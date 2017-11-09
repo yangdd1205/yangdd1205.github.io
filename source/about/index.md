@@ -31,8 +31,8 @@ date: 2017-11-07 09:52:13
 
 其他问题，直接联系我 :-p
 
-> * email: yangdd1205@126.com
-* wechat: yangdd1205
+>Mail: yangdd1205@126.com
+WeChat: yangdd1205
 
 
 
