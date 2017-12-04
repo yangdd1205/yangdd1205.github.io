@@ -89,6 +89,13 @@ public boolean add(Integer i) {
 }
 ```
 
+我们再看看添加元素到指定位置。
+
+```Java
+
+
+```
+
 最后，我们在看看 remove 方法。
 
 ```Java
@@ -115,20 +122,35 @@ LinkedList 分单向链表、双向链表、循环链表。
 
 ### 单向链表
 
-单向链表就是每个结点不仅仅保存数据，还要下一个结点的引用。
+单向链表就是每个结点不仅仅保存数据，还要保存下一个结点的引用。
 
-![单向链表](http://p0e1o9bcz.bkt.clouddn.com/list/singly.png)
+![单向链表](http://p0e1o9bcz.bkt.clouddn.com/list/singly.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+从上图可见，我们只需要拿到 head 结点，就可以“顺藤摸瓜”一直找到 last 结点。
+
+```Java
 
 
+```
 
+从上面可以看出，单向链表每次查找元素都需要从 head 结点开始，结点越来越多，遍历时间也就越来越长，特别是寻找靠近链表尾的结点。有什么办法优化呢？
 
 ### 双向链表
 
+
 双向链表就是每个结点不仅仅保存数据和下一个结点的引用，还要保存上一个结点的引用。
 
-![双向链表](http://p0e1o9bcz.bkt.clouddn.com/list/double.png)
+![双向链表](http://p0e1o9bcz.bkt.clouddn.com/list/doubly.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+```Java
+
+```
 
 ### 循环链表
 
 
 ## 对比
+
+
+链表的插入和删除，只需要修改前面两个元素。而arraylist 则需要移动已存在的元素。
+链表理论上是无限大的，而 arraylist 的最大值是 Integer的最大值（知道原因么？）。
