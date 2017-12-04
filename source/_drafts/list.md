@@ -111,23 +111,24 @@ public Integer remove(int index) {
 
 ## LinkedList
 
-LinkedList 分单链表和双链表。
+LinkedList 分单向链表、双向链表、循环链表。
 
-### 单链表
+### 单向链表
 
-单链表就是每个结点不仅仅保存数据，还要下一个结点的引用。
+单向链表就是每个结点不仅仅保存数据，还要下一个结点的引用。
 
-![单链表](http://p0e1o9bcz.bkt.clouddn.com/list/singly.png)
-
-
+![单向链表](http://p0e1o9bcz.bkt.clouddn.com/list/singly.png)
 
 
-### 双链表
 
-双链表就是每个结点不仅仅保存数据和下一个结点的引用，还要保存上一个结点的引用。
 
-![双链表](http://p0e1o9bcz.bkt.clouddn.com/list/double.png)
+### 双向链表
 
+双向链表就是每个结点不仅仅保存数据和下一个结点的引用，还要保存上一个结点的引用。
+
+![双向链表](http://p0e1o9bcz.bkt.clouddn.com/list/double.png)
+
+### 循环链表
 
 
 ## 对比
