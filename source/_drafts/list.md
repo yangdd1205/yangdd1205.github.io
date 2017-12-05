@@ -91,15 +91,42 @@ public boolean add(Integer i) {
 
 我们再看看添加元素到指定位置。
 
+假设，我们要把元素 6 加入到元素 2 的位置，也就是加入到下标为 1 的位置。
+
+![添加元素到指定位置](http://p0e1o9bcz.bkt.clouddn.com/list/arraylist-add-index-data-1.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+只需要把元素 2 及其后面的元素，往后挪动一位。
+
+![添加元素到指定位置](http://p0e1o9bcz.bkt.clouddn.com/list/arraylist-add-index-data-2.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+最后，把元素 6 存到下标为 1 的位置。
+
+![添加元素到指定位置](http://p0e1o9bcz.bkt.clouddn.com/list/arraylist-add-index-data-3.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+
 ```Java
+public boolean add(int index, Integer i) {
+    //需要检查下标的范围
 
-
+    if (size == data.length) {
+        // 默认每次扩大一倍容量
+        data = Arrays.copyOf(data, data.length * 2);
+    }
+    //移动元素
+    System.arraycopy(data, index, data, index + 1, size - index);
+    
+    data[index] = i;
+    size++;
+    return true;
+}
 ```
 
 最后，我们在看看 remove 方法。
 
 ```Java
 public Integer remove(int index) {
+    //需要检查下标的范围
+
     Integer value = data[index];
     //计算需要移动元素个数
     int numMoved = size - index - 1;
