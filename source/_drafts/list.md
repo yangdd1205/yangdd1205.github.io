@@ -114,7 +114,7 @@ public boolean add(int index, Integer i) {
     }
     //移动元素
     System.arraycopy(data, index, data, index + 1, size - index);
-    
+
     data[index] = i;
     size++;
     return true;
@@ -153,12 +153,90 @@ LinkedList 分单向链表、双向链表、循环链表。
 
 ![单向链表](http://p0e1o9bcz.bkt.clouddn.com/list/singly.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
-从上图可见，我们只需要拿到 head 结点，就可以“顺藤摸瓜”一直找到 last 结点。
+来看看怎么构建一个单向链表。
 
 ```Java
+public class SinglyLinkedList {
 
+    /**
+     * 链表头
+     */
+    private Node head;
+
+    /**
+     * 数据结点
+     */
+    private static class Node {
+        int data;
+        Node next;
+
+        public Node(int data) {
+            this.data = data;
+        }
+    }
+
+    /**
+     * 链表中元素的个数
+     */
+    private int size;
+}
 
 ```
+
+看看怎么向单向链表中插入元素。
+
+第一种情况，插入元素到链表头。
+
+![插入元素到链表头](http://p0e1o9bcz.bkt.clouddn.com/list/singly-insert-front.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+```Java
+public void push(int data) {
+  Node newNode = new Node(data);
+  newNode.next = head;
+  head = newNode;
+}
+
+```
+
+第二种情况，插入元素到指定元素后面。
+
+![插入元素到指定元素后面](http://p0e1o9bcz.bkt.clouddn.com/list/singly-insert-after.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+```Java
+public void insertAfter(Node prevNode, int data) {
+  if ( prevNode == null ) {
+    return;
+  }
+  Node newNode = new Node(data);
+  newNode.next = prevNode.next;
+  prevNode.next = newNode;
+}
+
+```
+
+第三种情况，追加到链表尾部。
+
+![追加元素到链表尾部](http://p0e1o9bcz.bkt.clouddn.com/list/singly-insert-end.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+
+```Java
+public void append(int data) {
+     Node newNode = new Node(data);
+     if (head == null) {
+         head = newNode;
+         return;
+     }
+     Node last = head;
+     while (last.next != null) {
+         last = last.next;
+     }
+     last.next = newNode;
+
+ }
+
+```
+
+
+
 
 从上面可以看出，单向链表每次查找元素都需要从 head 结点开始，结点越来越多，遍历时间也就越来越长，特别是寻找靠近链表尾的结点。有什么办法优化呢？
 
