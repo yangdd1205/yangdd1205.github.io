@@ -179,6 +179,10 @@ public class SinglyLinkedList {
      * 链表中元素的个数
      */
     private int size;
+
+    public int size() {
+        return this.size;
+    }
 }
 
 ```
@@ -194,6 +198,7 @@ public void push(int data) {
   Node newNode = new Node(data);
   newNode.next = head;
   head = newNode;
+  size++;
 }
 
 ```
@@ -210,6 +215,7 @@ public void insertAfter(Node prevNode, int data) {
   Node newNode = new Node(data);
   newNode.next = prevNode.next;
   prevNode.next = newNode;
+  size++;
 }
 
 ```
@@ -220,35 +226,89 @@ public void insertAfter(Node prevNode, int data) {
 
 ```Java
 public void append(int data) {
-     Node newNode = new Node(data);
-     if (head == null) {
-         head = newNode;
-         return;
-     }
-     Node last = head;
-     while (last.next != null) {
-         last = last.next;
-     }
-     last.next = newNode;
-
+    Node newNode = new Node(data);
+    if (head == null) {
+        head = newNode;
+        size++;
+        return;
+    }
+    Node last = head;
+    while (last.next != null) {
+        last = last.next;
+    }
+    last.next = newNode;
+    size++; 
  }
-
 ```
 
+再来看看删除元素。
 
+![删除元素]()
 
+```Java
+public void remove(int key) {
+    //判断是否是删除 head
+    Node del = head;
+    if (del != null && del.data == key) {
+        head = del.next;
+        size--;
+        return;
+    }
+    Node prev = null;
+    while (del != null && del.data != key ) {
+         prev = del;
+            del = del.next;
+    }
+    if (del == null) {
+        return;
+    }
+    prev.next = del.next;
+    size--;
+}
+```
 
-从上面可以看出，单向链表每次查找元素都需要从 head 结点开始，结点越来越多，遍历时间也就越来越长，特别是寻找靠近链表尾的结点。有什么办法优化呢？
+从上面可以看出，单向链表每次查找元素都需要从 head 结点开始，结点越来越多，遍历时间也就越来越长。有什么办法优化呢？
 
 ### 双向链表
 
 
-双向链表就是每个结点不仅仅保存数据和下一个结点的引用，还要保存上一个结点的引用。
+双向链表就是每个结点不仅仅保存数据和下一个结点的引用，还要保存上一个结点的引用。这样的话，从任何一个结点都可以遍历整个 list。
 
 ![双向链表](http://p0e1o9bcz.bkt.clouddn.com/list/doubly.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
-```Java
+构造一个双向链表。
 
+```Java
+public class DoublyLinkedList {
+
+    /**
+     * 链表头
+     */
+    private Node first;
+
+    /**
+     * 链表尾
+     */
+    private Node last;
+
+    /**
+     * 数据结点
+     */
+    private static class Node {
+        Node prev;
+        int data;
+        Node next;
+
+        public Node(int data) {
+            this.data = data;
+        }
+    }
+
+    /**
+     * 链表中元素的个数
+     */
+    private int size;
+}
 ```
 
 ### 循环链表
