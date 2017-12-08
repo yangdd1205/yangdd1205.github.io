@@ -86,7 +86,7 @@ public static native void arraycopy(Object src,  int  srcPos, Object dest, int d
 ```Java
 public boolean add(Integer i) {
     if (size == data.length) {
-        // 默认每次扩大一倍容量
+        // 每次扩大一倍容量
         data = Arrays.copyOf(data, data.length * 2);
     }
     data[size++] = i;
@@ -100,11 +100,11 @@ public boolean add(Integer i) {
 
 ![添加元素到指定位置](http://p0e1o9bcz.bkt.clouddn.com/list/arraylist-add-index-data-1.png?v1&imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
-只需要把元素 2 及其后面的元素，往后挪动一位。
+第一步，把下标大于等于 1 的元素，往后移动一位。
 
 ![添加元素到指定位置](http://p0e1o9bcz.bkt.clouddn.com/list/arraylist-add-index-data-2.png?v1&imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
-最后，把元素 6 存到下标为 1 的位置。
+第二步，把元素 6 存到下标为 1 的位置。
 
 ![添加元素到指定位置](http://p0e1o9bcz.bkt.clouddn.com/list/arraylist-add-index-data-3.png?v1&imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
@@ -126,7 +126,7 @@ public boolean add(int index, Integer i) {
 }
 ```
 
-最后，我们在看看 remove 方法。
+最后，我们在看看 remove 方法。其实也是移动元素，只不过是往前移动。
 
 ```Java
 public Integer remove(int index) {
@@ -279,7 +279,7 @@ public void remove(int key) {
 
 双向链表就是每个结点不仅仅保存数据和下一个结点的引用，还要保存上一个结点的引用。
 
-![双向链表](http://p0e1o9bcz.bkt.clouddn.com/list/doubly.png?v1&imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+![双向链表](http://p0e1o9bcz.bkt.clouddn.com/list/doubly.png?v2&imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
 构造一个双向链表。
 
