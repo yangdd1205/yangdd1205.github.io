@@ -3,7 +3,9 @@ title: Spring Cloud Eureka：服务注册与发现
 tags:
   - Spring Cloud
 categories: Spring Cloud
+date: 2017-12-20 06:44:44
 ---
+
 
 Spring Cloud Eureka 是 Spring Cloud Netflix 微服务套件中的一个重要部分。它基于 Netflix Eureka 做了二次封装，主要负责完成微服务架构中的服务治理与服务发现功能。
 
@@ -76,7 +78,7 @@ Spring Cloud Eureka 是 Spring Cloud Netflix 微服务套件中的一个重要�
 </project>
 ```
 
-只需要通过注解 `@EnableEurekaServer` 启用 Eureka 注册中心服务
+只需要通过注解 `@EnableEurekaServer` 作为 Eureka Server 启动。
 
 ```Java
 @EnableEurekaServer
@@ -88,6 +90,7 @@ public class EurekaServuerApplication {
     }
 }
 ```
+
 
 
 在 `application.yml` 修改配置。
@@ -114,7 +117,7 @@ eureka:
 ![Eureka Server](http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka-server.png?	
 imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
 
-可以看到现在还服务注册到上面。
+可以看到现在还没有服务注册到上面。
 
 ![no-instances-available](http://p0e1o9bcz.bkt.clouddn.com/eureka/no-instances-available.png?	
 imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
@@ -295,9 +298,10 @@ eureka:
 
 ## 服务发现注册机制
 
-![springcloud](http://7xq43s.com1.z0.glb.clouddn.com/springcloud1.png)
+![springcloud](http://img.blog.csdn.net/20170727221824930)<div style="text-align: center">图片来自大道化简的博客</div>
 
-服务注册：Eureka Client 在启动时会通过发送 Rest 请求的方式将自己注册到 Eureka Server 上，同时带上自身服务的一些元素。Eureka Server 收到这个 Rest 请求后，将元数据信息存储在一个双层结构的 Map中，其中第一层的 key 是服务名，第二层的 key 是具体服务实例名。
+
+服务注册：服务提供者在启动时会通过发送 Rest 请求的方式将自己注册到 Eureka 服务器上，同时带上自身服务的一些元素。Eureka 收到这个 Rest 请求后，将元数据信息存储在一个双层结构的 Map 中，其中第一层的 key 是服务名，第二层的 key 是具体服务实例名。
 
 服务同步：如架构图所示，这里两个服务提供者分别注册到了两个不同的注册中心上，也就是说他们的信息分别被两个服务注册中心所维护，此时由于服务中心之间因为相互注册服务的关系，当服务提供者发送注册请求到一个服务注册中心的时候，它会将请求转发给集群的其他注册中心，从而实现注册中心之间的服务同步过程。通过服务同步，两个服务提供者的服务信息就可以通过这两台服务注册中心的任意一台获取到。
 
@@ -305,18 +309,18 @@ eureka:
 服务续约：服务注册完成后，服务提供者会维护一个心跳来持续告诉注册中心“我还活在”以防止注册中心“剔除该服务”也就是将服务列表中排除出去。
 
 
-获取服务：当我们启动消费者的时候，它会发送一个 Rest 请求给 Eureka Server 获取上面所有的服务清单，并且为了性能考虑，返回给客户端的清单缓存默认为每30s更新一次。
+获取服务：当我们启动消费者的时候，它会发送一个 Rest 请求给注册中心获取上面所有的服务清单，并且为了性能考虑，返回给客户端的清单缓存默认为每 30s 更新一次。
 
 
-服务调用：Eureka Client 获得清单后，通过服务名可以获得具体提供服务的实例名和该实例的元数据信息。因为有这些服务实例的详细信息，所以客户端可以根据自己的需要决定调用哪个服务示例，在 Ribbon 中会默认采用轮训的方式进行调用，从而实现负载均衡机制。
+服务调用：消费者获得清单后，通过服务名可以获得具体提供服务的实例名和该实例的元数据信息。因为有这些服务实例的详细信息，所以客户端可以根据自己的需要决定调用哪个服务实例，在 Ribbon 中会默认采用轮训的方式进行调用，从而实现负载均衡机制。
 
-服务下线：在系统运行中必然会出现关闭或重启某个实例的情况，在关闭服务期间，我们自然不希望调用到已经下线的服务实例，所以在 Eureka Client 程序中，当服务实例正常关闭操作时，它会触发一个服务下线的 Rest 请求给 Eureka Server，通知其下线，当然  Eureka Server 收到该请求后把服务列表状态改为下线，并把该事件传播给集群中其他节点。当出现非正常下线（由于系统内部故障，如内存溢出、服务器宕机等问题）时， Eureka Server 可能并没有收到正确的下线通知请求，而这种情况， Eureka Server 自己会有一个内部的定时任务，每隔一段时间定时检查超时的清单进行剔除（如果没有续约）。
+服务下线：在系统运行中必然会出现关闭或重启某个实例的情况，在关闭服务期间，我们自然不希望调用到已经下线的服务实例，所以在客户端程序中，当服务实例正常关闭操作时，它会触发一个服务下线的 Rest 请求给 Eureka，通知其下线，当然注册中心收到该请求后把服务列表状态改为下线，并把该事件传播给集群中其他节点。当出现非正常下线（由于系统内部故障，如内存溢出、服务器宕机等问题）时，注册中心可能并没有收到正确的下线通知请求，而这种情况，Eureka 自己会有一个内部的定时任务，每隔一段时间定时检查超时的清单进行剔除（如果没有续约）。
 
 
 
 ## 示例源码
 
-本篇文章所用示例项目名称均已：spring-cloud-01 开头
+本篇文章所用示例项目名称均已 `spring-cloud-01` 开头
 
 GitHub：https://github.com/yangdd1205/spring-cloud-master
 
@@ -324,8 +328,9 @@ GitHub：https://github.com/yangdd1205/spring-cloud-master
 
 ## 参考资料
 
-Eureka Server：https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#spring-cloud-eureka-server
+[Eureka Server](https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#spring-cloud-eureka-server)
 
-Eureka Clients：https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_service_discovery_eureka_clients
+[Eureka Clients](https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_service_discovery_eureka_clients)
 
-大道化简 - Spring Cloud Eureka 详解： http://blog.csdn.net/sunhuiliang85/article/details/76222517
+[大道化简 - Spring Cloud Eureka 详解](http://blog.csdn.net/sunhuiliang85/article/details/76222517)
+
