@@ -115,12 +115,12 @@ eureka:
 启动项目后，访问：http://localhost:7001 
 
 ![Eureka Server](http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka-server.png?	
-imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "注册中心")
 
 可以看到现在还没有服务注册到上面。
 
 ![no-instances-available](http://p0e1o9bcz.bkt.clouddn.com/eureka/no-instances-available.png?	
-imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "暂无服务")
 
 
 ## 服务注册
@@ -212,7 +212,7 @@ eureka:
 启动项目，再次访问 http://localhost:7001
 
 ![instances-available](http://p0e1o9bcz.bkt.clouddn.com/eureka/instances-available.png?	
-imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "Client 已注册")
 
 
 到这里一个简单版的服务注册和发现就完成了。
@@ -270,10 +270,10 @@ eureka:
 
 访问 http://eureka1:7001/
 
-![eureka1](http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka1.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+![eureka1](http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka1.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "eureka-a")
 
 访问 http://eureka2:7002/
-![eureka2](http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka2.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim)
+![eureka2](http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka2.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "eureka-b")
 
 观察 DS Replicas 和实例 EUREKA-SERVICE 的个数。
 
@@ -298,7 +298,7 @@ eureka:
 
 ## 服务发现注册机制
 
-![springcloud](http://img.blog.csdn.net/20170727221824930)<div style="text-align: center">图片来自大道化简的博客</div>
+![springcloud](http://img.blog.csdn.net/20170727221824930 "图片来自大道化简的博客")
 
 
 服务注册：服务提供者在启动时会通过发送 Rest 请求的方式将自己注册到 Eureka 服务器上，同时带上自身服务的一些元素。Eureka 收到这个 Rest 请求后，将元数据信息存储在一个双层结构的 Map 中，其中第一层的 key 是服务名，第二层的 key 是具体服务实例名。
@@ -332,5 +332,5 @@ GitHub：https://github.com/yangdd1205/spring-cloud-master
 
 [Eureka Clients](https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_service_discovery_eureka_clients)
 
-[大道化简 - Spring Cloud Eureka 详解](http://blog.csdn.net/sunhuiliang85/article/details/76222517)
+[Spring Cloud Eureka 详解 - 大道化简](http://blog.csdn.net/sunhuiliang85/article/details/76222517)
 
