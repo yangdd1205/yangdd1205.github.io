@@ -320,7 +320,7 @@ eureka:
 
 ## 示例源码
 
-本篇文章所用示例项目名称均已 `spring-cloud-01` 开头
+本篇文章所用示例项目名称均以 `spring-cloud-01` 开头
 
 GitHub：https://github.com/yangdd1205/spring-cloud-master
 
