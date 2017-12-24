@@ -345,7 +345,7 @@ public class RetryController {
 client: # 服务名
   ribbon:
     OkToRetryOnAllOperations: true # 允许所有该服务的所有操作都可以重试 
-    MaxAutoRetriesNextServer: 1  # 重试时切换实例的次数（不包含第一次请求）
+    MaxAutoRetriesNextServer: 1  # 参与重试的服务个数（不包含第一个服务）
     MaxAutoRetries: 5 # 重试次数（不包含第一次请求）
 ```
 
