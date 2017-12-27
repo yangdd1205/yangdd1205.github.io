@@ -18,14 +18,63 @@ categories: Spring Cloud
 
 Spring Cloud Hytrix 是 基于 Netflix 的开源框架 Hystrix 做了封装，该框架的目的是通过控制那些访问远程系统、服务和第三方库的节点，从而对延迟和故障提供更强大的容错能力。Hystrix 具备了服务降级、服务熔断、线程隔离、请求缓存、请求合并以及服务监控等强大的功能。目前托管在 [GitHub](https://github.com/Netflix/Hystrix) 上。
 
+## 简单使用
+
+现有三个项目如下：
+* [server](https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-03-hystrix-server)：注册中心，服务名：eureka-service，端口：7001
+* [client](https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-03-hystrix-client)：服务提供者，服务名：client，端口：8001
+* [request-a](https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-03-hystrix-request-a)：服务调用者，服务名：request，端口 9001
+
+`client` 对外提供如下服务：
+```Java
+package org.yangdongdong.springcloud.service.api;
+
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloController {
+
+    @RequestMapping(value = "/hello", method = RequestMethod.GET)
+    public String sayHello() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(3);
+        System.out.println("hello hystrix!");
+        return "hello hystrix!";
+    }
+
+    @RequestMapping(value = "/hi", method = RequestMethod.GET)
+    public String hi(String name) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(5);
+        System.out.println("hi " + name + "!");
+        return "hi " + name + "!";
+    }
+
+    @RequestMapping(value = "/request", method = RequestMethod.GET)
+    public String request() throws InterruptedException {
+        System.out.println("request...");
+        return "request";
+    }
+}
+   
+```
+
+在 `request-a` 中，我们先加入 `spring-cloud-starter-hystrix` 的依赖：
+```XML
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-hystrixs</artifactId>
+</dependency>
+```
+
+我们可以通过注解 ``
 
 
-
-
-
-<!--  简单使用 -->
-
-
+{% note warning %}
+使用包装 Ribbon 客户端的 Hystrix 命令时，要确保将 Hystrix 超时配置为比配置的功能区超时（包括可能进行的任何潜在重试）更长。 例如，如果您的功能区连接超时时间为一秒，并且功能区客户端可能会重试三次请求，那么您的 Hystrix 超时应略超过三秒钟。
+{% endnote %}
 <!-- 高级进阶 容错保护 -->
 
 <!-- 其他功能 -->
