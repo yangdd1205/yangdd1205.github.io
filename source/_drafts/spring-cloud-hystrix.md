@@ -211,57 +211,106 @@ public String hi(String name) {
 
 通过上面的一系列机制，Hystrix 的断路器实现了对依赖资源故障的端口、对降级策略的自动切换以及对主逻辑的自动恢复机制。这使得我们的微服务在依赖外部服务或资源的时候得到了非常好的保护，同时对于一些具备降级逻辑的业务需求可以实现自动化的切换与恢复，相比于设置开关由监控和运维来进行切换的传统实现方式显得更为智能和高效。
 
+在 `client` 中的 `HelloController` 再添加一个方法：
+```Java
+@RequestMapping(value="/circuitBreaker",method=RequestMethod.GET)
+public String circuitBreaker() throws InterruptedException {
+   TimeUnit.SECONDS.sleep(3);
+   return "Circuit Breaker";
+}
+```
+在 `request` 中的 `HelloService` 添加调用方法：
+```Java
+@HystrixCommand(fallbackMethod = "callCircuitBreakerFailback", commandKey = "circuitBreakerKey", commandProperties = {
+        @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"), // 请求总数下限
+        @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "20"), // 错误百分比下限
+        @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "5000") }) // 休眠时间窗
+public String callCircuitBreaker() {
+    System.out.println("callCircuitBreaker 主逻辑");
+    return restTemplate.getForEntity("http://client/circuitBreaker", String.class).getBody();
+}
+
+ public String callCircuitBreakerFailback() {
+    System.err.println("callCircuitBreaker 执行降级策略");
+    return "callCircuitBreakerFailback";
+}
+
+```
+在 `request` 中的 `TestController` 添加方法：
+```Java
+@RequestMapping(value = "/hystrix-circuit-breaker", method = RequestMethod.GET)
+public String circuitBreaker() {
+    return helloService.callCircuitBreaker();
+}
+```
+
 写个方法测试下：
 
 ```Java
-    @HystrixCommand(fallbackMethod = "callRequestFailback",
-            commandKey="requestKey",
-            commandProperties= {
-                    @HystrixProperty(name="circuitBreaker.requestVolumeThreshold",value="10"),
-                    @HystrixProperty(name="circuitBreaker.errorThresholdPercentage",value="20"),
-                    @HystrixProperty(name="circuitBreaker.sleepWindowInMilliseconds",value="5000")
-                    
-            })
-    public String callRequest() {
-        System.out.println("-----非降级-----");
-        return restTemplate.getForEntity("http://client/request", String.class).getBody();
-    }
+public static void main(String[] args) throws Exception {
+    RestTemplate rt = new RestTemplate();
+    for (int i = 0; i < 15; i++) {
+        new Thread(() -> {
+            System.out.println(
+                    rt.getForEntity("http://localhost:9001//hystrix-circuit-breaker", String.class).getBody());
 
+         }).start();
+    }
+}
 ```
-```Java
-public static void main(String[] args) {
-       RestTemplate rt = new RestTemplate();
-       CountDownLatch cd = new CountDownLatch(10);
-       for(int i=0;i<10;i++) {
-           new Thread(()-> {
-               int random = new Random().nextInt(3);
-               try {
-                TimeUnit.SECONDS.sleep(random);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-               cd.countDown();
-               System.out.println(cd.getCount()+": "+rt.getForEntity("http://localhost:9001/hystrix-request", String.class).getBody());
-             
-           }).start();
-       }
-       
-       try {
-        cd.await();
-    } catch (InterruptedException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-       long start = System.currentTimeMillis();
-       System.out.println(rt.getForEntity("http://localhost:9001/hystrix-request", String.class).getBody());
-       long end = System.currentTimeMillis();
-       System.out.println("*******************"+(end - start));
-       
-    }
+观察 `client` 控制台输出（每次运行顺序可能都一样）：
+```
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 主逻辑
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
 ```
 
+证实了，上面我们所说的逻辑，当满足请求总数下限和错误百分比下限时，断路器开启，整个休眠时间窗内，都不会再走主逻辑。
 
+5 秒过后，我们在运行一次 `main`，理论上，当休眠时间窗到期，断路器将进入半开状态，释放一次请求到原来的主逻辑上，如果此次请求正常返回，那么断路器将继续闭合，主逻辑恢复，如果这次请求依然有问题，断路器继续进入打开状态，休眠时间窗重新计时。所有控制台输出应该只有一次是输出 `callCircuitBreaker 主逻辑`：
+```
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 主逻辑
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+callCircuitBreaker 执行降级策略
+```
+{% note info %}
+这个测试只是简单地测试下断路器的关闭和开启。
+{% endnote %}
 ## 更多功能
 
 由于断路器功能太过强大，这里仅仅举一个例子说明：高并发限流系统/限流组件应用，在断路器的配置限流策略 `execution.isolation.stargery` 中有两种方式进行处理：
@@ -291,6 +340,47 @@ public static void main(String[] args) {
 ```
 
 ## Dashboard
+
+Hystrix 还提供监控功能，监控我们断路器服务的并发量、请求率、错误率等信息，为了更好的方便我们对于服务接口进行测试和排查。架构如下：
+![Hystrix Dashboard]( Hystrix Dashboard)
+
+我们新建一个项目 [dashbord](https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-03-hystrix-dashboard) 端口 6001，引入 `hystrix-dashborad` 依赖：
+```XML
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+</dependency>
+```
+通过注解 `@EnableHystrixDashboard`，启断路器监控：
+```Java
+@EnableHystrixDashboard // 开启断路器监控
+@EnableDiscoveryClient
+@SpringBootApplication
+public class Application {
+
+    // 查看[我们要监控哪一个断路器服务]什么样的数据,写上具体的地址: http://localhost:9001/hystrix.stream
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+访问 http://localhost:6001/hystrix 
+![Hystrix Dashboard](http://p0e1o9bcz.bkt.clouddn.com/hystrix/hystrix-dashborad.png?	
+imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim Hystrix Dashboard)
+
+现在我们要监控 `request` 项目，必须先加入依赖：
+```XML
+<!--  加入后 才能通过 hystrix dashboard 监控 hystrix.stream -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+</dependencies>
+```
+访问：http://localhost:9001/hystrix-request，再访问 http://localhost:9001/hystrix.stream 会显示出断路器服务的明细信息。
+
+
+
 
 ## Turbine
 
