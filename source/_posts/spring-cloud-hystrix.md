@@ -3,9 +3,8 @@ title: Spring Cloud Hystrix：断路器
 tags:
   - Spring Cloud
 categories: Spring Cloud
+date: 2017-12-30 09:07:42
 ---
-
-<!-- 介绍下什么是断路器，生活中的例子 -->
 
 在分布式系统中，服务之间的调用难免会因为网络原因或者服务自身的问题出现延迟或者故障，如果不及时解决，随着请求不断的增加，最后积压的问题就如洪水决堤，轻则导致自身服务的瘫痪，重则导致整个系统的瘫痪，那么解决怎个问题呢？在日常生活中有个叫断路器的设备，能够在电流过载或发送短路的时候自动切断电路，做到对电源线路及电动机的保护。
 {% blockquote 百度百科, 断路器 %}
@@ -57,7 +56,7 @@ public class HelloController {
 ```XML
 <dependency>
     <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-hystrixs</artifactId>
+    <artifactId>spring-cloud-starter-hystrix</artifactId>
 </dependency>
 ```
 
@@ -258,7 +257,7 @@ public static void main(String[] args) throws Exception {
     }
 }
 ```
-观察 `client` 控制台输出（每次运行顺序可能都一样）：
+观察 `client` 控制台输出（每次运行顺序可能都不一样）：
 ```
 callCircuitBreaker 执行降级策略
 callCircuitBreaker 执行降级策略
@@ -342,7 +341,7 @@ callCircuitBreaker 执行降级策略
 ## Dashboard
 
 Hystrix 还提供监控功能，监控我们断路器服务的并发量、请求率、错误率等信息，为了更好的方便我们对于服务接口进行测试和排查。架构如下：
-![Hystrix Dashboard]( Hystrix Dashboard)
+![Hystrix Dashboard](http://p0e1o9bcz.bkt.clouddn.com/hystrrix/dashboard-hystrix-stream.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "Hystrix Dashboard")
 
 我们新建一个项目 [dashbord](https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-03-hystrix-dashboard) 端口 6001，引入 `hystrix-dashborad` 依赖：
 ```XML
@@ -364,9 +363,9 @@ public class Application {
     }
 }
 ```
-访问 http://localhost:6001/hystrix 
-![Hystrix Dashboard](http://p0e1o9bcz.bkt.clouddn.com/hystrix/hystrix-dashborad.png?	
-imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim Hystrix Dashboard)
+访问 http://localhost:6001/hystrix
+
+![Hystrix Dashboard](http://p0e1o9bcz.bkt.clouddn.com/hystrix/hystrix-dashborad.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "Hystrix Dashboard")
 
 现在我们要监控 `request` 项目，必须先加入依赖：
 ```XML
@@ -377,17 +376,58 @@ imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fonts
     </dependency>
 </dependencies>
 ```
-访问：http://localhost:9001/hystrix-request，再访问 http://localhost:9001/hystrix.stream 会显示出断路器服务的明细信息。
+访问：http://localhost:9001/hystrix-request http://localhost:9001/hystrix.stream 会显示出断路器服务的明细信息。
 
+我们把这些数据放到 Hystrix Dashboard 中，通过图形化界面展示。
 
+![Monitor Single Hystrix App](http://p0e1o9bcz.bkt.clouddn.com/hystrix/monitor-single-hystrix-app.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "Monitor Single Hystrix App")
+
+点击 `Monitor Stream`， 就会出现类似下图的一个界面：
+
+![Monitor Stream](https://github.com/Netflix/Hystrix/wiki/images/dashboard-annoted-circuit-640.png "图片来至于 Hystrix Wiki")
 
 
 ## Turbine
 
+上面介绍了我们如何来监控单个服务，假如我们要监控一个集群服务怎么办呢？我们可以使用 `Turbine` 将多个 `hystrix.stream` 聚合起来，其架构如下：
+![Turbine](http://p0e1o9bcz.bkt.clouddn.com/hystrrix/dashboard-turbine-stream.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim "Turbine")
+
+复制 `request-a` 改为 `request-b`，端口为：9002。
+
+我们新建一个 [turbine](https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-03-hystrix-turbine) 项目，其端口为：6002，引入依赖：
+```XML
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-turbine</artifactId>
+</dependency>
+```
+通过注解 `@EnableTurbine` 启用收集断路器集群服务功能：
+```Java
+@EnableTurbine // 启用收集断路器集群服务功能
+@EnableDiscoveryClient
+@SpringBootApplication
+public class Application {
+    // 要监控的 turbine 地址 [监控 request 服务]: http://localhost:6002/turbine.stream
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+添加 turbine 配置如下：
+```YML
+turbine:
+  app-config: request  # 指定需要收集监控信息的服务名，多个服务用英文下的逗号分隔
+  cluster-name-expression: "'default'" #指定集群名称，默认表达式appName
+  combine-host-port: true
+```
+
+在 Hystrix Dashboard 需要监控的 stream 链接填写 http://localhost:6002/turbine.stream
+
+点击 `Monitor Stream` 查看，访问：http://localhost:9001/hystrix-request 主要看 `callRequest` 中 `Hosts` 值为 1。再访问 http://localhost:9002/hystrix-request 发现 `Hosts` 值为 2。说明现在通过一个 stream 链接，可以监控整个集群的情况。
 
 
+<!-- Spring Retry 断路器 --> 
 
-<!-- 额外赠送 Spring Retry 断路器 -->
 
 ## 示例源码
 
@@ -396,6 +436,10 @@ imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fonts
 GitHub：https://github.com/yangdd1205/spring-cloud-master
 
 ## 参考资料
-
-
+[Turbine](http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_turbine)
+[Hystrix Dashboard](http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#netflix-hystrix-dashboard-starter)
+[Spring Cloud构建微服务架构：服务容错保护（Hystrix服务降级）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-4-1/)
+[Spring Cloud构建微服务架构：服务容错保护（Hystrix依赖隔离）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-4-2/)
+[Spring Cloud构建微服务架构：服务容错保护（Hystrix断路器）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-4-3/)
+<!--[Spring的三种Circuit Breaker](http://www.60kb.com/post/90.html)-->
 
