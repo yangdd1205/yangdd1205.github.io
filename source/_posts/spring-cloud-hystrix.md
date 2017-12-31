@@ -436,8 +436,8 @@ turbine:
 GitHub：https://github.com/yangdd1205/spring-cloud-master
 
 ## 参考资料
-[Turbine](http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_turbine)
-[Hystrix Dashboard](http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#netflix-hystrix-dashboard-starter)
+[Turbine](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_turbine)
+[Hystrix Dashboard](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#netflix-hystrix-dashboard-starter)
 [Spring Cloud构建微服务架构：服务容错保护（Hystrix服务降级）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-4-1/)
 [Spring Cloud构建微服务架构：服务容错保护（Hystrix依赖隔离）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-4-2/)
 [Spring Cloud构建微服务架构：服务容错保护（Hystrix断路器）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-4-3/)

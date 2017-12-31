@@ -432,6 +432,6 @@ GitHub：https://github.com/yangdd1205/spring-cloud-master
 ## 参考资料
 [Spring Cloud构建微服务架构：服务消费（Ribbon）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-2-2)
 [为Spring Cloud Ribbon配置请求重试（Camden.SR2+）](http://blog.didispace.com/spring-cloud-ribbon-failed-retry/)
-[Spring Cloud Commons: Common Abstractions](http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_spring_cloud_commons_common_abstractions)
-[Client Side Load Balancer: Ribbon](http://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#spring-cloud-ribbon)
+[Spring Cloud Commons: Common Abstractions](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_spring_cloud_commons_common_abstractions)
+[Client Side Load Balancer: Ribbon](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#spring-cloud-ribbon)
 [Ribbon documentation](https://github.com/Netflix/ribbon/wiki/Getting-Started#the-properties-file-sample-clientproperties)

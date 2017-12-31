@@ -328,9 +328,9 @@ GitHub：https://github.com/yangdd1205/spring-cloud-master
 
 ## 参考资料
 
-[Eureka Server](https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#spring-cloud-eureka-server)
+[Eureka Server](https://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#spring-cloud-eureka-server)
 
-[Eureka Clients](https://cloud.spring.io/spring-cloud-static/Dalston.SR4/single/spring-cloud.html#_service_discovery_eureka_clients)
+[Eureka Clients](https://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_service_discovery_eureka_clients)
 
 [Spring Cloud Eureka 详解 - 大道化简](http://blog.csdn.net/sunhuiliang85/article/details/76222517)
 
