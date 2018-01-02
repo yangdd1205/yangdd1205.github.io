@@ -47,7 +47,7 @@ public class HelloController {
 ```XML
 <dependency>
     <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-feign</artifactId>
+    <artifactId>spring-cloud-starter-openfeign</artifactId>
 </dependency>
 ```
 然后再主入口通过注解 `@EnableFeignClients` 启用 Feign Client 功能。

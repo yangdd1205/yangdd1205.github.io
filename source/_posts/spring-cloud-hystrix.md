@@ -56,7 +56,7 @@ public class HelloController {
 ```XML
 <dependency>
     <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-hystrix</artifactId>
+    <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 </dependency>
 ```
 
@@ -347,7 +347,7 @@ Hystrix 还提供监控功能，监控我们断路器服务的并发量、请求
 ```XML
 <dependency>
     <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
 </dependency>
 ```
 通过注解 `@EnableHystrixDashboard`，启断路器监控：
@@ -398,7 +398,7 @@ public class Application {
 ```XML
 <dependency>
     <groupId>org.springframework.cloud</groupId>
-    <artifactId>spring-cloud-starter-turbine</artifactId>
+    <artifactId>spring-cloud-starter-netflix-turbine</artifactId>
 </dependency>
 ```
 通过注解 `@EnableTurbine` 启用收集断路器集群服务功能：

@@ -60,7 +60,7 @@ Spring Cloud Eureka 是 Spring Cloud Netflix 微服务套件中的一个重要�
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka-server</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
 
@@ -167,7 +167,7 @@ imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fonts
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId><!-- 这里有差异 服务端则是  spring-cloud-starter-eureka-server -->
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId><!-- 这里有差异 服务端则是  spring-cloud-starter-netflix-eureka-server -->
         </dependency>
     </dependencies>
 
