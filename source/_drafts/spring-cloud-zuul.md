@@ -85,9 +85,204 @@ zuul:
     * `route`：在请求被路由时执行
     * `post`：在请求被路由之后执行
     * `error`：在请求发生错误时执行
-    * `static`：暂不知道
+    * `static`：特殊的 Filter 具体的可以看 StaticResponseFilter，它允许从 Zuul 本身生成响应，而不是将请求转发到源。
 * `filterOrder`：处理的优先级，值越小表示优先级越高
 * `shouldFilter`：该 filter 是否执行
 * `run`：filter 具体的业务逻辑
 
+我们现在写一个校验 TOKEN 的过滤器：
+```Java
+@Component // 交由 Spring 管理
+public class CustomAuthFilter extends ZuulFilter {
 
+    private static final String TOKEN_AUTH = "123456";
+    
+    /**
+     * 指定服务名字
+     */
+    @Override
+    public Object run() {
+        RequestContext ctx = RequestContext.getCurrentContext();
+        HttpServletRequest request = ctx.getRequest();
+        String uri = request.getRequestURI();
+
+        String token = request.getHeader("x-auth-token");
+
+        if (StringUtils.isEmpty(token)) {
+            ctx.setSendZuulResponse(false);
+            ctx.setResponseStatusCode(401);
+            ctx.setResponseBody("no token");
+            return null;
+        }
+        if(TOKEN_AUTH.equals(token)) {
+            ctx.addZuulRequestHeader("userInfo", "{\"name\":\"Tom\",\"age\":18}");
+        }else {
+            ctx.setSendZuulResponse(false);
+            ctx.setResponseStatusCode(401);
+            ctx.setResponseBody("token auth fail");
+            return null; 
+        }
+        return ctx;
+    }
+
+    /**
+     * filter 是否执行
+     */
+    @Override
+    public boolean shouldFilter() {
+        return true;
+    }
+
+    /**
+     * filter 的优先级，值越小优先级越高
+     */
+    @Override
+    public int filterOrder() {
+        return 0;
+    }
+
+    /**
+     * filter 执行的时机
+     *
+     * pre 表示在请求被路由之前执行
+     * 
+     * route 表示在请求被路由中执行
+     * 
+     * post 表示在请求被路由之后执行
+     * 
+     * error 表示在请求发生错误时执行
+     * 
+     * static 特殊的 Filter 具体的可以看 StaticResponseFilter，它允许从 Zuul 本身生成响应，而不是将请求转发到源。
+     */
+    @Override
+    public String filterType() {
+        return "pre";
+    }
+
+}
+```
+
+现在再通过网关请求服务就需要在 header 里面提供 x-auth-token 了。可以使用 Postman 来测试。
+
+我们在 `HelloController` 里面再写一个方法试试能否获取到 Zuul 添加在 header 里面的 userInfo：
+```Java
+@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+public String auth(@RequestHeader("userInfo") String userInfo, String id) {
+    System.out.println("id:" + id);
+    return userInfo;
+}
+```
+
+Zuul 还支持在某个服务发生 fallback 时，自定义返回值，只需要实现 `FallbackProvider` 接口即可。
+```Java
+package org.yangdongdong.springcloud;
+
+@Component // 交由 Spring 管理
+public class HiServiceZuulFallBackProvider implements FallbackProvider {
+
+    /**
+     * 指定服务名字
+     */
+    @Override
+    public String getRoute() {
+        return "hi";
+    }
+
+    @Override
+    public ClientHttpResponse fallbackResponse() {
+        return new ClientHttpResponse() {
+
+            @Override
+            public HttpHeaders getHeaders() {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+                return null;
+            }
+
+            @Override
+            public InputStream getBody() throws IOException {
+                String result = "{\"result:\":\"bad request\"}";
+                return new ByteArrayInputStream(result.getBytes("UTF-8"));
+            }
+
+            /**
+             * 状态文本信息
+             */
+            @Override
+            public String getStatusText() throws IOException {
+                return getStatusCode().getReasonPhrase();
+            }
+
+            /**
+             * 自定义响应的状态
+             */
+            @Override
+            public HttpStatus getStatusCode() throws IOException {
+                return HttpStatus.BAD_REQUEST;
+            }
+
+            /**
+             * 自定义响应的状态码
+             */
+            @Override
+            public int getRawStatusCode() throws IOException {
+                return getStatusCode().value();
+            }
+
+            @Override
+            public void close() {
+
+            }
+        };
+    }
+
+    @Override
+    public ClientHttpResponse fallbackResponse(Throwable cause) {
+        return new ClientHttpResponse() {
+
+            @Override
+            public HttpHeaders getHeaders() {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+                return headers;
+            }
+
+            @Override
+            public InputStream getBody() throws IOException {
+                String result = "{\"result:\":\"error\"}";
+                return new ByteArrayInputStream(result.getBytes("UTF-8"));
+            }
+
+            /**
+             * 状态文本信息
+             */
+            @Override
+            public String getStatusText() throws IOException {
+                return getStatusCode().getReasonPhrase();
+            }
+
+            /**
+             * 自定义响应的状态
+             */
+            @Override
+            public HttpStatus getStatusCode() throws IOException {
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+            }
+
+            /**
+             * 自定义响应的状态码
+             */
+            @Override
+            public int getRawStatusCode() throws IOException {
+                return getStatusCode().value();
+            }
+
+            @Override
+            public void close() {
+
+            }
+        };
+    }
+
+}
+```
