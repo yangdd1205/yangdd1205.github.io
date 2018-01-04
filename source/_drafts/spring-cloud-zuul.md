@@ -105,7 +105,9 @@ public class CustomAuthFilter extends ZuulFilter {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
         String uri = request.getRequestURI();
-
+//        if (uri.equals("/hi-service/upload") || uri.equals("/zuul/hi-service/upload")) {
+//            return ctx;
+//        }
         String token = request.getHeader("x-auth-token");
 
         if (StringUtils.isEmpty(token)) {
@@ -286,3 +288,77 @@ public class HiServiceZuulFallBackProvider implements FallbackProvider {
 
 }
 ```
+
+我们把 `hi-service` 停掉，访问 http://localhost:6001/hi-service/hi 
+
+
+## 文件上传
+
+我们现在写一个文件上传的功能，在 `HiController` 中加入文件上传的方法：
+```Java
+@RequestMapping(value="/upload",method=RequestMethod.POST)
+public String upload(@RequestParam("file")MultipartFile file) {
+    System.out.println("名称："+file.getOriginalFilename());
+    try {
+        FileCopyUtils.copy(file.getBytes(),new File(file.getOriginalFilename()));
+        return "success";
+    } catch (IOException e) {
+        e.printStackTrace();
+        return "error";
+    }
+    
+}
+```
+
+然后再配置文件中添加配置：
+```YML
+spring:
+  application:
+    name: hi
+  http:
+    encoding:
+      charset: UTF-8
+    multipart:
+      enabled: true
+      file-size-threshold: 10
+      max-file-size: 50MB
+      max-request-size: 80MB
+```
+
+在 `resources` 文件夹下，创建 `META-INF/resources/index.html`：
+```HTML
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<form action="http://localhost:6001/hi-service/upload"
+			enctype="multipart/form-data" method="post">
+			<input type="file" name="file"> <br /> <input type="submit"
+				value="普通上传">
+		</form>
+	</div>
+	<div>
+		<form action="http://localhost:8002/upload"
+			enctype="multipart/form-data" method="post">
+			<input type="file" name="file"> <br /> <input type="submit"
+				value="绕过 zuul 的 dispatchServlet 进行上传">
+		</form>
+	</div>
+	   <div>
+        <form action="http://localhost:6001/zuul/hi-service/upload"
+            enctype="multipart/form-data" method="post">
+            <input type="file" name="file"> <br /> <input type="submit"
+                value="绕过 zuul 的 dispatchServlet 进行上传">
+        </form>
+    </div>
+</body>
+</html>
+```
+
+注意，记得在 `CustomAuthFilter` 中，加上 文件上传的 URI 不校验 TOKEN。
+
+第一个 `form` 是通过 `gateway` 进行上传，当文件小于
