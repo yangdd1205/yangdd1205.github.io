@@ -171,7 +171,7 @@ niws:
 ## 踩坑
 
 如果我们把 `filterCircuitTripped` 注释掉或改为 `true`。重启服务，访问：http://localhost:9001/hi `consumer` 会报如下的错误：
-```
+```Java
 2017-12-31 16:12:55.410  WARN 12948 --- [trix-provider-1] c.netflix.loadbalancer.BaseLoadBalancer  : LoadBalancer [provider]:  Error choosing server for key null
 
 java.lang.IndexOutOfBoundsException: index (1) must be less than size (1)
