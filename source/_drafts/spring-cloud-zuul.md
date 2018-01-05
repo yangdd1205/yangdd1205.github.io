@@ -335,30 +335,44 @@ spring:
 </head>
 <body>
 	<div>
-		<form action="http://localhost:6001/hi-service/upload"
+		<form action="http://localhost:8002/upload"
 			enctype="multipart/form-data" method="post">
 			<input type="file" name="file"> <br /> <input type="submit"
-				value="普通上传">
+				value="直接通过 hi 服务上传">
 		</form>
 	</div>
 	<div>
-		<form action="http://localhost:8002/upload"
+		<form action="http://localhost:6001/hi-service/upload"
+			enctype="multipart/form-data" method="post">
+			<input type="file" name="file"> <br /> <input type="submit"
+				value="通过 gateway 上传">
+		</form>
+	</div>
+	<div>
+		<form action="http://localhost:6001/zuul/hi-service/upload"
 			enctype="multipart/form-data" method="post">
 			<input type="file" name="file"> <br /> <input type="submit"
 				value="绕过 zuul 的 dispatchServlet 进行上传">
 		</form>
 	</div>
-	   <div>
-        <form action="http://localhost:6001/zuul/hi-service/upload"
-            enctype="multipart/form-data" method="post">
-            <input type="file" name="file"> <br /> <input type="submit"
-                value="绕过 zuul 的 dispatchServlet 进行上传">
-        </form>
-    </div>
 </body>
 </html>
 ```
 
 注意，记得在 `CustomAuthFilter` 中，加上 文件上传的 URI 不校验 TOKEN。
 
-第一个 `form` 是通过 `gateway` 进行上传，当文件小于
+第一个 `form` 是通过 `hi` 服务进行上传，当文件小于 50M 的时候，没有问题。
+
+第二个 `form` 是通过 `gateway` 服务进行上传，但是当文件大约 10M 的时候就会报错：
+```Java
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (26684755) exceeds the configured maximum (10485760)
+```
+
+原来 Zuul 有自己的 `DispatchServlet`，我们可以使用 `/zuul` 前缀来表示绕过 Zuul 内部的 `DispatchServlet` 直接路由到具体的服务，这样可以避免 2 次配置，并且非常的方便，只要符合 `/zuul/*` 的配置即可。第三个 `form` 既是如此。
+
+
+## 示例源码
+
+本篇文章所用示例项目名称均以 `spring-cloud-05-zuul` 开头
+
+GitHub：https://github.com/yangdd1205/spring-cloud-master
