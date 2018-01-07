@@ -3,14 +3,16 @@ title: Spring Cloud Zuul：网关
 tags:
   - Spring Cloud
 categories: Spring Cloud
+date: 2018-01-07 10:14:39
 ---
+
 网关顾名思义就是网络请求的入口，外部服务通过网关进行访问我们的内部服务，网关可以做很多的事，进行限流、安全、权限认证、黑白名单过滤、请求拦截、数据校验、API 路由转发等等功能。
 
 <!-- more -->
 
 ## Zuul 
 
-服务网关是微服务架构中一个不可或缺的部分，通过服务网关统一向外系统提供 REST API 的过程中，除了具备服务路由、负载均衡功能之外，它还具备了权限控制的功能。Spring Cloud Netflix 中的 Zuul 就担任了这样一个角色，为微服务架构提供了前门保护的作用，同时将权限控制这些比较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。
+服务网关是微服务架构中一个不可或缺的部分，通过服务网关统一向外系统提供 REST API 的过程中，除了具备服务路由、负载均衡功能之外，它还具备了权限控制的功能。Spring Cloud Netflix 中的 Zuul 就担任了这样一个角色，为微服务架构提供了前置保护的作用，同时将权限控制这些比较重的非业务逻辑内容迁移到服务路由层面，使得服务集群主体能够具备更高的可复用性和可测试性。
 
 
 ## 使用
@@ -66,6 +68,7 @@ zuul:
     api-hello:
       path: /hello-service/**  
       service-id: hello
+      sensitive-headers: # blacklist 敏感头信息会被过滤，不设置的话 默认值是 Cookie,Set-Cookie,Authorization
     api-hi:
       path: /hi-service/**
       service-id: hi  
@@ -174,6 +177,7 @@ public String auth(@RequestHeader("userInfo") String userInfo, String id) {
     return userInfo;
 }
 ```
+更多的例子可以查看官网 [Sample Zuul Filters](https://github.com/spring-cloud-samples/sample-zuul-filters)
 
 Zuul 还支持在某个服务发生 fallback 时，自定义返回值，只需要实现 `FallbackProvider` 接口即可。
 ```Java
@@ -334,27 +338,27 @@ spring:
 <title>Insert title here</title>
 </head>
 <body>
-	<div>
-		<form action="http://localhost:8002/upload"
-			enctype="multipart/form-data" method="post">
-			<input type="file" name="file"> <br /> <input type="submit"
-				value="直接通过 hi 服务上传">
-		</form>
-	</div>
-	<div>
-		<form action="http://localhost:6001/hi-service/upload"
-			enctype="multipart/form-data" method="post">
-			<input type="file" name="file"> <br /> <input type="submit"
-				value="通过 gateway 上传">
-		</form>
-	</div>
-	<div>
-		<form action="http://localhost:6001/zuul/hi-service/upload"
-			enctype="multipart/form-data" method="post">
-			<input type="file" name="file"> <br /> <input type="submit"
-				value="绕过 zuul 的 dispatchServlet 进行上传">
-		</form>
-	</div>
+    <div>
+        <form action="http://localhost:8002/upload"
+            enctype="multipart/form-data" method="post">
+            <input type="file" name="file"> <br /> <input type="submit"
+                value="直接通过 hi 服务上传">
+        </form>
+    </div>
+    <div>
+        <form action="http://localhost:6001/hi-service/upload"
+            enctype="multipart/form-data" method="post">
+            <input type="file" name="file"> <br /> <input type="submit"
+                value="通过 gateway 上传">
+        </form>
+    </div>
+    <div>
+        <form action="http://localhost:6001/zuul/hi-service/upload"
+            enctype="multipart/form-data" method="post">
+            <input type="file" name="file"> <br /> <input type="submit"
+                value="绕过 zuul 的 dispatchServlet 进行上传">
+        </form>
+    </div>
 </body>
 </html>
 ```
@@ -376,3 +380,10 @@ org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException
 本篇文章所用示例项目名称均以 `spring-cloud-05-zuul` 开头
 
 GitHub：https://github.com/yangdd1205/spring-cloud-master
+
+
+## 参考资料
+[Router and Filter: Zuul](http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_router_and_filter_zuul)
+[Spring Cloud构建微服务架构：服务网关（基础）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-6-1/)
+[Spring Cloud构建微服务架构：服务网关（路由配置）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-6-2/)
+[Spring Cloud构建微服务架构：服务网关（过滤器）【Dalston版】](http://blog.didispace.com/spring-cloud-starter-dalston-6-3/)
