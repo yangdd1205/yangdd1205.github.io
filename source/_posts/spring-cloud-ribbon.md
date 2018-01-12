@@ -207,8 +207,8 @@ client 2
     <artifactId>spring-retry</artifactId>
 </dependency>
 <dependency>
-    <groupId>org.springframework</groupId>
-    <artifactId>spring-aspects</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-aop</artifactId>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
