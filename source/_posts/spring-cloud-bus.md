@@ -16,10 +16,10 @@ Spring Cloud Bus 将分布式系统的结点与轻量级消息链接起来，可
 也就是说，配置仓库发生改变了，我们可以通过 Config Server 发起广播通知到各个 Config Client 重新获取配置信息。
 
 
-这里我们使用 [kafka](http://kafka.apache.org/) 来作为消息代理。具体的安装可以查看[官网文档](http://kafka.apache.org/quickstart)
+这里我们使用 [Kafka](http://kafka.apache.org/) 来作为消息代理。具体的安装可以查看[官网文档](http://kafka.apache.org/quickstart)
 
 {% note info %} 
-在启动 kafka 时，如果出现 `java.net.UnknownHostException` 异常，有两种办法：
+在启动 Kafka 时，如果出现 `java.net.UnknownHostException` 异常，有两种办法：
 1. 在 `{kafkapath}/config/server.properties` 中添加 `host.name=192.168.222.130`
 2. 在 `/etc/hosts` 文件中添加 `127.0.0.1 主机名`
  {% endnote %}
@@ -120,7 +120,10 @@ public class TestController {
 
 依次启动 `bus-server` 和 `bus-client`。
 
-访问 http://localhost:4002/getInfo 现在是 `config-dev-1.0`。
+此时，我们可以使用 `kafka-topics --list --zookeeper localhost:2181` 命令来查看当前 Kafka 中的 Topic，如果项目成功启动则会发现一个名为 `springCloudBus` 的 Topic,这个就是 Spring Cloud Bus 的。
+
+
+现在，访问 http://localhost:4002/getInfo 现在是 `config-dev-1.0`。
 
 修改配置仓库中 `client-dev.yml` 文件 `info: config-dev-2.0`。
 
