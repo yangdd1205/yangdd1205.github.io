@@ -10,4 +10,7 @@ tags:
 
 2. codec 的添加顺序有什么要求？
 
+3. netty example 有的怎么运行，比如代理？
+
+
 
