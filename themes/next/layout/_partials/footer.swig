@@ -46,9 +46,3 @@
   #}{{ theme.footer.custom_text }}{#
 #}</div>
 {% endif %}
-<span class="post-meta-divider">|</span>
-<div class="powered-by">
-<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
-  本站访数：<span id="busuanzi_value_site_uv"></span>
-</span>
-</div>
