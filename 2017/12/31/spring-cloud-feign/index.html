@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring Cloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前面我们讲了使用 RestTemplate + Ribbon + Hystrix 进行服务的调用，其实还有更简单的方法，通过 Feign 调用。">
+<meta name="keywords" content="Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud Feign：声明式 REST 客户端">
+<meta property="og:url" content="http://yangdongdong.org/2017/12/31/spring-cloud-feign/index.html">
+<meta property="og:site_name" content="编程改变生活">
+<meta property="og:description" content="前面我们讲了使用 RestTemplate + Ribbon + Hystrix 进行服务的调用，其实还有更简单的方法，通过 Feign 调用。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-03-11T09:09:09.501Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud Feign：声明式 REST 客户端">
+<meta name="twitter:description" content="前面我们讲了使用 RestTemplate + Ribbon + Hystrix 进行服务的调用，其实还有更简单的方法，通过 Feign 调用。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangdongdong.org/2017/12/31/spring-cloud-feign/"/>
+
+
+
+
+
+  <title>Spring Cloud Feign：声明式 REST 客户端 | 编程改变生活</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">编程改变生活</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">软件法人，源于生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2017/12/31/spring-cloud-feign/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="杨冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="编程改变生活">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud Feign：声明式 REST 客户端</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T17:02:41+08:00">
+                2017-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Cloud</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前面我们讲了使用 RestTemplate + Ribbon + Hystrix 进行服务的调用，其实还有更简单的方法，通过 Feign 调用。<br><a id="more"></a></p>
+<h2 id="Feign"><a href="#Feign" class="headerlink" title="Feign"></a>Feign</h2><p>Feign 是一个声明式的 WEB 服务客户端，它让编写 WEB 服务客户端更加简单。只需要创建一个接口并使用注解进行配置即可。它支持插入式注解，包含了 Feign 注解和 JAX-RS 注解。Feign 还支持可插拔编码器和解码器。而 Spring Cloud Feing 增加了对 Spring MVC 注解的支持，并使用了 Spring Web 中默认使用的 <code>HttpMessageConverters</code>，还整合了 Ribbon 和 Eureka 来提供一个具有负载均衡的 HTTP 客户端。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>现有四个项目：</p>
+<ul>
+<li><a href="https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-04-feign-consumer" target="_blank" rel="noopener">server</a>：注册中心，服务名：eureka-service，端口：7001</li>
+<li><a href="https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-04-feign-provider-a" target="_blank" rel="noopener">provider-a</a>：服务提供者，服务名：provider，端口：8001</li>
+<li><a href="https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-04-feign-provider-b" target="_blank" rel="noopener">provider-b</a>：服务提供者，服务名：provider，端口：8002</li>
+<li><a href="https://github.com/yangdd1205/spring-cloud-master/tree/master/spring-cloud-04-feign-consumer" target="_blank" rel="noopener">consumer</a>：服务消费者，服务名：consumer，端口：9001</li>
+</ul>
+<p><code>provider</code> 提供的服务：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/hello"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</div><div class="line">        System.out.println(<span class="string">"provider-a hello feign!"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="string">"hello feign!"</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/hi"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHi</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        TimeUnit.SECONDS.sleep(<span class="number">5</span>);</div><div class="line">        System.out.println(<span class="string">"provider-a hi feign!"</span>);</div><div class="line">        <span class="keyword">return</span> <span class="string">"hi feign!"</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注意：<code>provider-b</code> 中需要打印 <code>provider-b</code>。</p>
+<p>在 <code>consumer</code> 中，我们首先引入 Feign 依赖：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>然后再主入口通过注解 <code>@EnableFeignClients</code> 启用 Feign Client 功能。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@EnableFeignClients</span> <span class="comment">// 开启 Feign client 功能</span></div><div class="line"><span class="meta">@EnableDiscoveryClient</span></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 注意：使用 feign 的时候，不需要去做自定义的 RestTemplate 配置。</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span></span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="meta">@LoadBalanced</span></div><div class="line">    <span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        SpringApplication.run(Application.class, args);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Spring Cloud Feign 还集成了 Hystrix，不过默认是禁用的，在源码 <code>HystrixFeignConfiguration</code> 类中可以找到，我们要在配置文件中手动开启：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="attr">feign:</span></div><div class="line"><span class="attr">  hystrix:</span></div><div class="line"><span class="attr">    enabled:</span> <span class="literal">true</span> <span class="comment"># 启动 feign 的断路器功能</span></div><div class="line"><span class="attr">  compression:</span></div><div class="line"><span class="attr">    request:</span></div><div class="line"><span class="attr">      mime-types:</span> <span class="comment"># 支持的格式</span></div><div class="line"><span class="bullet">      -</span> <span class="string">text/html,application/xml,application/json</span></div><div class="line"><span class="attr">      min-request-size:</span> <span class="number">2048</span> <span class="comment"># 超过就压缩</span></div><div class="line"><span class="attr">      enabled:</span> <span class="literal">true</span> <span class="comment"># 请求是否压缩</span></div><div class="line"><span class="attr">    response:</span></div><div class="line"><span class="attr">      enabled:</span> <span class="literal">true</span> <span class="comment"># 响应是否压缩</span></div></pre></td></tr></table></figure></p>
+<p>现在我们通过 Feign 调用 <code>provider</code> 提供的服务，通过注解 <code>@FeignClient</code> 表明是一个 Feign Client，配置注解 <code>name</code> 指明服务的提供者，<code>fallback</code> 表示服务降级方法所在类。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@FeignClient</span>(name = <span class="string">"provider"</span>, fallback = ProviderFeignClientHystrixFallback.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ProviderFeignClient</span> </span>&#123;</div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/hello"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/hi"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHi</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Component</span> <span class="comment">// 不要忘记 @Component 注解</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProviderFeignClientHystrixFallback</span> <span class="keyword">implements</span> <span class="title">ProviderFeignClient</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Hello Fallback"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">sayHi</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"Hi Fallback"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerController</span> </span>&#123;</div><div class="line">    </div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> ProviderFeignClient helloFeignClient;</div><div class="line">    </div><div class="line">    <span class="meta">@RequestMapping</span>(value=<span class="string">"/hello"</span>,method=RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> helloFeignClient.sayHello();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="meta">@RequestMapping</span>(value=<span class="string">"/hi"</span>,method=RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">hi</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> helloFeignClient.sayHi();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>依次启动项目，访问：<a href="http://localhost:9001/hello" target="_blank" rel="noopener">http://localhost:9001/hello</a> 观察 <code>provider-a</code> 和 <code>provider-b</code> 的控制台，发现是通过轮询来调用的服务，证实了 Fegin 集成了 Ribbon 具有负载均衡的功能。</p>
+<p>再访问：<a href="http://localhost:9001/hi" target="_blank" rel="noopener">http://localhost:9001/hi</a> 返回 <code>Hi Fallback</code>，但是发现 <code>provider-a</code> 和 <code>provider-b</code> 的控制台都有打印调用信息。原因是，Feign 底层默认提供了重试机制，也就是底层使用 Retry 类对调用服务进行重试操作，通过底层代码 <code>Retryer.java</code> 我们知道默认是 1000ms 去进行调用，调用次数是 5 次。我们可以配置 Ribbon 和 Hystrix 的超时时间。</p>
+<div class="note warning"><p>在配置 Ribbon 和 Hystrix 超时时间时，要特别注意，要确保将 Hystrix 超时配置为比配置的 Ribbon 超时（包括可能进行的任何潜在重试）更长。 例如，如果您的 Ribbon 连接超时时间为一秒，并且 Ribbon 客户端可能会重试三次请求，那么您的 Hystrix 超时应略超过三秒钟。如果 Hystrix 的超时时间小于 Ribbon 超时时间，则不会重试，直接被断路器组件调用请求执行熔断，服务降级。</p></div>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">## 断路器超时时间</span></div><div class="line"><span class="string">hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds:</span> <span class="number">30000</span></div><div class="line"><span class="attr">provider:</span></div><div class="line"><span class="attr">  ribbon:</span></div><div class="line"><span class="attr">    OkToRetryOnAllOperations:</span> <span class="literal">true</span> <span class="comment"># 允许所有该服务的所有操作都可以重试 </span></div><div class="line"><span class="attr">    MaxAutoRetriesNextServer:</span> <span class="number">1</span>  <span class="comment"># 参与重试的服务个数（不包含第一个服务）</span></div><div class="line"><span class="attr">    MaxAutoRetries:</span> <span class="number">5</span> <span class="comment"># 重试次数（不包含第一次请求）</span></div><div class="line">    <span class="comment"># 这两个属性在单独使用 Ribbon 时，是不生效的，但是使用 Feign 就行</span></div><div class="line"><span class="attr">    ConnectTimeout:</span> <span class="number">2000</span>   <span class="comment"># 连接超时时间</span></div><div class="line"><span class="attr">    ReadTimeout:</span> <span class="number">3000</span>     <span class="comment"># 处理超时时间</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">##### 发现深坑 /(ㄒoㄒ)/~~ ，一定要加下面这段配置 ######</span></div><div class="line"></div><div class="line"><span class="comment"># disable Ribbon's cicruit breaker and rely soley on Hystrix.</span></div><div class="line"><span class="comment"># this helps to avoid confusion.</span></div><div class="line"><span class="comment"># see https://github.com/Netflix/ribbon/issues/15</span></div><div class="line"><span class="attr">niws:</span></div><div class="line"><span class="attr">  loadbalancer:</span></div><div class="line"><span class="attr">    availabilityFilteringRule:</span></div><div class="line"><span class="attr">      filterCircuitTripped:</span> <span class="literal">false</span> <span class="comment"># 默认为 true</span></div></pre></td></tr></table></figure>
+<p>访问：<a href="http://localhost:9001/hi" target="_blank" rel="noopener">http://localhost:9001/hi</a> 查看 <code>provider-a</code> 和 <code>provider-b</code> 的控制台都有打印调用信息。</p>
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><p>如果我们把 <code>filterCircuitTripped</code> 注释掉或改为 <code>true</code>。重启服务，访问：<a href="http://localhost:9001/hi" target="_blank" rel="noopener">http://localhost:9001/hi</a> <code>consumer</code> 会报如下的错误：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="number">2017</span>-<span class="number">12</span>-<span class="number">31</span> <span class="number">16</span>:<span class="number">12</span>:<span class="number">55.410</span>  WARN <span class="number">12948</span> --- [trix-provider-<span class="number">1</span>] c.netflix.loadbalancer.BaseLoadBalancer  : LoadBalancer [provider]:  Error choosing server <span class="keyword">for</span> key <span class="keyword">null</span></div><div class="line"></div><div class="line">java.lang.IndexOutOfBoundsException: index (<span class="number">1</span>) <span class="function">must be less than <span class="title">size</span> <span class="params">(<span class="number">1</span>)</span></span></div><div class="line"><span class="function">    at com.google.common.base.Preconditions.<span class="title">checkElementIndex</span><span class="params">(Preconditions.java:<span class="number">310</span>)</span> ~[guava-18.0.jar:na]</span></div><div class="line"><span class="function">    at com.google.common.base.Preconditions.<span class="title">checkElementIndex</span><span class="params">(Preconditions.java:<span class="number">292</span>)</span> ~[guava-18.0.jar:na]</span></div><div class="line"><span class="function">    at com.google.common.collect.SingletonImmutableList.<span class="title">get</span><span class="params">(SingletonImmutableList.java:<span class="number">45</span>)</span> ~[guava-18.0.jar:na]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.AbstractServerPredicate.<span class="title">chooseRoundRobinAfterFiltering</span><span class="params">(AbstractServerPredicate.java:<span class="number">203</span>)</span> ~[ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.PredicateBasedRule.<span class="title">choose</span><span class="params">(PredicateBasedRule.java:<span class="number">45</span>)</span> ~[ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.BaseLoadBalancer.<span class="title">chooseServer</span><span class="params">(BaseLoadBalancer.java:<span class="number">736</span>)</span> ~[ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.ZoneAwareLoadBalancer.<span class="title">chooseServer</span><span class="params">(ZoneAwareLoadBalancer.java:<span class="number">113</span>)</span> [ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.LoadBalancerContext.<span class="title">getServerFromLoadBalancer</span><span class="params">(LoadBalancerContext.java:<span class="number">481</span>)</span> [ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.reactive.LoadBalancerCommand$1.<span class="title">call</span><span class="params">(LoadBalancerCommand.java:<span class="number">184</span>)</span> [ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at com.netflix.loadbalancer.reactive.LoadBalancerCommand$1.<span class="title">call</span><span class="params">(LoadBalancerCommand.java:<span class="number">180</span>)</span> [ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">unsafeSubscribe</span><span class="params">(Observable.java:<span class="number">10151</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeConcatMap.<span class="title">call</span><span class="params">(OnSubscribeConcatMap.java:<span class="number">94</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeConcatMap.<span class="title">call</span><span class="params">(OnSubscribeConcatMap.java:<span class="number">42</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">unsafeSubscribe</span><span class="params">(Observable.java:<span class="number">10151</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OperatorRetryWithPredicate$SourceSubscriber$1.<span class="title">call</span><span class="params">(OperatorRetryWithPredicate.java:<span class="number">127</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.<span class="title">enqueue</span><span class="params">(TrampolineScheduler.java:<span class="number">73</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.schedulers.TrampolineScheduler$InnerCurrentThreadScheduler.<span class="title">schedule</span><span class="params">(TrampolineScheduler.java:<span class="number">52</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OperatorRetryWithPredicate$SourceSubscriber.<span class="title">onNext</span><span class="params">(OperatorRetryWithPredicate.java:<span class="number">79</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OperatorRetryWithPredicate$SourceSubscriber.<span class="title">onNext</span><span class="params">(OperatorRetryWithPredicate.java:<span class="number">45</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.util.ScalarSynchronousObservable$WeakSingleProducer.<span class="title">request</span><span class="params">(ScalarSynchronousObservable.java:<span class="number">276</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Subscriber.<span class="title">setProducer</span><span class="params">(Subscriber.java:<span class="number">209</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.util.ScalarSynchronousObservable$JustOnSubscribe.<span class="title">call</span><span class="params">(ScalarSynchronousObservable.java:<span class="number">138</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.util.ScalarSynchronousObservable$JustOnSubscribe.<span class="title">call</span><span class="params">(ScalarSynchronousObservable.java:<span class="number">129</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">subscribe</span><span class="params">(Observable.java:<span class="number">10247</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">subscribe</span><span class="params">(Observable.java:<span class="number">10214</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.observables.BlockingObservable.<span class="title">blockForSingle</span><span class="params">(BlockingObservable.java:<span class="number">444</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.observables.BlockingObservable.<span class="title">single</span><span class="params">(BlockingObservable.java:<span class="number">341</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at com.netflix.client.AbstractLoadBalancerAwareClient.<span class="title">executeWithLoadBalancer</span><span class="params">(AbstractLoadBalancerAwareClient.java:<span class="number">112</span>)</span> [ribbon-loadbalancer-2.2.4.jar:2.2.4]</span></div><div class="line"><span class="function">    at org.springframework.cloud.netflix.feign.ribbon.LoadBalancerFeignClient.<span class="title">execute</span><span class="params">(LoadBalancerFeignClient.java:<span class="number">63</span>)</span> [spring-cloud-netflix-core-1.4.0.RELEASE.jar:1.4.0.RELEASE]</span></div><div class="line"><span class="function">    at feign.SynchronousMethodHandler.<span class="title">executeAndDecode</span><span class="params">(SynchronousMethodHandler.java:<span class="number">97</span>)</span> [feign-core-9.5.0.jar:na]</span></div><div class="line"><span class="function">    at feign.SynchronousMethodHandler.<span class="title">invoke</span><span class="params">(SynchronousMethodHandler.java:<span class="number">76</span>)</span> [feign-core-9.5.0.jar:na]</span></div><div class="line"><span class="function">    at feign.hystrix.HystrixInvocationHandler$1.<span class="title">run</span><span class="params">(HystrixInvocationHandler.java:<span class="number">108</span>)</span> [feign-hystrix-9.5.0.jar:na]</span></div><div class="line"><span class="function">    at com.netflix.hystrix.HystrixCommand$2.<span class="title">call</span><span class="params">(HystrixCommand.java:<span class="number">302</span>)</span> [hystrix-core-1.5.12.jar:1.5.12]</span></div><div class="line"><span class="function">    at com.netflix.hystrix.HystrixCommand$2.<span class="title">call</span><span class="params">(HystrixCommand.java:<span class="number">298</span>)</span> [hystrix-core-1.5.12.jar:1.5.12]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeDefer.<span class="title">call</span><span class="params">(OnSubscribeDefer.java:<span class="number">46</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeDefer.<span class="title">call</span><span class="params">(OnSubscribeDefer.java:<span class="number">35</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">unsafeSubscribe</span><span class="params">(Observable.java:<span class="number">10151</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeDefer.<span class="title">call</span><span class="params">(OnSubscribeDefer.java:<span class="number">51</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeDefer.<span class="title">call</span><span class="params">(OnSubscribeDefer.java:<span class="number">35</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">unsafeSubscribe</span><span class="params">(Observable.java:<span class="number">10151</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeDoOnEach.<span class="title">call</span><span class="params">(OnSubscribeDoOnEach.java:<span class="number">41</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeDoOnEach.<span class="title">call</span><span class="params">(OnSubscribeDoOnEach.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">48</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OnSubscribeLift.<span class="title">call</span><span class="params">(OnSubscribeLift.java:<span class="number">30</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.Observable.<span class="title">unsafeSubscribe</span><span class="params">(Observable.java:<span class="number">10151</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at rx.internal.operators.OperatorSubscribeOn$1.<span class="title">call</span><span class="params">(OperatorSubscribeOn.java:<span class="number">94</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at com.netflix.hystrix.strategy.concurrency.HystrixContexSchedulerAction$1.<span class="title">call</span><span class="params">(HystrixContexSchedulerAction.java:<span class="number">56</span>)</span> [hystrix-core-1.5.12.jar:1.5.12]</span></div><div class="line"><span class="function">    at com.netflix.hystrix.strategy.concurrency.HystrixContexSchedulerAction$1.<span class="title">call</span><span class="params">(HystrixContexSchedulerAction.java:<span class="number">47</span>)</span> [hystrix-core-1.5.12.jar:1.5.12]</span></div><div class="line"><span class="function">    at com.netflix.hystrix.strategy.concurrency.HystrixContexSchedulerAction.<span class="title">call</span><span class="params">(HystrixContexSchedulerAction.java:<span class="number">69</span>)</span> [hystrix-core-1.5.12.jar:1.5.12]</span></div><div class="line"><span class="function">    at rx.internal.schedulers.ScheduledAction.<span class="title">run</span><span class="params">(ScheduledAction.java:<span class="number">55</span>)</span> [rxjava-1.2.0.jar:1.2.0]</span></div><div class="line"><span class="function">    at java.util.concurrent.Executors$RunnableAdapter.<span class="title">call</span><span class="params">(Executors.java:<span class="number">511</span>)</span> [na:1.8.0_131]</span></div><div class="line"><span class="function">    at java.util.concurrent.FutureTask.<span class="title">run</span><span class="params">(FutureTask.java:<span class="number">266</span>)</span> [na:1.8.0_131]</span></div><div class="line"><span class="function">    at java.util.concurrent.ThreadPoolExecutor.<span class="title">runWorker</span><span class="params">(ThreadPoolExecutor.java:<span class="number">1142</span>)</span> [na:1.8.0_131]</span></div><div class="line"><span class="function">    at java.util.concurrent.ThreadPoolExecutor$Worker.<span class="title">run</span><span class="params">(ThreadPoolExecutor.java:<span class="number">617</span>)</span> [na:1.8.0_131]</span></div><div class="line"><span class="function">    at java.lang.Thread.<span class="title">run</span><span class="params">(Thread.java:<span class="number">748</span>)</span> [na:1.8.0_131]</span></div></pre></td></tr></table></figure></p>
+<p>根据错误信息，一层一层的找，我们首先看<br><figure class="highlight java"><figcaption><span>AbstractServerPredicate.java</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> Optional&lt;Server&gt; <span class="title">chooseRoundRobinAfterFiltering</span><span class="params">(List&lt;Server&gt; servers, Object loadBalancerKey)</span> </span>&#123;</div><div class="line">    List&lt;Server&gt; eligible = getEligibleServers(servers, loadBalancerKey);</div><div class="line">    <span class="keyword">if</span> (eligible.size() == <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">return</span> Optional.absent();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> Optional.of(eligible.get(incrementAndGetModulo(eligible.size())));</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在我们第一次访问是 <code>eligible</code> 的大小是 2，但进行重试的时候，大小就变成了 1。由于 Ribbon 是采用轮询方法做的负载均衡，具体的代码可以看 <code>incrementAndGetModulo(eligible.size())</code>，所以第二次返回的是 1，让去取 eligible 下标为 1 的元素。（黑人问号.jpg）当前 <code>eligible</code> 的大小是 1，所有报错了下标越界。</p>
+<p>那为啥两次返回的 Server 列表个数不一样呢？明明我们 <code>provider</code> 有两个实例。再找看代码：<br><figure class="highlight java"><figcaption><span>AbstractServerPredicate.java</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> List&lt;Server&gt; <span class="title">getEligibleServers</span><span class="params">(List&lt;Server&gt; servers, Object loadBalancerKey)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (loadBalancerKey == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="comment">// 发现这里对服务列表做了过滤  </span></div><div class="line">        <span class="keyword">return</span> ImmutableList.copyOf(Iterables.filter(servers, thi.getServerOnlyPredicate()));           </div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        List&lt;Server&gt; results = Lists.newArrayList();</div><div class="line">        <span class="keyword">for</span> (Server server: servers) &#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.apply(<span class="keyword">new</span> PredicateKey(loadBalancerKey, server))) &#123;</div><div class="line">                results.add(server);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> results;            </div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>继续一层一层的找，直到找到发现了过滤的代码：<br><figure class="highlight java"><figcaption><span>AbstractServerPredicate.java</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(@Nullable PredicateKey input)</span> </span>&#123;</div><div class="line">    LoadBalancerStats stats = getLBStats();</div><div class="line">    <span class="keyword">if</span> (stats == <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> !shouldSkipServer(stats.getSingleServerStat(input.getServer()));</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">shouldSkipServer</span><span class="params">(ServerStats stats)</span> </span>&#123;        </div><div class="line">    <span class="keyword">if</span> ((CIRCUIT_BREAKER_FILTERING.get() &amp;&amp; stats.isCircuitBreakerTripped()) </div><div class="line">            || stats.getActiveRequestsCount() &gt;= activeConnectionsLimit.get()) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>主要看 <code>shouldSkipServer</code> 方法中的 <code>CIRCUIT_BREAKER_FILTERING.get()</code> 断路器过滤？？进去看看：<br><figure class="highlight java"><figcaption><span>AvailabilityPredicate.java</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"><span class="comment">* Choose a server in a round robin fashion after the predicate filters a given list of servers and load balancer key. </span></div><div class="line"><span class="comment">*/</span></div><div class="line"><span class="function"><span class="keyword">public</span> Optional&lt;Server&gt; <span class="title">chooseRoundRobinAfterFiltering</span><span class="params">(List&lt;Server&gt; servers, Object loadBalancerKey)</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> DynamicBooleanProperty CIRCUIT_BREAKER_FILTERING =</div><div class="line">            DynamicPropertyFactory.getInstance().</div><div class="line">            <span class="comment">// 过滤断路器打开服务列表</span></div><div class="line">            getBooleanProperty(<span class="string">"niws.loadbalancer.availabilityFilteringRule.filterCircuitTripped"</span>, <span class="keyword">true</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>终于找到原因了，喜（F）极（U）而（C）泣（K）！</p>
+<p>好了，这应该是 2017 年最后一篇博客。</p>
+<p><strong>再见 2107，你好 2018</strong></p>
+<h2 id="示例源码"><a href="#示例源码" class="headerlink" title="示例源码"></a>示例源码</h2><p>本篇文章所用示例项目名称均以 <code>spring-cloud-04-feign</code> 开头</p>
+<p>GitHub：<a href="https://github.com/yangdd1205/spring-cloud-master" target="_blank" rel="noopener">https://github.com/yangdd1205/spring-cloud-master</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://github.com/OpenFeign/feign" target="_blank" rel="noopener">Feign</a><br><a href="http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#spring-cloud-feign" target="_blank" rel="noopener">Spring Cloud Feign</a></p>
+
+      
+    </div>
+    
+    
+    
+
+	<div>
+		
+			<div>
+    
+        <div>（完）</div>
+    
+</div>
+
+		
+	</div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果对你有帮助，请花一分钱告诉我</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="杨冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="杨冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    杨冬冬
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yangdongdong.org/2017/12/31/spring-cloud-feign/" title="Spring Cloud Feign：声明式 REST 客户端">http://yangdongdong.org/2017/12/31/spring-cloud-feign/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-Cloud/" <i class="fa fa-tag"></i> Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/30/spring-cloud-hystrix/" rel="next" title="Spring Cloud Hystrix：断路器">
+                <i class="fa fa-chevron-left"></i> Spring Cloud Hystrix：断路器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/07/spring-cloud-zuul/" rel="prev" title="Spring Cloud Zuul：网关">
+                Spring Cloud Zuul：网关 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDcwNC8xMTI0MQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">杨冬冬</p>
+              <p class="site-description motion-element" itemprop="description">爱编程，爱生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yangdd1205" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yangdd1205@126.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Feign"><span class="nav-number">1.</span> <span class="nav-text">Feign</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#踩坑"><span class="nav-number">3.</span> <span class="nav-text">踩坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例源码"><span class="nav-number">4.</span> <span class="nav-text">示例源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangdongdong.org</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 本站总访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

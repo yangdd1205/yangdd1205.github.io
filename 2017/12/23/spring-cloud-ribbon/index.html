@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring Cloud," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="负载均衡对于一个系统架构来说非常重要，是必须要有的一个基础设施，它能够有效的缓解网络压力和流量扩容。我们知道的负载均衡可以分为两种，一种是硬件负载均衡，比如 F5 服务器或者 SLB 负载设施；另外一种是软件负载均衡设施，比如我们耳熟能详的 Nginx 反向代理、LVS 负载均衡、HAProxy 负载均衡等等。但是只要是负载均衡服务都是能以类似的架构方式来构建">
+<meta name="keywords" content="Spring Cloud">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Cloud Ribbon：负载均衡">
+<meta property="og:url" content="http://yangdongdong.org/2017/12/23/spring-cloud-ribbon/index.html">
+<meta property="og:site_name" content="编程改变生活">
+<meta property="og:description" content="负载均衡对于一个系统架构来说非常重要，是必须要有的一个基础设施，它能够有效的缓解网络压力和流量扩容。我们知道的负载均衡可以分为两种，一种是硬件负载均衡，比如 F5 服务器或者 SLB 负载设施；另外一种是软件负载均衡设施，比如我们耳熟能详的 Nginx 反向代理、LVS 负载均衡、HAProxy 负载均衡等等。但是只要是负载均衡服务都是能以类似的架构方式来构建">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xq43s.com1.z0.glb.clouddn.com/LoadBalanced.png">
+<meta property="og:updated_time" content="2018-03-11T09:09:09.502Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring Cloud Ribbon：负载均衡">
+<meta name="twitter:description" content="负载均衡对于一个系统架构来说非常重要，是必须要有的一个基础设施，它能够有效的缓解网络压力和流量扩容。我们知道的负载均衡可以分为两种，一种是硬件负载均衡，比如 F5 服务器或者 SLB 负载设施；另外一种是软件负载均衡设施，比如我们耳熟能详的 Nginx 反向代理、LVS 负载均衡、HAProxy 负载均衡等等。但是只要是负载均衡服务都是能以类似的架构方式来构建">
+<meta name="twitter:image" content="http://7xq43s.com1.z0.glb.clouddn.com/LoadBalanced.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangdongdong.org/2017/12/23/spring-cloud-ribbon/"/>
+
+
+
+
+
+  <title>Spring Cloud Ribbon：负载均衡 | 编程改变生活</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">编程改变生活</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">软件法人，源于生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2017/12/23/spring-cloud-ribbon/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="杨冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="编程改变生活">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring Cloud Ribbon：负载均衡</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T18:22:24+08:00">
+                2017-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring Cloud</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>负载均衡对于一个系统架构来说非常重要，是必须要有的一个基础设施，它能够有效的缓解网络压力和流量扩容。我们知道的负载均衡可以分为两种，一种是硬件负载均衡，比如 F5 服务器或者 SLB 负载设施；另外一种是软件负载均衡设施，比如我们耳熟能详的 Nginx 反向代理、LVS 负载均衡、HAProxy 负载均衡等等。但是只要是负载均衡服务都是能以类似的架构方式来构建<br><img src="http://7xq43s.com1.z0.glb.clouddn.com/LoadBalanced.png" alt="负载均衡架构" title="负载均衡架构"><br><a id="more"></a></p>
+<h2 id="Ribbon"><a href="#Ribbon" class="headerlink" title="Ribbon"></a>Ribbon</h2><p>Ribbon 是一个客户端负载均衡器，它让你对 HTTP 和 TCP 客户端的行为有更大的控制权。Feign 已经使用了 Ribhon 做负载均衡。当 Ribbon 与 Eureka 一起使用时，<code>ribbonServerList</code> 会被 <code>DiscoveryEnabledNIWSServerList</code> 重写，扩展成从 Eureka 注册中心获取服务实例列表。同时它也会用 <code>NIWSDiscoveryPing</code> 来取代 <code>IPing</code>，它将职责委托给 Eureka 来确定服务端是否已经启动，默认使用轮询访问的规则来达到负载均衡的作用。关于负载均衡可以看看这篇文章 <a href="https://github.com/Netflix/ribbon/wiki/Working-with-load-balancers" target="_blank" rel="noopener"> Working with load balancers</a>。</p>
+<h2 id="RestTemplate"><a href="#RestTemplate" class="headerlink" title="RestTemplate"></a>RestTemplate</h2><p>要学习 Ribbon ，我们必须先了解 <code>RestTemplate</code> 的使用，因为 Ribbon 是基于  <code>RestTemplate</code> 模板进行负载调用的。其实跟 HttpClient 差不多，只不过在 <code>RestTemplate</code> 中，基本上都对 GET、PUT、POST、DELETE 进行了重载，提供了更多更简单的调用接口。</p>
+<h3 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h3><p>基于上一篇文章的示例项目，我们创建以下 6 个项目：</p>
+<ul>
+<li>注册中心：eureka-a、eureka-b</li>
+<li>服务提供者：clien-1、client-2</li>
+<li>服务调用者：request、retry</li>
+</ul>
+<p>具体的请到 <a href="https://github.com/yangdd1205/spring-cloud-master" target="_blank" rel="noopener">GitHub</a> 中找以 <code>spring-cloud-02-ribbon</code> 开头的项目。 </p>
+<p>在 <code>clinet-1</code> 项目中创建<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.yangdongdong.springcloud.service.api;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IndexController</span> </span>&#123;</div><div class="line"></div><div class="line">  <span class="meta">@RequestMapping</span>(value = <span class="string">"/sayHello"</span>, method = RequestMethod.GET)</div><div class="line">  <span class="function"><span class="keyword">public</span> String <span class="title">sayHello</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"hello "</span> + name;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>依次启动 <code>eureka-a</code>、<code>eureka-b</code>、<code>client-1</code>，访问 <a href="http://localhost:8001/sayHello?name=Tom" target="_blank" rel="noopener">http://localhost:8001/sayHello?name=Tom</a> 测试下。</p>
+<p>我们试试使用 <code>RestTemplate</code> 怎么调用 <code>sayHello</code>：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</div><div class="line">    </div><div class="line">    ResponseEntity&lt;String&gt; response = restTemplate.getForEntity(<span class="string">"http://localhost:8001/sayHello?name=Tom"</span>,String.class);</div><div class="line"></div><div class="line">    System.out.println(response.getBody());</div><div class="line">    </div><div class="line">    Map&lt;String, String&gt; map = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</div><div class="line">    map.put(<span class="string">"name"</span>,<span class="string">"Jack"</span>);</div><div class="line">    String result = restTemplate.getForObject(<span class="string">"http://localhost:8001/sayHello?name=&#123;name&#125;"</span>, String.class, map);</div><div class="line">    System.out.println(result);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">17:40:51.957 [main] DEBUG org.springframework.web.client.RestTemplate - Created GET request for &quot;http://localhost:8001/sayHello?name=Tom&quot;</div><div class="line">17:40:51.967 [main] DEBUG org.springframework.web.client.RestTemplate - Setting request Accept header to [text/plain, application/json, application/*+json, */*]</div><div class="line">17:40:52.139 [main] DEBUG org.springframework.web.client.RestTemplate - GET request for &quot;http://localhost:8001/sayHello?name=Tom&quot; resulted in 200 (null)</div><div class="line">17:40:52.140 [main] DEBUG org.springframework.web.client.RestTemplate - Reading [java.lang.String] as &quot;text/plain;charset=UTF-8&quot; using [org.springframework.http.converter.StringHttpMessageConverter@78ac1102]</div><div class="line">hello Tom</div><div class="line">17:40:52.144 [main] DEBUG org.springframework.web.client.RestTemplate - Created GET request for &quot;http://localhost:8001/sayHello?name=Jack&quot;</div><div class="line">17:40:52.144 [main] DEBUG org.springframework.web.client.RestTemplate - Setting request Accept header to [text/plain, application/json, application/*+json, */*]</div><div class="line">17:40:52.243 [main] DEBUG org.springframework.web.client.RestTemplate - GET request for &quot;http://localhost:8001/sayHello?name=Jack&quot; resulted in 200 (null)</div><div class="line">17:40:52.243 [main] DEBUG org.springframework.web.client.RestTemplate - Reading [java.lang.String] as &quot;text/plain;charset=UTF-8&quot; using [org.springframework.http.converter.StringHttpMessageConverter@78ac1102]</div><div class="line">hello Jack</div></pre></td></tr></table></figure></p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><p>要创建一个负载均衡的 <code>RestTemplate</code>，使用 <code>@Bean</code> 并使用 <code>@LoadBalanced</code> 限定符。</p>
+<p>首先在 <code>request</code> 项目加入 Ribbon 的依赖。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.cloud<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-cloud-starter-netflix-ribbon<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<p>修改 <code>RequestApplication</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@EnableDiscoveryClient</span></div><div class="line"><span class="meta">@SpringBootApplication</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestApplication</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="meta">@LoadBalanced</span>   <span class="comment">//自动负载均衡：他的机制是（通过）Application Name去寻找服务发现，然后去做负载均衡策略的</span></div><div class="line">    <span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        SpringApplication.run(RequestApplication.class, args);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>创建调用服务的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.yangdongdong.springcloud.service.api;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"><span class="keyword">import</span> org.springframework.web.client.RestTemplate;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> RestTemplate restTemplate;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 调用 Spring Cloud 服务</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> name</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span></span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"callByServerUrl"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">callByServerUrl</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        <span class="comment">// 调用地址：http://[请求协议头] client [服务名] / [context-path] /sayHello [调用方法的地址]</span></div><div class="line">        ResponseEntity&lt;String&gt; response = restTemplate.getForEntity(<span class="string">"http://client/sayHello?name="</span> + name,</div><div class="line">                String.class);</div><div class="line">        <span class="keyword">return</span> response.getBody();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line"><span class="comment">     * 采用 RestTemplate 方式调用（HTTP方式调用，与 Spring Cloud 调用服务没有一点关系）</span></div><div class="line"><span class="comment">     * </span></div><div class="line"><span class="comment">     * <span class="doctag">@param</span> name</span></div><div class="line"><span class="comment">     * <span class="doctag">@return</span></span></div><div class="line"><span class="comment">     */</span></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"callByHttpUrl"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">callByHttpUrl</span><span class="params">(String name)</span> </span>&#123;</div><div class="line">        RestTemplate restTemplate = <span class="keyword">new</span> RestTemplate();</div><div class="line">        ResponseEntity&lt;String&gt; response = restTemplate.getForEntity(<span class="string">"http://localhost:8001/sayHello?name="</span> + name,</div><div class="line">                String.class);</div><div class="line">        <span class="keyword">return</span> response.getBody();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>访问相应链接测试。</p>
+<div class="note info"><p>可以试试将 <code>callByHttpUrl</code> 方法中的 <code>restTemplate</code> 换成自动注入的 <code>restTemplate</code> 看看有什么效果。</p></div>
+<p>现在 <code>client</code> 服务只有一个，无法测试负载均衡，所以我们把 <code>client-1</code> 的 <code>IndexController</code> 复制到 <code>client-2</code> 并加入相应的标识用于区分调用的是哪个服务。</p>
+<p>现在访问 <a href="http://localhost:9001/callByServerUrl?name=Tom" target="_blank" rel="noopener">http://localhost:9001/callByServerUrl?name=Tom</a> 10 次。</p>
+<p><code>client-1</code> 的控制台输出<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">client <span class="number">1</span></div><div class="line">client <span class="number">1</span></div><div class="line">client <span class="number">1</span></div><div class="line">client <span class="number">1</span></div><div class="line">client <span class="number">1</span></div></pre></td></tr></table></figure></p>
+<p><code>client-2</code> 的控制台输出<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">client <span class="number">2</span></div><div class="line">client <span class="number">2</span></div><div class="line">client <span class="number">2</span></div><div class="line">client <span class="number">2</span></div><div class="line">client <span class="number">2</span></div></pre></td></tr></table></figure></p>
+<div class="note info"><p>现在除了测试负载均衡，也可以测试上篇文章所说的高可用。</p></div>
+<h2 id="失败重试"><a href="#失败重试" class="headerlink" title="失败重试"></a>失败重试</h2><p>对于互联网的服务调用，通常情况下我们都需要对某些服务进行重试策略，比如重试多次失败则返回错误信息，当然可重试的服务接口必须要自己实现<strong>幂等</strong>，不然由于网络或者其他原因导致请求时间过长导致重复操作，会出现我们不想要的结果。</p>
+<p>在 Spring 中有个很经典的框架就是 Retry，使用非常简单，只需要加上 <code>@EnableRetry</code> 启用重试机制，并且 <code>@Retryable</code> 注解配置重试所需要的服务即可，可以自己定义重试的异常信息、重试次数以及重试策略执行的周期，非常的强大好用。并且在最终重试次数都完成调用且仍然调用服务失败时，我们可以使用 <code>@Recover</code> 注解来完成最终的记录和补偿处理。</p>
+<div class="note warning"><p>重试策略会有单点问题，我们必须要配合持久化的相关标识来判断单点问题的重试策略算法搞定了，不然我们没有达到使用 Spring Retry 的效果。当然了，我们基于 Ribbon 的重试机制则不会存在该问题，即使存在也不需要考虑，因为我们仅仅是 http 服务调用而已，并不是持久化操作或涉及其他相关核心操作。</p></div>
+<p>在 <code>retry</code> 项目中加入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.retry<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-retry<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-aop<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在 <code>RetryApplication</code> 加上 <code>@EnableRetry</code> 注解。</p>
+<p>我们简单地使用下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.yangdongdong.springcloud.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.remoting.RemoteAccessException;</div><div class="line"><span class="keyword">import</span> org.springframework.retry.annotation.Backoff;</div><div class="line"><span class="keyword">import</span> org.springframework.retry.annotation.Recover;</div><div class="line"><span class="keyword">import</span> org.springframework.retry.annotation.Retryable;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="meta">@Service</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RetryService</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="comment">// 方法：需要进行重试[远程调动服务失败的情况，再次进行调用]</span></div><div class="line">    <span class="meta">@Retryable</span>(value = &#123; RemoteAccessException.class &#125;, <span class="comment">// value：什么样的异常进行重试策略的执行</span></div><div class="line">            maxAttempts = <span class="number">4</span>, <span class="comment">// maxAttempts：重试次数 包含首次调用失败 默认值：3</span></div><div class="line">            backoff = <span class="meta">@Backoff</span>(delay = <span class="number">2000</span>, multiplier = <span class="number">2</span>)) <span class="comment">// delay：间隔 multiplier：递增倍数（即下次间隔是上次的多少倍）</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</div><div class="line">        System.err.println(<span class="string">"时间："</span> + (System.currentTimeMillis() / <span class="number">1000</span>) + <span class="string">" 调用了 call 方法执行。。。。"</span>);</div><div class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RemoteAccessException(<span class="string">"RPC 调用异常"</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Recover</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">revocer</span><span class="params">(RemoteAccessException e)</span> </span>&#123;</div><div class="line">        System.err.println(<span class="string">"------ 最终处理 ------："</span> + e.getMessage());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>测试下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.yangdongdong.springcloud.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.junit.Test;</div><div class="line"><span class="keyword">import</span> org.junit.runner.RunWith;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.boot.test.context.SpringBootTest;</div><div class="line"><span class="keyword">import</span> org.springframework.test.context.junit4.SpringJUnit4ClassRunner;</div><div class="line"><span class="keyword">import</span> org.yangdongdong.springcloud.RetryApplication;</div><div class="line"></div><div class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</div><div class="line"><span class="meta">@SpringBootTest</span>(classes = RetryApplication.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RetryServiceTest</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> RetryService retryservice;</div><div class="line"></div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testCall</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>&#123;</div><div class="line">        retryservice.call();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">时间：1514019200 调用了 call 方法执行。。。。</div><div class="line">时间：1514019202 调用了 call 方法执行。。。。</div><div class="line">时间：1514019206 调用了 call 方法执行。。。。</div><div class="line">时间：1514019214 调用了 call 方法执行。。。。</div><div class="line">------ 最终处理 ------：RPC 调用异常</div></pre></td></tr></table></figure></p>
+<h3 id="与-Ribbon-整合"><a href="#与-Ribbon-整合" class="headerlink" title="与 Ribbon 整合"></a>与 Ribbon 整合</h3><p>我们再看看与 Ribbon 整合。</p>
+<p>在 <code>client-1</code> 项目的 <code>IndexController</code> 中添加如下方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/retry"</span>, method = RequestMethod.GET)</div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">retry</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.err.println(<span class="string">"client 1 call......."</span>);</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 模拟连接超时</span></div><div class="line">        TimeUnit.SECONDS.sleep(<span class="number">6</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="string">"client 1"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>而在 <code>client-2</code>项目中的 <code>IndexController</code> 中则正常返回：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/retry"</span>, method = RequestMethod.GET)</div><div class="line"><span class="function"><span class="keyword">public</span> String <span class="title">retry</span><span class="params">()</span> </span>&#123;</div><div class="line">    System.err.println(<span class="string">"client 2 call......."</span>);</div><div class="line">    <span class="keyword">return</span> <span class="string">"client 2"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在 <code>retry</code> 项目中调用服务：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.yangdongdong.springcloud.service.api;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.http.ResponseEntity;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"><span class="keyword">import</span> org.springframework.web.client.RestTemplate;</div><div class="line"></div><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RetryController</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Autowired</span></div><div class="line">    <span class="keyword">private</span> RestTemplate restTemplate;</div><div class="line"></div><div class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"retry"</span>, method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">retry</span><span class="params">()</span> </span>&#123;</div><div class="line">        ResponseEntity&lt;String&gt; response = restTemplate.getForEntity(<span class="string">"http://client/retry"</span>, String.class);</div><div class="line">        String result = response.getBody();</div><div class="line">        System.err.println(<span class="string">"result: "</span> + result);</div><div class="line">        <span class="keyword">return</span> <span class="string">"result: "</span> + result;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在 <code>retry</code> 项目中配置服务的重试参数：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># 格式 &lt;clientName&gt;.&lt;nameSpace&gt;.&lt;propertyName&gt;=&lt;value&gt;</span></div><div class="line"><span class="attr">client:</span> <span class="comment"># 服务名</span></div><div class="line"><span class="attr">  ribbon:</span></div><div class="line"><span class="attr">    OkToRetryOnAllOperations:</span> <span class="literal">true</span> <span class="comment"># 允许所有该服务的所有操作都可以重试 </span></div><div class="line"><span class="attr">    MaxAutoRetriesNextServer:</span> <span class="number">1</span>  <span class="comment"># 参与重试的服务个数（不包含第一个服务）</span></div><div class="line"><span class="attr">    MaxAutoRetries:</span> <span class="number">5</span> <span class="comment"># 重试次数（不包含第一次请求）</span></div></pre></td></tr></table></figure></p>
+<p>配置超时时间，有两种方式，一种是 Java 代码，一种是配置文件。</p>
+<p>方式一：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Bean</span></div><div class="line"><span class="meta">@LoadBalanced</span></div><div class="line"><span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</div><div class="line">    HttpComponentsClientHttpRequestFactory httpRequestFactory = <span class="keyword">new</span> HttpComponentsClientHttpRequestFactory();</div><div class="line">    httpRequestFactory.setConnectionRequestTimeout(<span class="number">1000</span>);</div><div class="line">    httpRequestFactory.setConnectTimeout(<span class="number">1000</span>);</div><div class="line">    httpRequestFactory.setReadTimeout(<span class="number">3000</span>);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate(httpRequestFactory);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>方式二：</p>
+<p>在配置文件中添加：<br><figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="attr">custom:</span></div><div class="line"><span class="attr">  http:</span> </div><div class="line"><span class="attr">    connect-timeout:</span> <span class="number">1000</span></div><div class="line"><span class="attr">    connection-request-timeout:</span> <span class="number">1000</span> </div><div class="line"><span class="attr">    read-timeout:</span> <span class="number">3000</span></div></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Bean</span></div><div class="line"><span class="meta">@ConfigurationProperties</span>(prefix = <span class="string">"custom.http"</span>)</div><div class="line"><span class="function"><span class="keyword">public</span> HttpComponentsClientHttpRequestFactory <span class="title">httpRequestFactory</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> HttpComponentsClientHttpRequestFactory();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Bean</span></div><div class="line"><span class="meta">@LoadBalanced</span> <span class="comment">// 自动负载均衡：他的机制是（通过）Application Name去寻找服务发现，然后去做负载均衡策略的</span></div><div class="line"><span class="function"><span class="keyword">public</span> RestTemplate <span class="title">restTemplate</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> RestTemplate(httpRequestFactory());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>一切准备就绪，启动项目。访问：<a href="http://localhost:9002/retry" target="_blank" rel="noopener">http://localhost:9002/retry</a></p>
+<p>查看控制台（下面的输出基于第一次就调用的是 <code>client-1</code>）</p>
+<p><code>client-1</code> 控制台输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">client 1 call.......</div><div class="line">client 1 call.......</div><div class="line">client 1 call.......</div><div class="line">client 1 call.......</div><div class="line">client 1 call.......</div><div class="line">client 1 call.......</div></pre></td></tr></table></figure></p>
+<p>可以看到，第一次打印是正常调用，后面的 5 次是失败重试。</p>
+<p><code>client-2</code> 控制台输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">client 2 call.......</div></pre></td></tr></table></figure></p>
+<p>当 5 次重试还是失败，切换到了 <code>client-2</code></p>
+<p><code>retry</code> 控制台输出：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">result: client 2</div></pre></td></tr></table></figure></p>
+<p>控制台只会打印 <code>result: client 2</code>。由此可见失败重试生效了。</p>
+<div class="note info"><p>假如，把 <code>client-2</code> 也休眠 6 秒种，会出现什么情况呢？</p></div>
+<h2 id="示例源码"><a href="#示例源码" class="headerlink" title="示例源码"></a>示例源码</h2><p>本篇文章所用示例项目名称均以 <code>spring-cloud-02-ribbon</code> 开头</p>
+<p>GitHub：<a href="https://github.com/yangdd1205/spring-cloud-master" target="_blank" rel="noopener">https://github.com/yangdd1205/spring-cloud-master</a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://blog.didispace.com/spring-cloud-starter-dalston-2-2" target="_blank" rel="noopener">Spring Cloud构建微服务架构：服务消费（Ribbon）【Dalston版】</a><br><a href="http://blog.didispace.com/spring-cloud-ribbon-failed-retry/" target="_blank" rel="noopener">为Spring Cloud Ribbon配置请求重试（Camden.SR2+）</a><br><a href="http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#_spring_cloud_commons_common_abstractions" target="_blank" rel="noopener">Spring Cloud Commons: Common Abstractions</a><br><a href="http://cloud.spring.io/spring-cloud-static/Edgware.RELEASE/single/spring-cloud.html#spring-cloud-ribbon" target="_blank" rel="noopener">Client Side Load Balancer: Ribbon</a><br><a href="https://github.com/Netflix/ribbon/wiki/Getting-Started#the-properties-file-sample-clientproperties" target="_blank" rel="noopener">Ribbon documentation</a></p>
+
+      
+    </div>
+    
+    
+    
+
+	<div>
+		
+			<div>
+    
+        <div>（完）</div>
+    
+</div>
+
+		
+	</div>
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>如果对你有帮助，请花一分钱告诉我</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="杨冬冬 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="杨冬冬 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    杨冬冬
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yangdongdong.org/2017/12/23/spring-cloud-ribbon/" title="Spring Cloud Ribbon：负载均衡">http://yangdongdong.org/2017/12/23/spring-cloud-ribbon/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-Cloud/" <i class="fa fa-tag"></i> Spring Cloud</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/20/spring-cloud-eureka/" rel="next" title="Spring Cloud Eureka：服务注册与发现">
+                <i class="fa fa-chevron-left"></i> Spring Cloud Eureka：服务注册与发现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/30/spring-cloud-hystrix/" rel="prev" title="Spring Cloud Hystrix：断路器">
+                Spring Cloud Hystrix：断路器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDcwNC8xMTI0MQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">杨冬冬</p>
+              <p class="site-description motion-element" itemprop="description">爱编程，爱生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yangdd1205" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yangdd1205@126.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ribbon"><span class="nav-number">1.</span> <span class="nav-text">Ribbon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RestTemplate"><span class="nav-number">2.</span> <span class="nav-text">RestTemplate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简单使用"><span class="nav-number">2.1.</span> <span class="nav-text">简单使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡"><span class="nav-number">2.2.</span> <span class="nav-text">负载均衡</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#失败重试"><span class="nav-number">3.</span> <span class="nav-text">失败重试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#与-Ribbon-整合"><span class="nav-number">3.1.</span> <span class="nav-text">与 Ribbon 整合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#示例源码"><span class="nav-number">4.</span> <span class="nav-text">示例源码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangdongdong.org</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 本站总访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
