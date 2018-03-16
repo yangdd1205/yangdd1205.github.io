@@ -73,9 +73,31 @@ tags:
 
 ![interface](https://www.goetas.com/img/posts/plugin-based-architecture/interface.png)
 
-例子：
+例如：
 
 * composer：[composer](https://getcomposer.org/) 通过发现的方式添加功能。
 Composer 将从包中的 `composer.json` 文件中，搜索有定义 `type=composer-plugin`，和名为 `class` 的属性，将注册由 class 声明的事件监听。[点击查看更多信息](https://getcomposer.org/doc/articles/plugins.md)
 * symfony：[symfony](https://www.symfony.com/) 通过配置的方式添加功能。
 * laravel：[laravel](https://getcomposer.org/) 通过配发现的方式添加功能。
+
+### 3. 配置
+当模块注册到内核中时，允许一些额外的配置可能会很有用。
+
+大多数情况下，应用程序可能会以某种方式配置以符合用户期望，同样的情况也会发生在模块上。
+
+进行配置的方式有很多种，我个人的建议是提供一个非常接近应用程序配置方式的配置机制。 如果应用程序是通过配置文件，环境变量，数据库条目或一个很好的控制面板配置的，则模块应该以相同的方式进行配置。
+
+模块应该提供一份默认的配置（如果应用程序允许），这样不需要配置也能使用。
+
+例如：
+
+
+### 4. 资源
+
+### 5. 与应用程序交互
+
+
+在接下来的文章中，我们将深入探讨与应用程序交互的方式。
+
+## 最后
+在第一篇文章中，我介绍了构建可扩展应用程序时的一些动机和挑战。在接下来的文章中，我们将看到一些与应用程序交互的策略：钩子、事件管理器、观察者模式、继承和其他方式。
