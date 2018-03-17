@@ -76,9 +76,11 @@ tags:
 例如：
 
 * composer：[composer](https://getcomposer.org/) 通过发现的方式添加功能。
-Composer 将从包中的 `composer.json` 文件中，搜索有定义 `type=composer-plugin`，和名为 `class` 的属性，将注册由 class 声明的事件监听。[点击查看更多信息](https://getcomposer.org/doc/articles/plugins.md)
+Composer 将从已安装的包中的 `composer.json` 文件中，搜索有定义 `type=composer-plugin`，和名为 `class` 的属性，将注册由 class 声明的事件监听。[点击查看更多信息](https://getcomposer.org/doc/articles/plugins.md)
 * symfony：[symfony](https://www.symfony.com/) 通过配置的方式添加功能。
+在 `Appkernel` 类中，需要定义在 `symfony` 丰富的框架功能中需要使用的 bundles。`bundle` 类将被实例化，并负责将 bundle 注册到 symfony 允许的扩展点中。`bundle` 类能改变 symfony 本身的几乎任何部分，因为它可以访问 symfony 核心依赖注入机制。[点击查看更多信息](https://symfony.com/doc/3.4/bundles.html)。最近使用 [flex](https://github.com/symfony/flex() 时，自动发现和配置变得可用。
 * laravel：[laravel](https://getcomposer.org/) 通过配发现的方式添加功能。
+Laravel 将从已安装的包中的 `composer.json` 文件中，搜索属性名为 `extra.laravel` 的值，并将其注册为服务提供者。[点击查看更多信息](https://laravel.com/docs/5.5/packages)
 
 ### 3. 配置
 当模块注册到内核中时，允许一些额外的配置可能会很有用。
@@ -90,12 +92,32 @@ Composer 将从包中的 `composer.json` 文件中，搜索有定义 `type=compo
 模块应该提供一份默认的配置（如果应用程序允许），这样不需要配置也能使用。
 
 例如：
-
+* composer：在 [composer](https://getcomposer.org/) 的 `composer.json` 文件中，允许您决定加载哪些插件，运行哪些命令等等
+* symfony：[symfony](https://www.symfony.com/) 支持 YML、XML 和 PHP 作为配置语言，配置值可以在 `config.(yml|xml|php)`（以及其他一些地方）只声明，bundle 可以为它提供默认值
+* laravel：[laravel](https://getcomposer.org/) 主要使用 PHP 为配置语言，并且在定义配置时可以使用 PHP 语言的强大功能
 
 ### 4. 资源
+ 某些模块可能需要向用户公开一些内容，如图像、CSS、模块、翻译、文件或类似内容。应用程序可以通过不同的方式将内容提供给用户。
+
+ 当资源是“应用程序管理”时，就是使用“应用程序接口”来提供/覆盖资源（比如使用应用程序插件接口）。
+
+ 如果资源不是由应用程序管理的，而是特定模块，则事情会变得更加复杂。处理它的一些方法是：
+ * 将内容链接（linking）/复制到 Web 目录
+    * 需要一些步骤来发布资源
+* 使用应用程序来为资源提供服务，例如 pipe-it 
+    * 可能是缓慢的或者资源密集型的
+* 配置 Web 服务器以显示地提供插件资源
+    * 通过添加额外配置来嘲讽模块背后的“即插即用”理念
+* 让用户手动“复制和粘贴"资源
+
+每个选项都有优缺点，最近，“链接/复制”策略最受欢迎。
 
 ### 5. 与应用程序交互
 
+现在该模块已经加载并配置好了，一切都准备就绪。
+应用程序可以决定所有的“交互”点，并检查某些模块是否对与应用程序内核交互“感兴趣”（可能）。
+
+有许多策略与应用程序“进行交互”，其中一些策略限制了模块在特定的（用户自定义的）部分进行交互的能力，如果他们被允许则可能改变怎个应用程序的流程。
 
 在接下来的文章中，我们将深入探讨与应用程序交互的方式。
 
