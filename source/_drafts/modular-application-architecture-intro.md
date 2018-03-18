@@ -1,8 +1,12 @@
 ---
-title: 【译】模块化应用架构（一）
+title: 【译】模块化应用架构——介绍
 tags:
 ---
 > 原文地址：https://www.goetas.com/blog/modular-application-architecture-intro/
+
+这是描述构建模块化和可扩展应用程序的策略系列的第一篇文章（灵感来源于 2011 年在柏林举行的 [qafoo](https://qafoo.com/) 演讲）。
+
+<!-- more -->
 
 开发软件时，一个通常要考虑的问题时软件的模块化与可扩展性。
 
