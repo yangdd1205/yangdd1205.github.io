@@ -4,7 +4,7 @@ tags:
 ---
 > 原文地址：https://www.goetas.com/blog/modular-application-architecture-intro/
 
-这是描述构建模块化和可扩展应用程序的策略系列的第一篇文章（灵感来源于 2011 年在柏林举行的 [qafoo](https://qafoo.com/) 演讲）。
+这是如何构建模块化和可扩展应用程序系列的第一篇文章（灵感来源于 2011 年在柏林举行的 [qafoo](https://qafoo.com/) 演讲）。
 
 <!-- more -->
 
