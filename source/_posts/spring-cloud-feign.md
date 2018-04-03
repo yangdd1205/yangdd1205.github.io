@@ -52,7 +52,7 @@ public class HelloController {
 ```
 然后再主入口通过注解 `@EnableFeignClients` 启用 Feign Client 功能。
 ```Java
-@EnableFeignClients // 开启 Feign client 功能
+@EnableFeignClients(basePackages={"org.yangdongdong.springcloud.*"}) // 开启 Feign client 功能
 @EnableDiscoveryClient
 @SpringBootApplication
 public class Application {
