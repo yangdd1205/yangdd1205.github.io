@@ -39,6 +39,49 @@ public class HelloController {
         System.out.println("provider-a hi feign!");
         return "hi feign!";
     }
+
+    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
+    public String getData(@PathVariable("id") String id) {
+        return "PathVariable id: " + id;
+    }
+
+    @RequestMapping(value = "/get", method = RequestMethod.GET)
+    public String get(@RequestParam("id") String id) {
+        return "RequestParam id: " + id;
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(User user) {
+        return user.getId() + ":" + user.getName();
+    }
+
+    @RequestMapping(value = "/addFormRequestBody", method = RequestMethod.POST)
+    public String addFormRequestBody(@RequestBody User user) {
+        return "From body " + user.getId() + ":" + user.getName();
+    }
+
+    static class User {
+        private Integer id;
+        private String name;
+
+        public Integer getId() {
+            return id;
+        }
+
+        public void setId(Integer id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+    }
+
 }
 ```
 注意：`provider-b` 中需要打印 `provider-b`。
@@ -52,7 +95,7 @@ public class HelloController {
 ```
 然后再主入口通过注解 `@EnableFeignClients` 启用 Feign Client 功能。
 ```Java
-@EnableFeignClients(basePackages={"org.yangdongdong.springcloud.*"}) // 开启 Feign client 功能
+@EnableFeignClients(basePackages = { "org.yangdongdong.springcloud.feign" }) // 开启 Feign client 功能
 @EnableDiscoveryClient
 @SpringBootApplication
 public class Application {
@@ -97,6 +140,18 @@ public interface ProviderFeignClient {
 
     @RequestMapping(value = "/hi", method = RequestMethod.GET)
     public String sayHi();
+
+    @RequestMapping(value = "get/{id}", method = RequestMethod.GET)
+    public String getFromPathVariable(@PathVariable("id") String id);
+
+    @RequestMapping(value = "get/", method = RequestMethod.GET)
+    public String getFromRequestParam(@RequestParam("id") String id);
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(@RequestParam("id") String id, @RequestParam("name") String name);
+
+    @RequestMapping(value = "/addFormRequestBody", method = RequestMethod.POST)
+    public String addFormRequestBody(@RequestBody Map map);    
 }
 ```
 ```Java
@@ -112,7 +167,25 @@ public class ProviderFeignClientHystrixFallback implements ProviderFeignClient {
     public String sayHi() {
         return "Hi Fallback";
     }
+    @Override
+    public String add(String id, String name) {
+        return "simple add fallback";
+    }
 
+    @Override
+    public String addFormRequestBody(Map map) {
+        return "add Form RequestBody fallback";
+    }
+
+    @Override
+    public String getFromPathVariable(String id) {
+        return "get from @PathVariable fallback";
+    }
+
+    @Override
+    public String getFromRequestParam(String id) {
+        return "get from @RequestParam fallback";
+    }
 }
 ```
 ```Java
@@ -131,6 +204,25 @@ public class ConsumerController {
     public String hi() {
         return helloFeignClient.sayHi();
     }
+    @RequestMapping(value = "/testPathVariable/{id}", method = RequestMethod.GET)
+    public String getData(@PathVariable("id") String id) {
+        return helloFeignClient.getFromPathVariable(id);
+    }
+
+    @RequestMapping(value = "/testRequestParam", method = RequestMethod.GET)
+    public String get(@RequestParam("id") String id) {
+        return helloFeignClient.getFromRequestParam(id);
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(@RequestParam("id") String id, @RequestParam("name") String name) {
+        return helloFeignClient.add(id, name);
+    }
+
+    @RequestMapping(value = "/addFromBody", method = RequestMethod.POST)
+    public String addFromBody(@RequestBody Map map) {
+        return helloFeignClient.addFormRequestBody(map);
+    }    
 }
 ```
 
