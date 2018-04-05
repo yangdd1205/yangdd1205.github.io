@@ -6,7 +6,7 @@ tags:
   - TCP/IP
 date: 2018-03-30 20:27:00
 ---
-
+> 本篇内容来源于《图解TCP/IP》第一章
 
 最近在看[《图解TCP/IP》](https://www.amazon.cn/dp/B00DMS9990/)，这篇先介绍下网络基础知识。
 
