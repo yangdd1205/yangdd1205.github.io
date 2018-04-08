@@ -108,6 +108,8 @@ eureka:
   client:
     register-with-eureka: false # 是否将自身当作 client 注册，默认值为  true。
     fetch-registry: false # 抓取注册的服务信息，默认值为 true
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 ```
 
 更多的配置选项可以查看 `EurekaInstanceConfigBean` 和 `EurekaClientConfigBean`。
