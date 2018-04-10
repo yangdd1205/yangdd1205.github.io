@@ -139,5 +139,7 @@ GitHub：https://github.com/yangdd1205/spring-cloud-master
 
 ## 参考资料
 [Spring Cloud Bus](http://cloud.spring.io/spring-cloud-static/spring-cloud-bus/1.3.2.RELEASE/single/spring-cloud-bus.html)
+
 [Spring Cloud 构建微服务架构（七）消息总线（Rabbit）](http://blog.didispace.com/springcloud7/)
+
 [Spring Cloud 构建微服务架构（七）消息总线（Kafka）](http://blog.didispace.com/springcloud7-2/)
