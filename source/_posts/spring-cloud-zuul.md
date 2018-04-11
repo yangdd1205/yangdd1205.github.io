@@ -59,7 +59,19 @@ public class HiController {
 
 依次启动项目，现在我们通过网关来访问服务：http://localhost:6001/hello/hello http://localhost:6001/hi/hi
 
-如果我们什么都不配置的话，Zuul 会使用默认路由规则，即端口后为服务名，如：http://localhost:6001/hello/hello 表示调用 `hello` 服务的 `hello` 方法。   
+如果我们什么都不配置的话，Zuul 会使用默认路由规则，即端口后为服务名，如：http://localhost:6001/hello/hello 表示调用 `hello` 服务的 `hello` 方法。
+
+我们也可以提供一个正则表达式来修改路由规则，比如，在 `gateway` 的 `Application.java` 中添加：
+```Java
+@Bean
+public PatternServiceRouteMapper serviceRouteMapper() {
+    return new PatternServiceRouteMapper(
+        "(?<name>^.+)-(?<version>v.+$)",
+        "${version}/${name}");
+}
+```
+
+上面的路由规则为，当服务名为 `hello-v1` 则映射到路由 `/v1/hello/**`，这样的话，可以通过 `URI` 中版本号实现调用不同版本的服务。如果正则表达式匹配不上，则还是使用默认的路由规则。不过这仅适用于从注册中心发现的服务。
 
 当然我们也可以自定义 Zuul 的路由规则，修改 `gateway` 的配置文件：
 ```YML
