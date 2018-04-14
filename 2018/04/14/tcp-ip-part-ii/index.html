@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="本篇内容来源于《图解TCP/IP》第一章  最近在看《图解TCP/IP》，这篇先介绍下网络基础知识。 最开始的计算机都是单机模式，随着计算机的不断发展，人们已经不再局限于单机模式，而是将一个个计算机连接在一起，形成一个计算机网络。">
+<meta name="description" content="本篇内容来源于《图解TCP/IP》第二章  上一篇介绍了网络基础知识，这一篇说说 TCP/IP 基础知识。">
 <meta name="keywords" content="计算机网络,TCP&#x2F;IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="网络基础知识">
-<meta property="og:url" content="http://yangdongdong.org/2018/03/30/tcp-ip-part-i/index.html">
+<meta property="og:title" content="TCP&#x2F;IP 基础">
+<meta property="og:url" content="http://yangdongdong.org/2018/04/14/tcp-ip-part-ii/index.html">
 <meta property="og:site_name" content="编程改变生活">
-<meta property="og:description" content="本篇内容来源于《图解TCP/IP》第一章  最近在看《图解TCP/IP》，这篇先介绍下网络基础知识。 最开始的计算机都是单机模式，随着计算机的不断发展，人们已经不再局限于单机模式，而是将一个个计算机连接在一起，形成一个计算机网络。">
+<meta property="og:description" content="本篇内容来源于《图解TCP/IP》第二章  上一篇介绍了网络基础知识，这一篇说说 TCP/IP 基础知识。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-04-10T14:09:30.000Z">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/data-package.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-ii-2.png?refresh=1">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-ii-3.png">
+<meta property="og:updated_time" content="2018-04-14T04:33:27.623Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="网络基础知识">
-<meta name="twitter:description" content="本篇内容来源于《图解TCP/IP》第一章  最近在看《图解TCP/IP》，这篇先介绍下网络基础知识。 最开始的计算机都是单机模式，随着计算机的不断发展，人们已经不再局限于单机模式，而是将一个个计算机连接在一起，形成一个计算机网络。">
+<meta name="twitter:title" content="TCP&#x2F;IP 基础">
+<meta name="twitter:description" content="本篇内容来源于《图解TCP/IP》第二章  上一篇介绍了网络基础知识，这一篇说说 TCP/IP 基础知识。">
+<meta name="twitter:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/data-package.png">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yangdongdong.org/2018/03/30/tcp-ip-part-i/"/>
+  <link rel="canonical" href="http://yangdongdong.org/2018/04/14/tcp-ip-part-ii/"/>
 
 
 
 
 
-  <title>网络基础知识 | 编程改变生活</title>
+  <title>TCP/IP 基础 | 编程改变生活</title>
   
 
 
@@ -243,7 +247,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/03/30/tcp-ip-part-i/">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/04/14/tcp-ip-part-ii/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="杨冬冬">
@@ -260,7 +264,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">网络基础知识</h1>
+          <h1 class="post-title" itemprop="name headline">TCP/IP 基础</h1>
         
 
         <div class="post-meta">
@@ -272,8 +276,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T20:27:00+08:00">
-                2018-03-30
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-14T12:33:27+08:00">
+                2018-04-14
               </time>
             
 
@@ -338,119 +342,99 @@
 
       
         <blockquote>
-<p>本篇内容来源于《图解TCP/IP》第一章</p>
+<p>本篇内容来源于《图解TCP/IP》第二章</p>
 </blockquote>
-<p>最近在看<a href="https://www.amazon.cn/dp/B00DMS9990/" target="_blank" rel="noopener">《图解TCP/IP》</a>，这篇先介绍下网络基础知识。</p>
-<p>最开始的计算机都是单机模式，随着计算机的不断发展，人们已经不再局限于单机模式，而是将一个个计算机连接在一起，形成一个计算机网络。</p>
+<p>上一篇介绍了网络基础知识，这一篇说说 TCP/IP 基础知识。</p>
 <a id="more"></a>
-<p>计算机网络，根据其规模可分为：</p>
-<ul>
-<li>WAN（Wide Area Network，广域网）指覆盖多个远距离区域的远程网络</li>
-<li>MAN（Metropolitan Area Network，城域网）比广域网小一级、连接整个城市的网络</li>
-<li>LAN（Local Area Network，局域网）指一个楼层、一栋楼或一个校园等相对较小的区域内的网络</li>
-</ul>
-<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><h3 id="计算机之间通信的前提"><a href="#计算机之间通信的前提" class="headerlink" title="计算机之间通信的前提"></a>计算机之间通信的前提</h3><p>简单来说，协议就是计算机与计算机之间通过网络实现通信时事先达成的一种“约定”。这种“约定”使那些由不同厂商的设备、不同的 CPU 以及不同的操作系统组成的计算机之间，只要遵循相同的协议就能够实现通信。如果没有协议或者使用了不同的协议，就好比两个说着不同语言的人，谁也听不懂谁在说什么。</p>
-<h3 id="协议的制定"><a href="#协议的制定" class="headerlink" title="协议的制定"></a>协议的制定</h3><p>有了协议还不行，还得大家都使用同样的协议才能通信。所以 ISO（International Organization for Standards，国际标准化组织）制定了一个国际标准 OSI（Open Systems Interconnection，开放式通信系统互联参考模型），对通信系统进行了标准化，但并没有得到普及。现在全世界广泛应用的通信协议是由 IETF（Internet Engineering Task Force）所建议的 TCP/IP 协议。</p>
-<h2 id="OSI-参考模型"><a href="#OSI-参考模型" class="headerlink" title="OSI 参考模型"></a>OSI 参考模型</h2><p>OSI 参考模型将通信协议中必要的功能分成了 7 层。每个分层都接收由它下一层所提供的特定服务，并负责为自己的上一层提供特定服务。上下层之间进行交互时所遵循的约定叫做“接口”。同一层之间的交互所遵循的约定叫做“协议”。分层可以将每个分层独立使用，即使系统中某些分层发生变化，也不会波及整个系统。通过分层能够细分通信功能，更易于独立实现每个分层的协议，并界定各个分层的具体责任和义务。</p>
-<table>
+<h2 id="TCP-IP-与-OSI-协议分层模型"><a href="#TCP-IP-与-OSI-协议分层模型" class="headerlink" title="TCP/IP 与 OSI 协议分层模型"></a>TCP/IP 与 OSI 协议分层模型</h2><table>
     <tr>
-        <th style="width: 100px;"></th>
-        <th>分层名称</th>
-        <th>功能</th>
-        <th>每层功能概览</th>
+        <th>OSI 参考模型</th>
+        <th colspan="2">TCP/IP 分层模型</th>
     </tr>
     <tr>
-        <td>7</td>
         <td>应用层</td>
-        <td>针对特定的应用的协议。</td>
-        <td>为应用程序提供服务并规定应用程序中通信相关的细节。比如：电子邮件、远程登录、文件传输。</td>
+        <td rowspan="3">应用层<br>DNS、URI、HTML、HTTP<br>TLS/SSL、SMTP、POP、IMAP<br>MIME、TELNET、SSH、FTP<br>SNMP、MIB、SIP、RTP、LDAP</td>
+        <td rowspan="3">应用程序</td>
     </tr>
     <tr>
-        <td>6</td>
         <td>表示层</td>
-        <td>设备固有数据格式和网络标准数据格式的转换。</td>
-        <td>接收不同表现形式的信息，如文字流、图像、声音等。</td>
     </tr>
     <tr>
-        <td>5</td>
         <td>会话层</td>
-        <td>通信管理。负者建立和新开通信连接（数据流动的逻辑通路）。管理传输层以下的分层。</td>
-        <td>如何建立连接，何时断开连接以及保存多久的连接？</td>
     </tr>
     <tr>
-        <td>4</td>
         <td>传输层</td>
-        <td>管理两个节点之间的数据传输。负者可靠传输（确保数据被可靠地传送到目标地址）。</td>
-        <td>是否有数据丢失？</td>
+        <td>传输层<br>TCP、UDP、UDP-Lite、SCTP、DCCP</td>
+        <td rowspan="2">操作系统</td>
     </tr>
     <tr>
-        <td>3</td>
         <td>网络层</td>
-        <td>地址管理与路由选择。</td>
-        <td>经过哪个路由器传递到目标地址？</td>
+        <td>互联网层<br>ARP、IP、ICMP</td>
     </tr>
     <tr>
-        <td>2</td>
         <td>数据链路层</td>
-        <td>互连设备之间传送和识别数据帧。</td>
-        <td>数据帧与比特流之间的转换</td>
+        <td>网卡层</td>
+        <td rowspan="2">设备驱动程序与网络接口</td>
     </tr>
     <tr>
-        <td>1</td>
         <td>物理层</td>
-        <td>以“0”、“1”代表电压的高低、灯光的闪灭。界定连接器和网线的规格。</td>
-        <td>比特流与电子信号之间的切换。连接器与网线之间的规格。</td>
+        <td>（硬件）</td>
     </tr>
 </table>
 
-
-
-<h2 id="传输方式的分类"><a href="#传输方式的分类" class="headerlink" title="传输方式的分类"></a>传输方式的分类</h2><h3 id="面向有连接型与面向无连接型"><a href="#面向有连接型与面向无连接型" class="headerlink" title="面向有连接型与面向无连接型"></a>面向有连接型与面向无连接型</h3><p>面向有连接型：在发送数据前，先打开一个连接。连接被关闭时无法发送数据。比如：打电话</p>
-<p>面向无连接型：不要求建立和断开连接。发送端可于任何时候自由发送数据。比如：寄快递（不需要知道收件人地址是否真实存在）</p>
-<h3 id="电路交换与分组交换"><a href="#电路交换与分组交换" class="headerlink" title="电路交换与分组交换"></a>电路交换与分组交换</h3><p>电路交换：两台计算机建立好连接后，一直占用着这条通信电路，在断开连接之前，其他机器都不可用这条电路收发数据。</p>
-<p>分组交换：让连接到通信电路的计算机将所有要发送的数据分成多个数据包，按照一定的顺序排列之后分别发送。数据被细分后，所有的计算机就可以一起收发数据。</p>
-<h3 id="根据接收端数量分类"><a href="#根据接收端数量分类" class="headerlink" title="根据接收端数量分类"></a>根据接收端数量分类</h3><p>单播（Unicast）：指 1 对 1 通信</p>
-<p>广播（Broadcast）：指将消息从 1 台主机发送给与之相连的所有其他主机</p>
-<p>多播（Multicast）：也是将消息发给多个接收主机。不同之处在于多播要限定某一组主机作为接收端</p>
-<p>任播（Anycast）：指在特定的多台主机中选出一台作为接收端的一种通信方式。通常，所被选中的那台特定主机将返回一个单播信号。任播在实际网络中的应用有 DNS 根域名解析服务器</p>
-<h2 id="地址"><a href="#地址" class="headerlink" title="地址"></a>地址</h2><h3 id="MAC-地址"><a href="#MAC-地址" class="headerlink" title="MAC 地址"></a>MAC 地址</h3><p>MAC 地址由设备的制造厂商针对每块网卡进行分别指定。人们可以通过制造识别号、制造商内部产品编号以及产品通用编号确保 MAC 地址的<strong>唯一性</strong>。</p>
-<h3 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h3><p>为了高效地找出通信的目标地址，地址还需要具有<strong>层次性</strong>。</p>
-<p>IP 地址有网络号和主机号两部分组成。即使通信主体的 IP 地址不同，若主机号不同，网络号相同，说明它们处于同一个网段。</p>
-<p>网络传输中，每个节点会根据分组数据的地址信息，来判断该报文应该由哪个网卡发送出去。为此，各个地址会参考一个发出接口列表。在这一点上 MAC 寻址和 IP 寻址是一样的。只不过 MAC 寻址中所参考的这张表叫做<strong>地址转发表</strong>，而 IP 寻址中所参考的叫做<strong>路由控制表</strong>。</p>
-<h2 id="网络的构成要素"><a href="#网络的构成要素" class="headerlink" title="网络的构成要素"></a>网络的构成要素</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">设备</th>
-<th style="text-align:center">作用</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">网卡</td>
-<td style="text-align:center">使计算机连接网络的设备（Network Interface）</td>
-</tr>
-<tr>
-<td style="text-align:center">中继器（Repeater）</td>
-<td style="text-align:center">从物理层上延长网络的设备</td>
-</tr>
-<tr>
-<td style="text-align:center">网桥（Bridge）/ 2 层交换机</td>
-<td style="text-align:center">从数据链路层上延长网络的设备</td>
-</tr>
-<tr>
-<td style="text-align:center">路由器（Router）/ 3 层交换机</td>
-<td style="text-align:center">通过网络层转发分组数据的设备</td>
-</tr>
-<tr>
-<td style="text-align:center">4 ~ 7 层交换机</td>
-<td style="text-align:center">处理传输层以上各层网络传输的设备</td>
-</tr>
-<tr>
-<td style="text-align:center">网关（Gateway）</td>
-<td style="text-align:center">转换协议的设备</td>
-</tr>
-</tbody>
-</table>
+<h3 id="硬件（物理层）"><a href="#硬件（物理层）" class="headerlink" title="硬件（物理层）"></a>硬件（物理层）</h3><p>TCP/IP 的最底层是负责数据传输的硬件。这种硬件就相当于以太网或电话线路等物理层的设备。TCP/IP 是在网络互连的设备之间能够通信的前提下才被提出的协议。</p>
+<h3 id="网络接口层（数据链路层）"><a href="#网络接口层（数据链路层）" class="headerlink" title="网络接口层（数据链路层）"></a>网络接口层（数据链路层）</h3><p>网络接口层利用以太网中的数据链路层进行通信，因此属于接口层。相当于一个“驱动程序”。</p>
+<h3 id="互联网层（网络层）"><a href="#互联网层（网络层）" class="headerlink" title="互联网层（网络层）"></a>互联网层（网络层）</h3><p>互联网层使用 IP 协议，它相当于 OSI 模型中的第 3 层网络层。IP 协议基于 IP 地址转发分包数据。</p>
+<p>TCP/IP 分层中的互联网与传输层的功能通常由操作系统提供。尤其是路由器，它必须得实现通过互联网层转发分组数据包的功能。</p>
+<p><strong>IP</strong></p>
+<p>IP 是跨网络传送数据包，使整个互联网都能收到数据的协议。IP 协议使数据能够发送到地球的另一端，这期间它使用 IP 地址作为主机的标识。
+IP 还隐含着数据链路层的功能。通过 IP，相互通信的主机之间不论经过怎样的底层数据链路都能实现通信。
+<strong>虽然 IP 也是分组交换的一种协议，但是它不具有重发机制</strong>。即使分组数据包未能到达对端主机也不会重发，<strong>属于非可靠性传输协议</strong>。</p>
+<p><strong>ICMP</strong></p>
+<p>IP 数据包在发送途中一旦发生异常导致无法到达对端目标地址时，需要给发送端发送一个发生异常的通常。ICMP 就是为这一功能而制定的。它有时也被用来诊断网络的健康状况。</p>
+<p><strong>ARP</strong></p>
+<p>从分组数据包的 IP 地址中解析出物理地址（MAC 地址）的一种协议。</p>
+<h3 id="传输层"><a href="#传输层" class="headerlink" title="传输层"></a>传输层</h3><p>传输层最主要的功能就是能够让应用程序之间实现通信。计算机内部，通常同一时间运行着多个程序。为此，必须分清是哪些程序与哪些程序在进行通信。识别这些应用程序的是端口号。</p>
+<p><strong>TCP</strong></p>
+<p>TCP 是一种面向有连接的传输层协议。它可以保证两端通信主机之间的通信可达。TCP 能够正确处理在传输过程中丢包、传输顺序乱掉等异常情况。此外，TCP 还能够有效利用宽带，缓解网络拥堵。</p>
+<p>然而，为了建立与断开连接，有时它需要至少 7  次的发包收包（3 次握手和 4 次挥手），导致网络流量的浪费。</p>
+<p><strong>UDP</strong></p>
+<p>UDP 有别于 TCP，它是一种面向无连接的传输层协议。UDP 不会关注对端是否真的收到了传送过去的数据，如果需要检查对端是否收到了分组数据包，或者对端是否连接到网络，则需要在应用程序中实现。</p>
+<p>UDP 常用于分组数据较少或多播、广播通信以及视频通信等多媒体领域。</p>
+<h3 id="应用层"><a href="#应用层" class="headerlink" title="应用层"></a>应用层</h3><p>TCP/IP 的分层中，将 OSI 参考模型中的会话层、表示层和应用层的功能都集中到了应用程序中实现。这些功能有时由一个单一的程序实现，有时也可能会由多个程序实现。因此，细看 TCP/IP 的应用程序功能会发现，它不仅实现 OSI 模型中应用层的内容，还要实现会话层与表示层的功能。 </p>
+<h2 id="TCP-IP-分层模型与通信模型"><a href="#TCP-IP-分层模型与通信模型" class="headerlink" title="TCP/IP 分层模型与通信模型"></a>TCP/IP 分层模型与通信模型</h2><h3 id="数据包首部"><a href="#数据包首部" class="headerlink" title="数据包首部"></a>数据包首部</h3><p> <img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/data-package.png" alt="数据包首部的层次化" title="数据包首部的层次化"></p>
+<p><strong>包、帧、数据包、段、消息</strong></p>
+<p>包可以说是全能性述语。帧用于表示数据链路层中的包的单位。而数据包是 IP 和 UDP 等网络层以上的分层中包的单位。段则表示 TCP 数据流中的信息。最后，消息是指应用协议中数据的单位。</p>
+<p>网络中传输的数据包由两部分组成：一部分是协议所要用到的首部，另一部分是上层传过来的数据。首部的结构由协议的具体规范详细定义。明确标明了协议应该如果读取数据。</p>
+<h3 id="发送数据包"><a href="#发送数据包" class="headerlink" title="发送数据包"></a>发送数据包</h3><p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-ii-2.png?refresh=1" alt="TCP/IP 各层对邮件的收发处理" title="TCP/IP 各层对邮件的收发处理"></p>
+<p>① 应用层处理</p>
+<p>首先，应用程序中会进行编码处理。相当于 OSI 的表示层功能。应用程序在发送邮件的那一刻建立 TCP 连接，从而利用这个 TCP 连接发送数据。它的过程首先是将应用的数据发送给下一层的 TCP，再做实际的转发处理。</p>
+<p>② TCP 模块的处理</p>
+<p>TCP 根据应用的指示（这种关于连接的指示相当于 OSI 参考模型中的会话层），负者建立连接、发送数据以及断开连接。TCP 将应用层发来的数据顺利发送至对端的可靠传输。</p>
+<p>为了实现 TCP 的这一功能，需要在应用层数据的前端附加一个 TCP 首部。TCP 首部中包括源端口号和目标端口号（用以识别发送主机跟接收主机上的应用）、序号（用以发送包中的哪部分是数据）以及校验和（Check Sum，用来检验数据的读取是否正常进行的方法，用以判断数据是否被损坏）。随后将附加了 TCP 首部的包再发送给 IP。</p>
+<p>③ IP 模块的处理</p>
+<p>IP 将 TCP 传过来的 TCP 首部和 TCP 数据合起来当做自己的数据，并在 TCP 首部的前端在加上自己的 IP 首部。因此，IP 数据包中的 IP 首部后面紧跟着 TCP 首部，然后才是应用程序的首部和数据本身。IP 首部中包含接收端 IP 地址以及发送端 IP 地址。紧随 IP 首部的还有用来判断器后面数据时 TCP 还是 UDP 的信息。</p>
+<p>IP 包生成后，参考路由控制表决定接受次 IP 包的路由或主机。随后，IP 包将被发送给连接这些路由器或主机网络接口的驱动程序，以实现真正发送数据。
+
+如果尚不知道接收端的 MAC 地址，可以利用 ARP （Address Resolution Protocol）查找。只要知道了对端的 MAC 地址，就可以将 MAC 地址和 IP 地址交给以太网的驱动程序，以实现数据传输。</p>
+<p>④ 网络接口（以太网驱动）的处理</p>
+<p>从 IP 传过来的 IP 包，对于以太网驱动来说不过就是数据。给这些数据附加上以太网首部并进行发送处理。以太网首部中包含接收端 MAC 地址、发送端 MAC 地址以及标志以太网类型的以太网数据的协议。根据上述信息产生的以太网数据包将通过物理层传输给接收端。发送处理中的 FCS（Frame Check Sequence）由硬件计算，添加到包的最后。设置 FCS 的目的是为了判断数据包是否由于噪声而被破坏。</p>
+<h3 id="经过数据链路的包"><a href="#经过数据链路的包" class="headerlink" title="经过数据链路的包"></a>经过数据链路的包</h3><p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-ii-3.png" alt="分层中包的结构" title="分层中包的结构"></p>
+<p>包流动时，从前往后依次被附加了以太网包首部、IP 包首部、TCP 包首部（或 UDP 包首部）以及应用自己的包首部和数据。而包的最后则追加了以太网包尾（Ethernet Trailer）。</p>
+<p>每个包首部中至少都会包含两个信息：一个是发送端和接收端地址，另一个是上一层的协议类型。</p>
+<p>经过每个协议分层时，都必须有识别包发送端和接收端的信息。以太网会用 MAC 地址，IP 会用 MAC 地址，而 TCP/UDP 则会用端口号作为识别两端主机的地址。即使在应用程序中，像电子邮件地址这样的信息也是一种地址标识。这些地址信息都在每个包经由各个分层时，附加到协议对应的包首部里边。</p>
+<p>此外，每个分层的包首部中还包含一个识别位，它是用来标识上一层协议的种类信息。例如以太网的包首部中的以太网类型，IP 中的协议类型以及 TCP/UDP 中两个端口号等都起着识别协议类型的作用。就是在应用的首部信息中，有时也会包含一个用来识别其数据类型的标签。</p>
+<h3 id="数据包接收处理"><a href="#数据包接收处理" class="headerlink" title="数据包接收处理"></a>数据包接收处理</h3><p>⑤ 网络接口（以太网驱动）的处理</p>
+<p>主机收到以太网包以后，首先从以太网的包首部找到 MAC 地址判断是否为发给自己的包。如果不是则丢弃数据（很多 NIC 产品可以设置为即使不是发给自己的包也不丢弃数据，这可以用于监控网络流量）。</p>
+<p>而如果接收到了恰好是发给自己的包，就查找以太网包首部中的类型区域从而确定以太网协议所传送过来的数据类型。在这个例子中数据类型显示是 IP 包，因此再将数据传给处理 IP 的子程序，如果这时不是 IP 而是其他诸如 ARP 的协议，就把数据传给 ARP 处理。总之，如果以太网包首部的类型域包含了一个无法识别的协议类型，则丢弃数据。</p>
+<p>⑥ IP 模块的处理</p>
+<p>IP 模块收到 IP 包首部及后面的数据部分以后，也做类似的处理。如果判断得出首部中的 IP 地址与自己的 IP 地址匹配，则可接收数据并从中查找上一层协议。如果上一层是 TCP 就将 IP 包首部之后部分传给 TCP 处理；如果是 UDP 则传给 UPD 处理。对于有路由器的情况下，接收端地址往往不是自己的地址，此时，需要借助路由控制表，在得知应该送达的主机或路由器以后再转发数据。</p>
+<p>⑦ TCP 模块的处理</p>
+<p>在 TCP 模块中，首先会计算下校验和，判断数据是否被破坏。然后检查是否在按照序号接收数据。最后检查端口号，确定具体的应用程序。</p>
+<p>数据接收完毕后，接收端则发送一个“确定回执”给发送端。如果这个回执信息未能达到发送端，那么发送端会认为接收端没有接收到数据而一直反复发送。</p>
+<p>数据被完整地接收以后，会传给由端口号识别的应用程序。</p>
+<p>⑧ 应用程序的处理</p>
+<p>接收端应用程序会直接接收发送端发送的数据。通过解析数据可以获知邮件的收件人地址是乙的地址。如果主机 B 上没有乙的邮件信箱，那么主机 B 返回给发送端一个“无此收件地址”的报错信息。</p>
 
       
     </div>
@@ -482,7 +466,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yangdongdong.org/2018/03/30/tcp-ip-part-i/" title="网络基础知识">http://yangdongdong.org/2018/03/30/tcp-ip-part-i/</a>
+    <a href="http://yangdongdong.org/2018/04/14/tcp-ip-part-ii/" title="TCP/IP 基础">http://yangdongdong.org/2018/04/14/tcp-ip-part-ii/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -512,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/24/i-am-a-mediocre-developer/" rel="next" title="【译】我是一个平庸的开发者">
-                <i class="fa fa-chevron-left"></i> 【译】我是一个平庸的开发者
+              <a href="/2018/03/30/tcp-ip-part-i/" rel="next" title="网络基础知识">
+                <i class="fa fa-chevron-left"></i> 网络基础知识
               </a>
             
           </div>
@@ -521,10 +505,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/14/tcp-ip-part-ii/" rel="prev" title="TCP/IP 基础">
-                TCP/IP 基础 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -677,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#协议"><span class="nav-number">1.</span> <span class="nav-text">协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机之间通信的前提"><span class="nav-number">1.1.</span> <span class="nav-text">计算机之间通信的前提</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#协议的制定"><span class="nav-number">1.2.</span> <span class="nav-text">协议的制定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OSI-参考模型"><span class="nav-number">2.</span> <span class="nav-text">OSI 参考模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传输方式的分类"><span class="nav-number">3.</span> <span class="nav-text">传输方式的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#面向有连接型与面向无连接型"><span class="nav-number">3.1.</span> <span class="nav-text">面向有连接型与面向无连接型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#电路交换与分组交换"><span class="nav-number">3.2.</span> <span class="nav-text">电路交换与分组交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据接收端数量分类"><span class="nav-number">3.3.</span> <span class="nav-text">根据接收端数量分类</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地址"><span class="nav-number">4.</span> <span class="nav-text">地址</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC-地址"><span class="nav-number">4.1.</span> <span class="nav-text">MAC 地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IP-地址"><span class="nav-number">4.2.</span> <span class="nav-text">IP 地址</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络的构成要素"><span class="nav-number">5.</span> <span class="nav-text">网络的构成要素</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-IP-与-OSI-协议分层模型"><span class="nav-number">1.</span> <span class="nav-text">TCP/IP 与 OSI 协议分层模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#硬件（物理层）"><span class="nav-number">1.1.</span> <span class="nav-text">硬件（物理层）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络接口层（数据链路层）"><span class="nav-number">1.2.</span> <span class="nav-text">网络接口层（数据链路层）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#互联网层（网络层）"><span class="nav-number">1.3.</span> <span class="nav-text">互联网层（网络层）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#传输层"><span class="nav-number">1.4.</span> <span class="nav-text">传输层</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用层"><span class="nav-number">1.5.</span> <span class="nav-text">应用层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-IP-分层模型与通信模型"><span class="nav-number">2.</span> <span class="nav-text">TCP/IP 分层模型与通信模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据包首部"><span class="nav-number">2.1.</span> <span class="nav-text">数据包首部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#发送数据包"><span class="nav-number">2.2.</span> <span class="nav-text">发送数据包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#经过数据链路的包"><span class="nav-number">2.3.</span> <span class="nav-text">经过数据链路的包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据包接收处理"><span class="nav-number">2.4.</span> <span class="nav-text">数据包接收处理</span></a></li></ol></li></ol></div>
             
 
           </div>
