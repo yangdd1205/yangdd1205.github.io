@@ -1,10 +1,12 @@
 ---
 title: TCP/IP 基础
-categories: 计算机网络
 tags:
   - 计算机网络
   - TCP/IP
+categories: 计算机网络
+date: 2018-04-14 12:33:27
 ---
+
 > 本篇内容来源于《图解TCP/IP》第二章
 
 上一篇介绍了网络基础知识，这一篇说说 TCP/IP 基础知识。
@@ -115,7 +117,7 @@ TCP/IP 的分层中，将 OSI 参考模型中的会话层、表示层和应用�
 
 ### 发送数据包
 
-![TCP/IP 各层对邮件的收发处理](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-ii-2.png "TCP/IP 各层对邮件的收发处理")
+![TCP/IP 各层对邮件的收发处理](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-ii-2.png?refresh=1 "TCP/IP 各层对邮件的收发处理")
 
 ① 应用层处理
 
