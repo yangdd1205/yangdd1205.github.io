@@ -30,8 +30,11 @@ MAC 地址长 48 比特，结果如下图所示
 ![IEEE802.3 规范的 MAC 地址格式](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-2.png "MAC 地址长 48 比特")
 
 第 1 位：单播地址（0）/多播地址（1）
+
 第 2 位：全局地址（0）/本地地址（1）
+
 第 3~24 位：由 IEEE 管理并保证各厂家之间不重复
+
 第 25~48 位：有厂家管理管理并保证产品之间不重复
 
 
@@ -91,7 +94,7 @@ MAC 地址长 48 比特，结果如下图所示
 
 TAG VLAN 允许包含跨越异构交换机的网段。TAG VLAN 中对每个网段都用了一个 VLAN ID 的标签进行唯一标识。在交换机中传输帧时，在以太网首部加入这个 VID 标签，根据这个值决定将数据帧发送给哪个网段。各个交换机之间流动的数据帧的格式如下：
 
-![]("帧格式")
+![VLAN 中以太网帧的格式](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-8.png "带有 VLNA 标记的交换机之间流动的以太网帧格式")
 
 ![跨交换机的 VLAN](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-4.png  "跨交换机的 VLAN")
 ## 以太网
@@ -99,11 +102,11 @@ TAG VLAN 允许包含跨越异构交换机的网段。TAG VLAN 中对每个网�
 
 以太网帧前端有一个叫做前导码（Preamble）的部分，它由 0、1 数字交替组合而成，表示一个以太网帧的开始，也是对端网卡能够确保与其同步的标签。前导码末尾是一个叫做 SFD（Start Frame Delimiter）的域，它的值是 “11”。在这域之后就是以太网帧的本地。前导码与 SFD 合起来占 8 个字节。
 
-![]( "前导码")
+![以太网帧的前导码](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-5.png "前导码")
 
-![]( "以太网帧体格式")
+![以太网帧体格式](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-6.png "以太网帧体格式")
 
-![]( "IEEE802.3 以太网帧体格式")
+![IEEE802.3 以太网帧体格式](http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-7.png "IEEE802.3 以太网帧体格式")
 
 紧随帧头后面的是数据。一个数据帧能容纳的最大数据范围是 46~1500 个字节。帧尾是一个叫做 FCS（Frame Check Sequence，帧检验序列）的 4 个字节。FCS 用于检查帧是否有所损坏。
 
@@ -128,5 +131,3 @@ IEEE802.11 定义了无线 LAN 协议中物理层与数据链路层的一部分�
 最后，我们介绍下我们常用的 VPN
 
 网络服务商提供一种在 IP 网络上使用 MPLS 技术构建 VPN 的服务。其中 MPLS（Multiprotocol Label Switching，多协议标签交换）在 IP 包中附加一个叫做标签（Label）的信息进行传输控制。每个用户的标签信息不同，因此在通过 MPLS 网时，可以轻松地判断出目标地址。这样一来就可以将多个不同用户的 VPN 信息通过 MPLS 网加以区分，形成封闭的私有网络。此外，还能进行用户级的宽带控制
-
-![]( "IP-VPN（MPLS）")
