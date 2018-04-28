@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Spring Cloud," />
+  <meta name="keywords" content="计算机网络,TCP/IP," />
 
 
 
@@ -79,18 +79,27 @@
 
 
 
-<meta name="description" content="简单聊聊微服务和 Spirng Cloud。">
-<meta name="keywords" content="Spring Cloud">
+<meta name="description" content="本篇内容来源于《图解TCP/IP》第三章  数据链路层是计算机网络最基本的内容。如果没有数据链路层，基于 TCP/IP 的通信也就无法谈起。TCP/IP 中对于 OSI 参考模型的数据链路层及以下部分（物理层）未作定义。因为 TCP/IP 以这两层的功能是透明的为前提。 数据链路层的协议定义了通过通信媒介互连的设备之间传输的规范。通信媒介包括双绞线电缆、同轴电缆、光纤、电波以及红外线等介质。数据">
+<meta name="keywords" content="计算机网络,TCP&#x2F;IP">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud 简介">
-<meta property="og:url" content="http://yangdongdong.org/2017/12/17/introduction-to-spring-cloud/index.html">
+<meta property="og:title" content="数据链路">
+<meta property="og:url" content="http://yangdongdong.org/2018/04/28/tcp-ip-part-iii/index.html">
 <meta property="og:site_name" content="编程改变生活">
-<meta property="og:description" content="简单聊聊微服务和 Spirng Cloud。">
+<meta property="og:description" content="本篇内容来源于《图解TCP/IP》第三章  数据链路层是计算机网络最基本的内容。如果没有数据链路层，基于 TCP/IP 的通信也就无法谈起。TCP/IP 中对于 OSI 参考模型的数据链路层及以下部分（物理层）未作定义。因为 TCP/IP 以这两层的功能是透明的为前提。 数据链路层的协议定义了通过通信媒介互连的设备之间传输的规范。通信媒介包括双绞线电缆、同轴电缆、光纤、电波以及红外线等介质。数据">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-14T10:59:28.684Z">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-1.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-2.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-3.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-8.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-4.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-5.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-6.png">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-7.png">
+<meta property="og:updated_time" content="2018-04-28T12:50:17.098Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring Cloud 简介">
-<meta name="twitter:description" content="简单聊聊微服务和 Spirng Cloud。">
+<meta name="twitter:title" content="数据链路">
+<meta name="twitter:description" content="本篇内容来源于《图解TCP/IP》第三章  数据链路层是计算机网络最基本的内容。如果没有数据链路层，基于 TCP/IP 的通信也就无法谈起。TCP/IP 中对于 OSI 参考模型的数据链路层及以下部分（物理层）未作定义。因为 TCP/IP 以这两层的功能是透明的为前提。 数据链路层的协议定义了通过通信媒介互连的设备之间传输的规范。通信媒介包括双绞线电缆、同轴电缆、光纤、电波以及红外线等介质。数据">
+<meta name="twitter:image" content="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-1.png">
 
 
 
@@ -120,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="http://yangdongdong.org/2017/12/17/introduction-to-spring-cloud/"/>
+  <link rel="canonical" href="http://yangdongdong.org/2018/04/28/tcp-ip-part-iii/"/>
 
 
 
 
 
-  <title>Spring Cloud 简介 | 编程改变生活</title>
+  <title>数据链路 | 编程改变生活</title>
   
 
 
@@ -243,7 +252,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2017/12/17/introduction-to-spring-cloud/">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/04/28/tcp-ip-part-iii/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="杨冬冬">
@@ -260,7 +269,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Spring Cloud 简介</h1>
+          <h1 class="post-title" itemprop="name headline">数据链路</h1>
         
 
         <div class="post-meta">
@@ -272,8 +281,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-17T23:09:10+08:00">
-                2017-12-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T20:50:17+08:00">
+                2018-04-28
               </time>
             
 
@@ -295,8 +304,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-Cloud/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring Cloud</span>
+                  <a href="/categories/计算机网络/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
                   </a>
                 </span>
 
@@ -337,49 +346,98 @@
       
 
       
-        <p>简单聊聊微服务和 Spirng Cloud。</p>
+        <blockquote>
+<p>本篇内容来源于《图解TCP/IP》第三章</p>
+</blockquote>
+<p>数据链路层是计算机网络最基本的内容。如果没有数据链路层，基于 TCP/IP 的通信也就无法谈起。TCP/IP 中对于 OSI 参考模型的数据链路层及以下部分（物理层）未作定义。因为 TCP/IP 以这两层的功能是透明的为前提。</p>
+<p>数据链路层的协议定义了通过通信媒介互连的设备之间传输的规范。通信媒介包括双绞线电缆、同轴电缆、光纤、电波以及红外线等介质。数据链路层处理的数据也不是单纯的 0、1 序列，该层把它们集合为一个叫做“帧”的块，然后再进行传输。</p>
 <a id="more"></a>
-<h2 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h2><p>微服务简单的来说就是把系统中的每个模块拆分出来独立运行。例如，商城系统中包含了商品模块、用户模块、订单模块、支付模块等等，原先的做法是写在同一个项目里面，随着系统越来越完善，功能越来越多，代码耦合就越深。微服务的思想就是拆分，将庞大的系统拆分为小系统或小模块（统一称为服务），每个服务只需要保证对外提供服务，至于服务内部用什么语言、技术，外界根本不关心（不管黑猫白猫 捉到老鼠就是好猫）。比如将商品系统按功能模块拆分开，原本是个整体的商城系统，现在被拆分成了商品服务、用户服务、订单服务等等，当需要哪个服务时就调用相应的服务，这样代码耦合度就降低了。</p>
-<h3 id="垂直系统-VS-微服务"><a href="#垂直系统-VS-微服务" class="headerlink" title="垂直系统 VS 微服务"></a>垂直系统 VS 微服务</h3><p>垂直系统的弊端：</p>
-<ul>
-<li>随着业务量的增加，复杂性逐渐提高、代码耦合太深，不利于开发和维护</li>
-<li>技术债务逐渐积累加剧，很多代码都是为了解决问题而开发</li>
-<li>阻碍新技术的引入和使用，只能依赖原有旧的框架开发</li>
-<li>无法进行高可用、负载均衡、水平扩展和合理的伸缩</li>
-<li>部署的服务速度会随着代码积累逐渐变慢、性能降低，随着数据量增大下降</li>
-</ul>
-<h3 id="微服务的架构"><a href="#微服务的架构" class="headerlink" title="微服务的架构"></a>微服务的架构</h3><p>一个微服务需要有清晰的业务边界，高度的模块化服务化解耦。每个服务都完成自己的功能，并且每个服务都可以灵活的使用自己本身所需的技术。它们是分而治之，独立部署运行，又可以相互进行数据通信，可以使用 Rest 方法，也可以使用 RPC 方法，更加可以使用消息中间件。</p>
-<h3 id="微服务的优缺点"><a href="#微服务的优缺点" class="headerlink" title="微服务的优缺点"></a>微服务的优缺点</h3><p>优点：</p>
-<ul>
-<li>扩展性强，便于开发和维护，局部修改简单</li>
-<li>启动较快、性能、压力测试更有针对性。调节 CPU、内存、磁盘、IO 性能等参数值指标方便</li>
-<li>技术栈不受限制，可以使用任何技术框架，也可以选择其他编程语言实现</li>
-<li>可伸缩性、扩展性、高可用性都可控，可调节</li>
-</ul>
-<p>缺点：</p>
-<ul>
-<li>运维要求比较高，需要分布式监控、自动化部署测试等</li>
-<li>分布式的复杂性、逻辑复杂、分布式事务等问题</li>
-<li>接口调用、服务与服务之间联调测试比较复杂</li>
-</ul>
-<h2 id="Spring-Cloud-简述"><a href="#Spring-Cloud-简述" class="headerlink" title="Spring Cloud 简述"></a>Spring Cloud 简述</h2><p>Spring Cloud 是一个开发分布式系统的工具包，它为开发人员提供了快速构建分布式系统中一些基础设施的工具（如服务注册、配置中心、消息总线、负载均衡、数据监控等）。它将目前各家公司开发的比较成熟，经得起实际考验的服务框架组合，通过“Spring Boot 风格”进行再封装，屏蔽了复杂的配置和实现原理，最终给开发者留出了一套简单易懂、易部署和易维护的分布式系统开发工具包。</p>
-<p>Spring Cloud：</p>
-<ul>
-<li>遵循于约定优于配置的原则</li>
-<li>开箱即用、配置简单、编写代码简单、部署简单</li>
-<li>适用于各种环境，即可单独部署，又可集中部署，轻量级的组件</li>
-<li>支持丰富的组件集成，并且有 90% 的主流框架配置参数提供</li>
-<li>实现了一套完整的微服务流程，各个方面考虑全面</li>
-</ul>
-<h3 id="Sring-Cloud-组成"><a href="#Sring-Cloud-组成" class="headerlink" title="Sring Cloud 组成"></a>Sring Cloud 组成</h3><p>Spring Cloud 的子项目，大致可以分为两类。一类是对现有成熟框架 “Spring Boot 化”的封装和抽象，也是数量最多的项目，第二类是开发了一部分分布式系统的基础设施的实现，如 Spring Cloud Stream 扮演的就是 Kafka、MQ 这样的角色。对于我们想要快速实践微服务的开发者来说，第一类子项目已经足够使用，如：</p>
-<ul>
-<li>Spring Cloud Netflix 是对 Netflix 开发的一套分布式服务框架的封装，包括服务的发现和注册、负载均衡、断路器、Rest 客户端、请求路由等</li>
-<li>Spring Cloud Config 将配置信息中心化保存，配置 Spring Cloud Bus 可以实现动态修改配置文件</li>
-<li>Spring Cloud Stream 分布式消息队列，是对 Kafka、MQ 的封装</li>
-<li>Spring Cloud Security 是对 Spring Security 的封装，并能配合 Netflix 使用</li>
-<li>Spring Cloud Zookeeper 对 Zookeeper 的封装，使之能配置其他 Spring Cloud 子项目使用</li>
-</ul>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>Spring Cloud：<a href="https://projects.spring.io/spring-cloud" target="_blank" rel="noopener">https://projects.spring.io/spring-cloud</a></p>
+<h2 id="相关技术"><a href="#相关技术" class="headerlink" title="相关技术"></a>相关技术</h2><h3 id="MAC-地址"><a href="#MAC-地址" class="headerlink" title="MAC 地址"></a>MAC 地址</h3><p>MAC 地址用于识别数据链路中互连的节点。</p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-1.png" alt="通过 MAC 地址判断目标地址" title="在总线型与环路型的网络中，先暂时获取所有目标站的帧，然后再通过 MAC 寻址。如果是发给自己的就接收，如果不是就丢弃（在令牌环的这种情况下，依次转发给下一个站）"></p>
+<p>MAC 地址长 48 比特，结果如下图所示</p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-2.png" alt="IEEE802.3 规范的 MAC 地址格式" title="MAC 地址长 48 比特"></p>
+<p>第 1 位：单播地址（0）/多播地址（1）</p>
+<p>第 2 位：全局地址（0）/本地地址（1）</p>
+<p>第 3~24 位：由 IEEE 管理并保证各厂家之间不重复</p>
+<p>第 25~48 位：有厂家管理管理并保证产品之间不重复</p>
+<h3 id="共享介质型网络"><a href="#共享介质型网络" class="headerlink" title="共享介质型网络"></a>共享介质型网络</h3><p>共享型介质网络指由多个设备共享一个通信介质的一种网络。在这种方式下，设置之间使用同一个载波信道进行发送和接收。为此，基本上采用半双工通信方式，并有必要对介质进行访问控制。</p>
+<p>共享介质型网络中有两种介质访问控制方式：一种是争用方式，另一种是令牌传递方式。</p>
+<p><strong>争用方式</strong></p>
+<p>争用方式（Contention）是指争夺获取数据传输的权力，也叫 CSMA（载波监听多路访问）。这种方法通常令网络中的各个站采用先到先得的方式占用信道发送数据，如果多个站同时发送帧，则会产生冲突现象。也因此导致网络拥堵与性能下降。</p>
+<p><strong>令牌传递方式</strong></p>
+<p>令牌传递方式是沿着令牌环发送一种叫做“令牌”的特殊报文，是控制传输的一种方式。只有获得令牌的站才能发送数据。这种方式有两个特点：一是不会有冲突，二是每个站都有通过平等循环获得令牌的机会。因此，即使网络拥堵也不会导致性能下降。</p>
+<h3 id="非共享介质型网络"><a href="#非共享介质型网络" class="headerlink" title="非共享介质型网络"></a>非共享介质型网络</h3><p>非共享介质网络是指不共享介质，是对介质采取专用的一种传输控制方式。在这种方式下，网络中的每个站直连交换机，由交换机负责转发数据帧。此方式下，发送端与接收端并不共享通信介质，因此很多情况下采用全双工通信方式。</p>
+<h3 id="根据-MAC-地址转发"><a href="#根据-MAC-地址转发" class="headerlink" title="根据 MAC 地址转发"></a>根据 MAC 地址转发</h3><p>交换集线器是一种将非介质共享型网络中所使用的交换机用在以太网中的技术，也叫做以太网交换机。以太网交换机就是持有多个端口的网桥。它们根据数据链路层中每个帧的目标 MAC 地址，决定从哪个网络接口发送数据。这时所参考的、用以记录发送接口的表就叫做转发表（Forwarding Table）。</p>
+<p>交换机转发方式有两种，一种是存储转发，另一种叫直通转发。</p>
+<p>存储转发方式检查以太网数据帧末尾的 FCS 位后再进行转发。因此，可以避免发送由于冲突而被破坏的帧或噪声导致的错误帧。</p>
+<p>直通转发方式中不需要将整个帧全部接收下来以后再进行转发。只需要得知目标地址即可开始转发。因此，它具有延迟较短的优势。但同时也不可避免地有发送错误帧的可能性。</p>
+<h3 id="环路检测技术"><a href="#环路检测技术" class="headerlink" title="环路检测技术"></a>环路检测技术</h3><p>通过网桥连接网络时，一旦出现环路，最坏的情况下，数据帧会在环路中被一而再再而三地持续转发。而一旦这种数据帧越积越多将会导致网络瘫痪。</p>
+<p>解决网络中的环路问题，具体有生成树与源路由两种方式。</p>
+<p><strong>生成树方式</strong></p>
+<p>该方法由 IEEE802.1D 定义。每个网桥必须在每 1~10 秒内相互交换 BPDU（Bridge Protocol Data Unit）包，从而判断哪些端口使用哪些不使用，以便消除环路。一旦发生故障，则自动切换通信线路，利用那些没有被使用的端口继续进行传输。</p>
+<p><strong>源路由法</strong></p>
+<p>源路由法最早由 IBM 提出，以解决令牌环网络的问题，该方法可以判断发送数据的源地址是通过哪个网桥实现传输的，并将帧写入 RIF（Routing Information Field）。网桥则根据这个 RIF 信息发送帧给目标地址。因此，即使网桥中出现了环路，数据帧也不会被反复转发，可成功地发送到目标地址。</p>
+<h3 id="VLAN"><a href="#VLAN" class="headerlink" title="VLAN"></a>VLAN</h3><p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-3.png" alt="简单的 VLAN" title="即使连接在同一个交换集线器，也可以分成不同的网段"></p>
+<p>TAG VLAN 允许包含跨越异构交换机的网段。TAG VLAN 中对每个网段都用了一个 VLAN ID 的标签进行唯一标识。在交换机中传输帧时，在以太网首部加入这个 VID 标签，根据这个值决定将数据帧发送给哪个网段。各个交换机之间流动的数据帧的格式如下：</p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-8.png" alt="VLAN 中以太网帧的格式" title="带有 VLNA 标记的交换机之间流动的以太网帧格式"></p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-4.png" alt="跨交换机的 VLAN" title="跨交换机的 VLAN"></p>
+<h2 id="以太网"><a href="#以太网" class="headerlink" title="以太网"></a>以太网</h2><p>以太网帧前端有一个叫做前导码（Preamble）的部分，它由 0、1 数字交替组合而成，表示一个以太网帧的开始，也是对端网卡能够确保与其同步的标签。前导码末尾是一个叫做 SFD（Start Frame Delimiter）的域，它的值是 “11”。在这域之后就是以太网帧的本地。前导码与 SFD 合起来占 8 个字节。</p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-5.png" alt="以太网帧的前导码" title="前导码"></p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-6.png" alt="以太网帧体格式" title="以太网帧体格式"></p>
+<p><img src="http://p0e1o9bcz.bkt.clouddn.com/tcp-ip/tcp-ip-part-iii-7.png" alt="IEEE802.3 以太网帧体格式" title="IEEE802.3 以太网帧体格式"></p>
+<p>紧随帧头后面的是数据。一个数据帧能容纳的最大数据范围是 46~1500 个字节。帧尾是一个叫做 FCS（Frame Check Sequence，帧检验序列）的 4 个字节。FCS 用于检查帧是否有所损坏。</p>
+<h2 id="无线通信"><a href="#无线通信" class="headerlink" title="无线通信"></a>无线通信</h2><p>IEEE802 委员会制定了无线 PAN（Personal Area Network）（802.15）、无线 LAN（Local Area Network）(802.11)、无线 MAN（Metropolitan Area Network）(802.16) 以及无线 RAN（Regional Area Network）(802.22)等无线标准。</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>通信距离</th>
+<th>标准化组织</th>
+<th>相关其他组织及技术</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>短距离无线</td>
+<td>数米</td>
+<td>个别组织</td>
+<td>RF-ID</td>
+</tr>
+<tr>
+<td>无线 PAN</td>
+<td>10 米左右</td>
+<td>IEEE802.15</td>
+<td>蓝牙</td>
+</tr>
+<tr>
+<td>无线 LAN</td>
+<td>100 米左右</td>
+<td>IEEE802.11</td>
+<td>Wi-Fi</td>
+</tr>
+<tr>
+<td>无线 MAN</td>
+<td>数千米~100 千米</td>
+<td>IEEE802.16、IEEE802.20</td>
+<td>WiMAX</td>
+</tr>
+<tr>
+<td>无线 RAN</td>
+<td>200千米~700千米</td>
+<td>IEEE802.22</td>
+<td>-</td>
+</tr>
+<tr>
+<td>无线 WAN</td>
+<td>-</td>
+<td>GSM、CDMA2000、W-CDMA</td>
+<td>3G、LET、4G、下一代移动通信网络</td>
+</tr>
+</tbody>
+</table>
+<p>IEEE802.11 定义了无线 LAN 协议中物理层与数据链路层的一部分（MAC 层）。</p>
+<p>最后，我们介绍下我们常用的 VPN</p>
+<p>网络服务商提供一种在 IP 网络上使用 MPLS 技术构建 VPN 的服务。其中 MPLS（Multiprotocol Label Switching，多协议标签交换）在 IP 包中附加一个叫做标签（Label）的信息进行传输控制。每个用户的标签信息不同，因此在通过 MPLS 网时，可以轻松地判断出目标地址。这样一来就可以将多个不同用户的 VPN 信息通过 MPLS 网加以区分，形成封闭的私有网络。此外，还能进行用户级的宽带控制</p>
 
       
     </div>
@@ -411,7 +469,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yangdongdong.org/2017/12/17/introduction-to-spring-cloud/" title="Spring Cloud 简介">http://yangdongdong.org/2017/12/17/introduction-to-spring-cloud/</a>
+    <a href="http://yangdongdong.org/2018/04/28/tcp-ip-part-iii/" title="数据链路">http://yangdongdong.org/2018/04/28/tcp-ip-part-iii/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -426,7 +484,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Spring-Cloud/" <i class="fa fa-tag"></i> Spring Cloud</a>
+            <a href="/tags/计算机网络/" <i class="fa fa-tag"></i> 计算机网络</a>
+          
+            <a href="/tags/TCP-IP/" <i class="fa fa-tag"></i> TCP/IP</a>
           
         </div>
       
@@ -439,15 +499,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/04/14/tcp-ip-part-ii/" rel="next" title="TCP/IP 基础">
+                <i class="fa fa-chevron-left"></i> TCP/IP 基础
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/20/spring-cloud-eureka/" rel="prev" title="Spring Cloud Eureka：服务注册与发现">
-                Spring Cloud Eureka：服务注册与发现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -600,7 +660,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#微服务"><span class="nav-number">1.</span> <span class="nav-text">微服务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#垂直系统-VS-微服务"><span class="nav-number">1.1.</span> <span class="nav-text">垂直系统 VS 微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务的架构"><span class="nav-number">1.2.</span> <span class="nav-text">微服务的架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#微服务的优缺点"><span class="nav-number">1.3.</span> <span class="nav-text">微服务的优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-简述"><span class="nav-number">2.</span> <span class="nav-text">Spring Cloud 简述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sring-Cloud-组成"><span class="nav-number">2.1.</span> <span class="nav-text">Sring Cloud 组成</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">3.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#相关技术"><span class="nav-number">1.</span> <span class="nav-text">相关技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MAC-地址"><span class="nav-number">1.1.</span> <span class="nav-text">MAC 地址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#共享介质型网络"><span class="nav-number">1.2.</span> <span class="nav-text">共享介质型网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非共享介质型网络"><span class="nav-number">1.3.</span> <span class="nav-text">非共享介质型网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#根据-MAC-地址转发"><span class="nav-number">1.4.</span> <span class="nav-text">根据 MAC 地址转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环路检测技术"><span class="nav-number">1.5.</span> <span class="nav-text">环路检测技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#VLAN"><span class="nav-number">1.6.</span> <span class="nav-text">VLAN</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#以太网"><span class="nav-number">2.</span> <span class="nav-text">以太网</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无线通信"><span class="nav-number">3.</span> <span class="nav-text">无线通信</span></a></li></ol></div>
             
 
           </div>
