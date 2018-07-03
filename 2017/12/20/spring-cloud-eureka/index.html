@@ -96,8 +96,8 @@ imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fonts
 <meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka1.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim">
 <meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/eureka/eureka2.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim">
 <meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/eureka/client-ha.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim">
-<meta property="og:image" content="http://img.blog.csdn.net/20170727221824930">
-<meta property="og:updated_time" content="2018-04-08T08:42:40.000Z">
+<meta property="og:image" content="http://p0e1o9bcz.bkt.clouddn.com/20170727221824930.png">
+<meta property="og:updated_time" content="2018-07-03T12:17:19.309Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Spring Cloud Eureka：服务注册与发现">
 <meta name="twitter:description" content="Spring Cloud Eureka 是 Spring Cloud Netflix 微服务套件中的一个重要部分。它基于 Netflix Eureka 做了二次封装，主要负责完成微服务架构中的服务治理与服务发现功能。">
@@ -401,7 +401,7 @@ imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fonts
 <p>访问 <a href="http://eureka1:7001/" target="_blank" rel="noopener">http://eureka1:7001/</a> 
 <img src="http://p0e1o9bcz.bkt.clouddn.com/eureka/client-ha.png?imageView2/0/q/100|watermark/2/text/eWFuZ2Rvbmdkb25nLm9yZw==/font/5a6L5L2T/fontsize/240/fill/IzAwMDAwMA==/dissolve/100/gravity/SouthEast/dx/10/dy/10|imageslim" alt="client-ha"></p>
 <p>可以看到 CLIENT 的个数为 2。</p>
-<h2 id="服务发现注册机制"><a href="#服务发现注册机制" class="headerlink" title="服务发现注册机制"></a>服务发现注册机制</h2><p><img src="http://img.blog.csdn.net/20170727221824930" alt="springcloud" title="图片来自大道化简的博客"></p>
+<h2 id="服务发现注册机制"><a href="#服务发现注册机制" class="headerlink" title="服务发现注册机制"></a>服务发现注册机制</h2><p><img src="http://p0e1o9bcz.bkt.clouddn.com/20170727221824930.png" alt="springcloud" title="图片来自大道化简的博客"></p>
 <p>服务注册：服务提供者在启动时会通过发送 Rest 请求的方式将自己注册到 Eureka 服务器上，同时带上自身服务的一些元素。Eureka 收到这个 Rest 请求后，将元数据信息存储在一个双层结构的 Map 中，其中第一层的 key 是服务名，第二层的 key 是具体服务实例名。</p>
 <p>服务同步：如架构图所示，这里两个服务提供者分别注册到了两个不同的注册中心上，也就是说他们的信息分别被两个服务注册中心所维护，此时由于服务中心之间因为相互注册服务的关系，当服务提供者发送注册请求到一个服务注册中心的时候，它会将请求转发给集群的其他注册中心，从而实现注册中心之间的服务同步过程。通过服务同步，两个服务提供者的服务信息就可以通过这两台服务注册中心的任意一台获取到。</p>
 <p>服务续约：服务注册完成后，服务提供者会维护一个心跳来持续告诉注册中心“我还活在”以防止注册中心“剔除该服务”也就是将服务列表中排除出去。</p>
