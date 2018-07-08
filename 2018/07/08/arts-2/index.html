@@ -82,17 +82,15 @@
 <meta name="description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 <meta name="keywords" content="ARTS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ARTS 第 1 周">
-<meta property="og:url" content="http://yangdongdong.org/2018/07/01/arts-1/index.html">
+<meta property="og:title" content="ARTS 第 2 周">
+<meta property="og:url" content="http://yangdongdong.org/2018/07/08/arts-2/index.html">
 <meta property="og:site_name" content="编程改变生活">
 <meta property="og:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://165.227.208.227/posts/wp-content/uploads/2015/04/graph-1.png">
-<meta property="og:updated_time" content="2018-07-01T07:55:29.143Z">
+<meta property="og:updated_time" content="2018-07-08T15:58:07.182Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ARTS 第 1 周">
+<meta name="twitter:title" content="ARTS 第 2 周">
 <meta name="twitter:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
-<meta name="twitter:image" content="http://165.227.208.227/posts/wp-content/uploads/2015/04/graph-1.png">
 
 
 
@@ -122,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yangdongdong.org/2018/07/01/arts-1/"/>
+  <link rel="canonical" href="http://yangdongdong.org/2018/07/08/arts-2/"/>
 
 
 
 
 
-  <title>ARTS 第 1 周 | 编程改变生活</title>
+  <title>ARTS 第 2 周 | 编程改变生活</title>
   
 
 
@@ -245,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/07/01/arts-1/">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/07/08/arts-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="杨冬冬">
@@ -262,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ARTS 第 1 周</h1>
+          <h1 class="post-title" itemprop="name headline">ARTS 第 2 周</h1>
         
 
         <div class="post-meta">
@@ -274,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-01T15:55:29+08:00">
-                2018-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-08T23:52:14+08:00">
+                2018-07-08
               </time>
             
 
@@ -341,47 +339,33 @@
       
         <p>每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路</p>
 <a id="more"></a>
-<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>题目：<a href="https://leetcode.com/problems/two-sum/description/" target="_blank" rel="noopener">两数和</a></p>
-<p>给定一个整数数组，返回这两个数字的索引，使它们相加为一个指定的数。</p>
-<p>因为是返回两个数字的索引，所以不能对数组排序。就算排序也要保留原始的索引。</p>
-<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路 1"></a>思路 1</h3><p>两层循环
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; nums.length; j++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(nums[i] == target - nums[j])&#123;</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;i,j&#125;;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"not found"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>beats 26.64%</p>
-<h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路 2"></a>思路 2</h3><p>使用 <code>HashMap</code>，空间换时间</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        HashMap&lt;Integer,Integer&gt; map = <span class="keyword">new</span> HashMap(nums.length);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nums.length;i++)&#123;</span><br><span class="line">            <span class="keyword">if</span>(map.containsKey(target-nums[i]))&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;map.get(target-nums[i]),i&#125;;</span><br><span class="line">            &#125;</span><br><span class="line">            map.put(nums[i],i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"not found"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>beats 99.70%</p>
-<h2 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h2><p><a href="http://blog.thefirehoseproject.com/posts/learn-to-code-and-be-self-reliant/" target="_blank" rel="noopener">The Key To Accelerating Your Coding Skills</a></p>
-<p>在学习编程的过程中，从某个时间点开始会觉得“顿悟了”，把这个时间点称为拐点。</p>
-<p><img src="http://165.227.208.227/posts/wp-content/uploads/2015/04/graph-1.png" alt=""></p>
-<p>首先是教程阶段（3~8 周严格地编码），在此阶段应该注重细节，从错误信息中学习总结。认识到编程无法一蹴而就，是需要长期持续学习的。</p>
-<p>其次是拐点阶段（正确心态的2-4周），在此阶段会发现你的编码效率提高了 10~20 倍。但是，不要满足，永远保持空杯心态，坚持每天进步一点点。重视基础，学习算法和数据结构。</p>
-<p>最后通过拐点，不再一味追求新的技术，能看透新技术的本质。能根据已学得知识来学习新的技术。积累自己的代码库。</p>
-<p>如何判断是否通过了拐点？其实就是心态的改变。接受软件开发是一个不断学习的过程。接受不断的学习是为了解决更复杂的问题。</p>
-<h2 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h2><p>本周分享一个 Spring Boot 的注解 <code>@Profile</code>，它有什么用呢？</p>
-<p>它可以标记在任何一个 <code>@Component</code> 、<code>@Configuration</code> 和 <code>@Bean</code> 上，根据当前环境来决定是否加载。</p>
-<p>举个例子，项目中使用到了 Swagger，只想在开发和测试环境使用。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@EnableSwagger</span>2</span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@Profile</span>(<span class="string">"dev"</span>,<span class="string">"test"</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Swagger2</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当 <code>spring.profiles.active=dev,test</code> 时，Swagger 才能被访问。</p>
-<p>还可以写成非生成环境 <code>@Profile(&quot;!prod&quot;)</code></p>
-<p>注意：在 <code>@Bean</code> 方法上使用 <code>@Profile</code> 时，可能会有一个特殊情况：对于具有相同 Java 方法名称的重载 <code>@Bean</code> 方法（类似于构造函数重载），必须在所有重载的方法上一致地声明 <code>@Profile</code> 条件。</p>
-<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>最近公司招聘 Java 开发，由我筛选简历，说说我个人从技术人员的角度来看面试机会更大的简历是什么样的。</p>
-<ul>
-<li>一份完整的简历。至少包括个人信息、工作经验、项目经验、技能</li>
-<li>完整的项目经验。包括项目简介、架构、使用技术、职责、成绩、收获。如果能展示则更好。</li>
-<li>技能。展示自己会的技术</li>
-</ul>
-<p>加分项：</p>
-<ul>
-<li>入职过大厂</li>
-<li>个人博客</li>
-<li>Github</li>
-</ul>
-<p>注意事项：</p>
-<ul>
-<li>简历应该真实</li>
-<li>简历不写无足轻重的信息，突出重点。</li>
-<li>多读自己的简历，假想你是招聘人员，能从你的简历上获取到什么信息。</li>
-</ul>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>题目：<a href="https://leetcode.com/problems/add-two-numbers/description/" target="_blank" rel="noopener">Add Two Numbers</a></p>
+<p>You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order and each of their nodes contain a single digit. Add the two numbers and return it as a linked list.</p>
+<p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
+<p>Example：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: (2 -&gt; 4 -&gt; 3) + (5 -&gt; 6 -&gt; 4)</span><br><span class="line">Output: 7 -&gt; 0 -&gt; 8</span><br><span class="line">Explanation: 342 + 465 = 807.</span><br></pre></td></tr></table></figure></p>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路 1"></a>思路 1</h3><p>先将最终的结果算出来，再做分割。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> num = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(l1!=<span class="keyword">null</span> &amp;&amp; l2!=<span class="keyword">null</span>)&#123;</span><br><span class="line">            num = num + (l1.val+l2.val) * i;</span><br><span class="line">            l1 = l1.next;</span><br><span class="line">            l2 = l2.next;</span><br><span class="line">            i = i*<span class="number">10</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        String numStr = num + <span class="string">""</span>;</span><br><span class="line">        <span class="keyword">int</span> length = numStr.length();</span><br><span class="line">        ListNode result = <span class="keyword">new</span> ListNode(Integer.parseInt(numStr.substring(length - <span class="number">1</span>, length)));</span><br><span class="line">        ListNode first = result;</span><br><span class="line">        length = length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">           result.next = <span class="keyword">new</span> ListNode(Integer.parseInt(numStr.substring(length - <span class="number">1</span>, length)));</span><br><span class="line">            length = length-<span class="number">1</span>;</span><br><span class="line">            result = result.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>提交，<strong>错误</strong>。超过 int 的存储范围后，<code>num</code> 变为负数。该为 long 同理。这样写还有一个限制，<code>l1</code> 和 <code>l2</code> 的长度必须一样。</p>
+<h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路 2"></a>思路 2</h3><p>写一个加法器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">                List&lt;Integer&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> val1 = l1 == <span class="keyword">null</span> ? <span class="number">0</span> : l1.val;</span><br><span class="line">            <span class="keyword">int</span> val2 = l2 == <span class="keyword">null</span> ? <span class="number">0</span> : l2.val;</span><br><span class="line">            <span class="keyword">int</span> sum = val1 + val2 + carry;</span><br><span class="line">            <span class="keyword">if</span> (sum &gt; <span class="number">9</span>) &#123;</span><br><span class="line">                carry = <span class="number">1</span>;</span><br><span class="line">                result.add(sum - <span class="number">10</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                carry = <span class="number">0</span>;</span><br><span class="line">                result.add(sum);</span><br><span class="line">            &#125;</span><br><span class="line">            l1 = l1 == <span class="keyword">null</span> ? <span class="keyword">null</span> : l1.next;</span><br><span class="line">            l2 = l2 == <span class="keyword">null</span> ? <span class="keyword">null</span> : l2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (carry == <span class="number">1</span>) &#123;</span><br><span class="line">            result.add(carry);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ListNode listNode = <span class="keyword">new</span> ListNode(result.get(<span class="number">0</span>));</span><br><span class="line">        ListNode first = listNode;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; result.size(); i++) &#123;</span><br><span class="line">            listNode.next = <span class="keyword">new</span> ListNode(result.get(i));</span><br><span class="line">            listNode = listNode.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> first;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>beats 78.48%</p>
+<p>优化一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123;</span><br><span class="line">        ListNode listNode = <span class="keyword">new</span> ListNode(<span class="number">0</span>);</span><br><span class="line">        ListNode result = listNode;</span><br><span class="line">        <span class="keyword">int</span> carry = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> val1 = (l1 == <span class="keyword">null</span>) ? <span class="number">0</span> : l1.val;</span><br><span class="line">            <span class="keyword">int</span> val2 = (l2 == <span class="keyword">null</span>) ? <span class="number">0</span> : l2.val;</span><br><span class="line">            <span class="keyword">int</span> sum = val1 + val2 + carry;</span><br><span class="line">            <span class="keyword">if</span>(sum&gt;<span class="number">9</span>)&#123;</span><br><span class="line">                carry = <span class="number">1</span>;</span><br><span class="line">                listNode.next = <span class="keyword">new</span> ListNode(sum-<span class="number">10</span>);</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                carry = <span class="number">0</span>;</span><br><span class="line">                listNode.next = <span class="keyword">new</span> ListNode(sum); </span><br><span class="line">            &#125;</span><br><span class="line">            listNode = listNode.next;</span><br><span class="line">           <span class="keyword">if</span>(l1!=<span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">            <span class="keyword">if</span>(l2!=<span class="keyword">null</span>) l2 = l2.next;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (carry==<span class="number">1</span>) &#123;</span><br><span class="line">            listNode.next = <span class="keyword">new</span> ListNode(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result.next;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>beats 89.98%</p>
+<h2 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h2><p>这周看了下有关字符集合和字符编码的文章。</p>
+<p><a href="http://www.developerknowhow.com/1091/the-history-of-character-encoding" target="_blank" rel="noopener">The history of Character Encoding</a></p>
+<p><a href="http://www.imkevinyang.com/2010/06/关于字符编码，你所需要知道的.html" target="_blank" rel="noopener">关于字符编码，你所需要知道的</a></p>
+<p>字符集就是计算机可正常显示的字符集合。从刚开始的 ASCII（26 个大小写英文字母和一些常见的符号）到 GBK（覆盖了所有简体字以及一部分其他字符）到现在的 Unicode（涵盖了目前人类使用的所有字符）。</p>
+<p>在 Unicode 出现之前，所有的字符集都是和具体编码方案绑定在一起的，都是直接将字符和最终字节流绑定死了，例如 ASCII 编码系统规定使用 7 比特来编码 ASCII 字符集；GB2312 以及 GBK 字符集，限定了使用最多 2 个字节来编码所有字符，并且规定了字节序。这样的编码系统通常用简单的查表，也就是通过代码页就可以直接将字符映射为存储设备上的字节流了。</p>
+<p>而 Unicode 将字符集和字符编码方案分开。具体的字符编码根据所采用的编码方案而定。也就是说，虽然每个字符在 Unicode 字符集中都能找到唯一确定的编号（字符码，又称 Unicode 码），但是决定最终字节流的却是具体的字符编码。例如同样是对 Unicode 字符 “A” 进行编码，UTF-8 字符编码得到的字节流是 0x41，而 UTF-16（大端模式）得到的是 0x00 0x41。</p>
+<h2 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h2><p>最近在实现一个需要后台给前端发送通知的功能，参考了<a href="https://mp.weixin.qq.com/s/6BCucq6QsH8lfDGLtQCl2A" target="_blank" rel="noopener">http如何像tcp一样实时的收消息？</a>的方案。</p>
+<p>原理是当线程阻塞时不占用系统资源，这样通过把线程挂起，让 HTTP 请求超时，从而减轻 HTTP 轮询对服务器造成的压力。</p>
+<p>这里打算采用阻塞队列的方式，选用了 Redis 中的 <code>BRPOP/BLPOP</code> 来实现。</p>
+<p>当前端请求进来的时候，从 Redis 中通过 <code>BRPOP/BLPOP</code> 获取数据，如果没有数据则一直阻塞着直到 Redis 中有了数据或者超过等待时间。前端在接口返回数据或者请求超时后再次发起请求。这样就通过 HTTP 长轮询可以保证消息的实时性，并且这样的连接对服务的请求压力是<code>超时时间/次</code>。</p>
+<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>我觉得开发人员一定要多了解业务，不仅限于自家公司，也要多了解其他行业。了解业务对程序的设计和开发起到了很大的帮助。PRD 往往是很表面的东西，是抽象的业务加上各种限制条件后最终的呈现。所以开发人员能够从 PRD 中把这个抽象的业务理出来是很重要的，了解业务能帮助开发人员从 PRD 中把抽象业务逻辑提取出来。</p>
+<p>为什么要找到抽象的业务？是为了底层逻辑的通用性，让系统有更好的灵活性和适用性。有了一个通用性的底层，每次业务逻辑的变更只是上层限制条件的变更。当然不可能无限大的通用，必须有一个边界限定。</p>
+<p>一切脱离实际的设计都是扯淡。从业务出发，能知道系统设计重点和取舍。系统是为业务服务的，如果一个系统与业务不符，那就没有什么价值。</p>
 
       
     </div>
@@ -413,7 +397,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yangdongdong.org/2018/07/01/arts-1/" title="ARTS 第 1 周">http://yangdongdong.org/2018/07/01/arts-1/</a>
+    <a href="http://yangdongdong.org/2018/07/08/arts-2/" title="ARTS 第 2 周">http://yangdongdong.org/2018/07/08/arts-2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -441,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/24/jvm-internals/" rel="next" title="【译】JVM 内幕">
-                <i class="fa fa-chevron-left"></i> 【译】JVM 内幕
+              <a href="/2018/07/01/arts-1/" rel="next" title="ARTS 第 1 周">
+                <i class="fa fa-chevron-left"></i> ARTS 第 1 周
               </a>
             
           </div>
@@ -450,10 +434,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/08/arts-2/" rel="prev" title="ARTS 第 2 周">
-                ARTS 第 2 周 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
