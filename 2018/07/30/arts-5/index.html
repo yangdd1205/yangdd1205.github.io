@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ARTS," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
+<meta name="keywords" content="ARTS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARTS 第 5 周">
+<meta property="og:url" content="http://yangdongdong.org/2018/07/30/arts-5/index.html">
+<meta property="og:site_name" content="编程改变生活">
+<meta property="og:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table10.png">
+<meta property="og:image" content="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table4.png">
+<meta property="og:image" content="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table4.png">
+<meta property="og:image" content="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table5.png">
+<meta property="og:updated_time" content="2018-07-29T16:30:56.564Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ARTS 第 5 周">
+<meta name="twitter:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
+<meta name="twitter:image" content="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table10.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.3',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yangdongdong.org/2018/07/30/arts-5/"/>
+
+
+
+
+
+  <title>ARTS 第 5 周 | 编程改变生活</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">编程改变生活</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">软件法人，源于生活</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/07/30/arts-5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="杨冬冬">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="编程改变生活">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ARTS 第 5 周</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-30T00:00:00+08:00">
+                2018-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ARTS/" itemprop="url" rel="index">
+                    <span itemprop="name">ARTS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 本文总阅读量
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路</p>
+<a id="more"></a>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>Problem: <a href="https://leetcode.com/problems/longest-palindromic-substring/description/" target="_blank" rel="noopener">Longest Palindromic Substring</a></p>
+<p>Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.</p>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路 1"></a>思路 1</h3><p>枚举中心位置，然后再在该位置上用扩展法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">char</span>[] chars = s.toCharArray();</span><br><span class="line">        <span class="keyword">int</span> start = <span class="number">0</span>, end = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span> length = chars.length;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            <span class="comment">// odd</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; (i - j &gt;= <span class="number">0</span>) &amp;&amp; (i + j &lt; length); j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (chars[i - j] != chars[i + j]) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (<span class="number">2</span> * j &gt; end - start) &#123;</span><br><span class="line">                    start = i - j;</span><br><span class="line">                    end = i + j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// even</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; (i - j &gt;= <span class="number">0</span>) &amp;&amp; (i + j + <span class="number">1</span> &lt; length); j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (chars[i - j] != chars[i + j + <span class="number">1</span>]) &#123;</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (<span class="number">2</span> * j + <span class="number">1</span> &gt; end - start) &#123;</span><br><span class="line">                    start = i - j;</span><br><span class="line">                    end = i + j + <span class="number">1</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s.substring(start, end + <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到一个很简单的思路</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> lo, maxLen;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> len = s.length();</span><br><span class="line">        <span class="keyword">if</span> (len &lt; <span class="number">2</span>)</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; len - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            extendPalindrome(s, i, i);  <span class="comment">//assume odd length, try to extend Palindrome as possible</span></span><br><span class="line">            extendPalindrome(s, i, i + <span class="number">1</span>); <span class="comment">//assume even length.</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> s.substring(lo, lo + maxLen);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">extendPalindrome</span><span class="params">(String s, <span class="keyword">int</span> j, <span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span> (j &gt;= <span class="number">0</span> &amp;&amp; k &lt; s.length() &amp;&amp; s.charAt(j) == s.charAt(k)) &#123;</span><br><span class="line">            j--;</span><br><span class="line">            k++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (maxLen &lt; k - j - <span class="number">1</span>) &#123;</span><br><span class="line">            lo = j + <span class="number">1</span>;</span><br><span class="line">            maxLen = k - j - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Review-amp-Tip"><a href="#Review-amp-Tip" class="headerlink" title="Review &amp; Tip"></a>Review &amp; Tip</h2><p>最长回文子串的另外一种算法：<a href="https://articles.leetcode.com/longest-palindromic-substring-part-ii/" target="_blank" rel="noopener">Manacher’s Algorithm</a></p>
+<p>算法第一个优点，用“#“分割字符串，将所有可能的奇数或偶数长度的回文子串都转换成了奇数长度。比如 <code>abba</code> 变成 <code>#a#b#b#a#</code>， <code>aba</code> 变成 <code>#a#b#a#</code>。</p>
+<p>现有
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">S = <span class="string">"abaaba"</span></span><br></pre></td></tr></table></figure></p>
+<p>则
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T = <span class="string">"#a#b#a#a#b#a#"</span></span><br></pre></td></tr></table></figure></p>
+<p>然后用一个数据 <code>P</code>，用 <code>P[i]</code> 来记录以 <code>T[i]</code> 中心最长的回文子串左边或右边的长度。
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">T = # a # b # a # a # b # a #</span><br><span class="line">P = <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">3</span> <span class="number">0</span> <span class="number">1</span> <span class="number">6</span> <span class="number">1</span> <span class="number">0</span> <span class="number">3</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看出 <code>P[i]</code> 正好是原字符串中最长回文串的总长度，所以 <code>abaaba</code> 的最长回文子串是 <code>P[6] = 6</code>。</p>
+<p>这就是算法的第二个优点，用已知的回文子串长度计算后面回文子串的长度。</p>
+<p>那是怎么计算的呢？</p>
+<p>现有 <code>S = &quot;babcbabcbaccba&quot;</code></p>
+<p><img src="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table10.png" alt="" title="图片来源 LeetCode"></p>
+<p>数组 <code>P</code> 已经完成了一部分，已知垂直实线表示回文 <code>abcbabcba</code> 的中心 <code>C</code>，两条垂直虚线分别表示其左 <code>L</code> 和 <code>R</code> 边缘。</p>
+<p>假设现在 <code>i = 13</code>，我们需要计算 <code>P[13]</code> 的值。</p>
+<p><img src="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table4.png" alt="" title="图片来源 LeetCode"></p>
+<p>因为，从 <code>L</code> 到 <code>R</code> 是以 <code>C</code> 为轴对称，所以 <code>P[13]</code> 也应该与 <code>P[9]</code> 是对称点，所以 <code>P[13] = P[9] = 1</code></p>
+<p>我们看 <code>i=15</code> 时，<code>P[15]</code> 的值</p>
+<p><img src="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table4.png" alt="" title="图片来源 LeetCode"></p>
+<p>安装上面的对称原理，所有 <code>P[15] = P[7] = 7</code>？如果我们以 <code>T[15]</code> 为中心，发现回文是 <code>#a#b#c#b#a#</code>，比 7 小。</p>
+<p><img src="https://articles.leetcode.com/wp-content/uploads/2011/11/palindrome_table5.png" alt="" title="图片来源 LeetCode"></p>
+<p>[0,14] 以 C 为对称轴的映射为 [8,22]。两条绿实线所表示的字符串必须完全匹配，绿虚线也是对称。而 <code>P[i&#39;]</code> 它的回文一直延伸到 <code>L</code> 的左边（左红实线）。所以 <code>P[i]</code> 的值 <code>≥ 5</code> （因为 [2,7] 和 [15,20] 还是对称的）。至于 <code>P[i]</code> 的具体值，则需要继续往 <code>R</code> 延伸匹配。由于 <code>P[21] != P[1]</code>，所以 <code>P[i] = 5</code>。</p>
+<p>所有这个算法的关键点是：
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if P[i&apos;] ≤ R - i</span><br><span class="line">then P[i] = P[i&apos;]</span><br><span class="line">else P[i] 大于等于 R - i</span><br></pre></td></tr></table></figure></p>
+<p>代码如下：
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">longestPalindrome</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>[] T = preProcess(s).toCharArray();</span><br><span class="line">    <span class="keyword">int</span> n = T.length;</span><br><span class="line">    <span class="keyword">int</span>[] P = <span class="keyword">new</span> <span class="keyword">int</span>[n];</span><br><span class="line">    <span class="keyword">int</span> C = <span class="number">0</span>, R = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">int</span> i_mirror = <span class="number">2</span> * C - <span class="number">1</span>;<span class="comment">// i' = C - (i-C)</span></span><br><span class="line">        <span class="keyword">int</span> p_mirror = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> ((i_mirror &gt;= <span class="number">0</span> &amp;&amp; i_mirror &lt; n)) &#123;</span><br><span class="line">            p_mirror = P[i_mirror];</span><br><span class="line">        &#125;</span><br><span class="line">        P[i] = (R &gt; i) ? Math.min(R - i, p_mirror) : <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (T[i + <span class="number">1</span> + P[i]] == T[i - <span class="number">1</span> - P[i]])</span><br><span class="line">            P[i]++;</span><br><span class="line">        <span class="keyword">if</span> (i + P[i] &gt; R) &#123;</span><br><span class="line">            C = i;</span><br><span class="line">            R = i + P[i];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// Find the maximum element in P.</span></span><br><span class="line">    <span class="keyword">int</span> maxLen = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> centerIndex = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n - <span class="number">1</span>; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (P[i] &gt; maxLen) &#123;</span><br><span class="line">            maxLen = P[i];</span><br><span class="line">            centerIndex = i;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> start = (centerIndex - <span class="number">1</span> - maxLen) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">return</span> s.substring(start, start + maxLen);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">preProcess</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//^和$符号是附加到每一端的标记，以避免边界检查</span></span><br><span class="line">    <span class="keyword">int</span> n = s.length();</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span>) <span class="keyword">return</span> <span class="string">"^$"</span>;</span><br><span class="line">    String ret = <span class="string">"^"</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        ret += <span class="string">"#"</span> + s.substring(i, i + <span class="number">1</span>);</span><br><span class="line">    ret += <span class="string">"#$"</span>;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>最近懒了，什么事都要拖到最后才去做，做事的时候容易被其他事情吸引，得改。</p>
+
+      
+    </div>
+    
+    
+    
+
+	<div>
+		
+			<div>
+    
+        <div>（完）</div>
+    
+</div>
+
+		
+	</div>
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    杨冬冬
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://yangdongdong.org/2018/07/30/arts-5/" title="ARTS 第 5 周">http://yangdongdong.org/2018/07/30/arts-5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ARTS/" <i class="fa fa-tag"></i> ARTS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/22/arts-4/" rel="next" title="ARTS 第 4 周">
+                <i class="fa fa-chevron-left"></i> ARTS 第 4 周
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDcwNC8xMTI0MQ=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">杨冬冬</p>
+              <p class="site-description motion-element" itemprop="description">爱编程，爱生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/yangdd1205" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="mailto:yangdd1205@126.com" target="_blank" title="E-Mail">
+                    
+                      <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-1"><span class="nav-number">1.1.</span> <span class="nav-text">思路 1</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Review-amp-Tip"><span class="nav-number">2.</span> <span class="nav-text">Review &amp; Tip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Share"><span class="nav-number">3.</span> <span class="nav-text">Share</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">yangdongdong.org</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 本站总访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 本站总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
