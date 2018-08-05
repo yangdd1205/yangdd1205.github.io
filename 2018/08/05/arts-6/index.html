@@ -82,14 +82,14 @@
 <meta name="description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 <meta name="keywords" content="ARTS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ARTS 第 4 周">
-<meta property="og:url" content="http://yangdongdong.org/2018/07/22/arts-4/index.html">
+<meta property="og:title" content="ARTS 第 6 周">
+<meta property="og:url" content="http://yangdongdong.org/2018/08/05/arts-6/index.html">
 <meta property="og:site_name" content="编程改变生活">
 <meta property="og:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-07-22T15:56:51.509Z">
+<meta property="og:updated_time" content="2018-08-05T15:55:21.278Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ARTS 第 4 周">
+<meta name="twitter:title" content="ARTS 第 6 周">
 <meta name="twitter:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yangdongdong.org/2018/07/22/arts-4/"/>
+  <link rel="canonical" href="http://yangdongdong.org/2018/08/05/arts-6/"/>
 
 
 
 
 
-  <title>ARTS 第 4 周 | 编程改变生活</title>
+  <title>ARTS 第 6 周 | 编程改变生活</title>
   
 
 
@@ -243,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/07/22/arts-4/">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/08/05/arts-6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="杨冬冬">
@@ -260,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ARTS 第 4 周</h1>
+          <h1 class="post-title" itemprop="name headline">ARTS 第 6 周</h1>
         
 
         <div class="post-meta">
@@ -272,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-22T23:52:59+08:00">
-                2018-07-22
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-05T23:55:21+08:00">
+                2018-08-05
               </time>
             
 
@@ -339,21 +339,23 @@
       
         <p>每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路</p>
 <a id="more"></a>
-<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>题目：<a href="https://leetcode.com/problems/median-of-two-sorted-arrays/description/" target="_blank" rel="noopener">Median of Two Sorted Arrays</a></p>
-<p>There are two sorted arrays <code>nums1</code> and <code>nums2</code> of size m and n respectively.</p>
-<p>Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).</p>
-<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路 1"></a>思路 1</h3><p>将两个数组中的值按从小到大排序，但是不用把所有数都排完，只需要排到中位数就行。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(<span class="keyword">int</span>[] nums1, <span class="keyword">int</span>[] nums2)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> total_length = nums1.length + nums2.length;</span><br><span class="line">        <span class="keyword">int</span> median = total_length / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">int</span> i1 = <span class="number">0</span>, i2 = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">int</span>[] result = <span class="keyword">new</span> <span class="keyword">int</span>[median + <span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= median; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i1 &gt;= nums1.length) &#123;</span><br><span class="line">                result[j] = nums2[i2++];</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (i2 &gt;= nums2.length) &#123;</span><br><span class="line">                result[j] = nums1[i1++];</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (nums1[i1] &gt;= nums2[i2]) &#123;</span><br><span class="line">                result[j] = nums2[i2++];</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                result[j] = nums1[i1++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (total_length % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">int</span> i3 = result[result.length - <span class="number">1</span>] + result[result.length - <span class="number">2</span>];</span><br><span class="line">            <span class="keyword">return</span> i3 / <span class="number">2.0</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> result[result.length - <span class="number">1</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路 2"></a>思路 2</h3><p>在统计学上中位数是将一组分成两个相等长度的子集，一个子集总是大于另一个子集。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">findMedianSortedArrays</span><span class="params">(<span class="keyword">int</span>[] A, <span class="keyword">int</span>[] B)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> m = A.length;</span><br><span class="line">        <span class="keyword">int</span> n = B.length;</span><br><span class="line">        <span class="keyword">if</span> (m &gt; n) &#123; <span class="comment">// to ensure m&lt;=n</span></span><br><span class="line">            <span class="keyword">int</span>[] temp = A; A = B; B = temp;</span><br><span class="line">            <span class="keyword">int</span> tmp = m; m = n; n = tmp;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> iMin = <span class="number">0</span>, iMax = m, halfLen = (m + n + <span class="number">1</span>) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">while</span> (iMin &lt;= iMax) &#123;</span><br><span class="line">            <span class="keyword">int</span> i = (iMin + iMax) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">int</span> j = halfLen - i;</span><br><span class="line">            <span class="keyword">if</span> (i &lt; iMax &amp;&amp; B[j-<span class="number">1</span>] &gt; A[i])&#123;</span><br><span class="line">                iMin = iMin + <span class="number">1</span>; <span class="comment">// i is too small</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> <span class="keyword">if</span> (i &gt; iMin &amp;&amp; A[i-<span class="number">1</span>] &gt; B[j]) &#123;</span><br><span class="line">                iMax = iMax - <span class="number">1</span>; <span class="comment">// i is too big</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123; <span class="comment">// i is perfect</span></span><br><span class="line">                <span class="keyword">int</span> maxLeft = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (i == <span class="number">0</span>) &#123; maxLeft = B[j-<span class="number">1</span>]; &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (j == <span class="number">0</span>) &#123; maxLeft = A[i-<span class="number">1</span>]; &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; maxLeft = Math.max(A[i-<span class="number">1</span>], B[j-<span class="number">1</span>]); &#125;</span><br><span class="line">                <span class="keyword">if</span> ( (m + n) % <span class="number">2</span> == <span class="number">1</span> ) &#123; <span class="keyword">return</span> maxLeft; &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">int</span> minRight = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">if</span> (i == m) &#123; minRight = B[j]; &#125;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span> (j == n) &#123; minRight = A[i]; &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; minRight = Math.min(B[j], A[i]); &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> (maxLeft + minRight) / <span class="number">2.0</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0.0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="Review-amp-Tip"><a href="#Review-amp-Tip" class="headerlink" title="Review &amp; Tip"></a>Review &amp; Tip</h2><p>这周依旧是<a href="https://git-scm.com/book/zh/v2/" target="_blank" rel="noopener">Pro Git 第二版</a>，主要是第 6 ~ 10 章。</p>
-<p>以前重来没这么完整的读过 Git 的文档，这次在里面学到了很多小技巧。比如 <code>rebase</code> 除了用来合并，还可以重写历史，合并提交记录，这样的话就可以把很碎的提交合并为一个大的提交。还是<a href="https://git-scm.com/book/zh/v2/Git-工具-高级合并" target="_blank" rel="noopener">高级合并</a>、<a href="https://git-scm.com/book/zh/v2/Git-工具-Rerere" target="_blank" rel="noopener">Rerere</a>、<a href="https://git-scm.com/book/zh/v2/自定义-Git-Git-钩子" target="_blank" rel="noopener">钩子</a>。</p>
-<p>最后讲了 Git 内部原理，第一次知道 Git 命令分为“高层（porcelain）”命令和“底层（plumbing）”命令，所谓的高层命令都是底层命令的组合。对 Git 的底层存储有了一点了解，知道了 Git 各个对象的作用以及存储的位置。强烈推荐看。</p>
-<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>这周分享的不是技术观点，而是假疫苗事件。</p>
-<p>真的是心凉，为了赚钱真的是什么都敢干。美国强生痱子粉致癌 22 人获配 47 亿美元，而 18万已注入病人体中假疫苗，处罚 300 万。</p>
-<p>呵呵。</p>
-<p>违法成本真的是低。也难怪这些人胆大包天，毫无人性。</p>
-<p>无（f）话（u）可（c）说（k），一句话努力赚钱。</p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>Problem: <a href="https://leetcode.com/problems/zigzag-conversion/description/" target="_blank" rel="noopener">ZigZag Conversion</a></p>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路 1"></a>思路 1</h3><p>定义一个二维数组，记录字符串的走势</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">convert</span><span class="params">(String s, <span class="keyword">int</span> numRows)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> length = s.length();</span><br><span class="line">        <span class="keyword">if</span> (length &lt; numRows || numRows &lt; <span class="number">2</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span>[][] ints = <span class="keyword">new</span> <span class="keyword">int</span>[numRows][length];</span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">0</span>, incr = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">            ints[j][i] = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (j == <span class="number">0</span>) &#123;</span><br><span class="line">                incr = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (j == numRows - <span class="number">1</span>) &#123;</span><br><span class="line">                incr = -<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            j += incr;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; length; k++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (ints[i][k] == <span class="number">1</span>) &#123;</span><br><span class="line">                    sb.append(s.charAt(k));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路 2"></a>思路 2</h3><p>一行一行的访问。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">convert</span><span class="params">(String s, <span class="keyword">int</span> numRows)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (numRows == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> s;</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">int</span> length = s.length();</span><br><span class="line">        <span class="keyword">int</span> cycleLen = <span class="number">2</span> * numRows - <span class="number">2</span>;<span class="comment">// 头尾只有一个</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numRows; i++) &#123;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> currentCycle = <span class="number">0</span>; currentCycle + i &lt; length; currentCycle += cycleLen) &#123;</span><br><span class="line">                sb.append(s.charAt(currentCycle + i));</span><br><span class="line">                <span class="comment">//不是头尾两行的情况，同一个周期里面，有两个值在同一行</span></span><br><span class="line">                <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; i != numRows - <span class="number">1</span> &amp;&amp; currentCycle + cycleLen - i &lt; length)</span><br><span class="line">                    sb.append(s.charAt(currentCycle + cycleLen - i));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h2><p>最近看了《编程珠玑》，果然经典的书就是经典，值得一看，且得多看几遍。</p>
+<p>虽然只看了前面几章，但是给我了不少的启发。</p>
+<p>编程时，需要明确问题、找到合适的数据结构和算法、使用简单的设计。</p>
+<p>而这需要扎实的基础，尽量的压榨每一个字节，所以夯实基础是重点，这也是我一直的目标。</p>
+<h2 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h2><p>现在使用 Spring Boot 写一个 <code>Filter</code> 很简单，实现 <code>javax.servlet.Filter</code> 再加上 <code>@WebFilter</code> 注解，通过 <code>urlPatterns</code> 配置 <code>Filter</code> 的应用范围。还可以通过 <code>@Order</code> 指定顺序。最后加上 <code>@ServletComponentScan</code> 扫描这个 <code>Filter</code>。</p>
+<p>我在配置 <code>urlPatterns</code> 遇到一个坑，就是使用 <code>/**</code> 是无效的，只有 <code>*</code>。</p>
+<p><code>/order/*</code> 表示以 <code>/order/</code> 开始的 URL。</p>
+<p><code>/*.do</code> 表示以 <code>.do</code> 结尾的 URL。</p>
+<p>注意：<code>urlPatterns</code> 中的字符串除了 <code>*</code> 都是全匹配（大小写，长度）。</p>
+<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>最近遇到了一些事情，发现自己的心态炸了，太容易被别人点燃了。得好好地控制心态，这又是一门得好好锻炼的事情。为人处世还是挺重要的，要做一个高情商的人。有时还得学习下阿Q精神。</p>
+<p>暂时的办法是，不要被别人的情绪影响，在气头上的时候，冷静下来，也尽量用诙谐幽默的话让对方也冷静下来，脸皮厚一点。</p>
+<p>二是控制自己的脾气，控制语气，不要把负面情绪传递给别人。</p>
 
       
     </div>
@@ -385,7 +387,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yangdongdong.org/2018/07/22/arts-4/" title="ARTS 第 4 周">http://yangdongdong.org/2018/07/22/arts-4/</a>
+    <a href="http://yangdongdong.org/2018/08/05/arts-6/" title="ARTS 第 6 周">http://yangdongdong.org/2018/08/05/arts-6/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -413,8 +415,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/15/arts-3/" rel="next" title="ARTS 第 3 周">
-                <i class="fa fa-chevron-left"></i> ARTS 第 3 周
+              <a href="/2018/07/30/arts-5/" rel="next" title="ARTS 第 5 周">
+                <i class="fa fa-chevron-left"></i> ARTS 第 5 周
               </a>
             
           </div>
@@ -422,10 +424,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/30/arts-5/" rel="prev" title="ARTS 第 5 周">
-                ARTS 第 5 周 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -578,7 +576,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-1"><span class="nav-number">1.1.</span> <span class="nav-text">思路 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-2"><span class="nav-number">1.2.</span> <span class="nav-text">思路 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Review-amp-Tip"><span class="nav-number">2.</span> <span class="nav-text">Review &amp; Tip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Share"><span class="nav-number">3.</span> <span class="nav-text">Share</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-1"><span class="nav-number">1.1.</span> <span class="nav-text">思路 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-2"><span class="nav-number">1.2.</span> <span class="nav-text">思路 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Review"><span class="nav-number">2.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tip"><span class="nav-number">3.</span> <span class="nav-text">Tip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Share"><span class="nav-number">4.</span> <span class="nav-text">Share</span></a></li></ol></div>
             
 
           </div>
