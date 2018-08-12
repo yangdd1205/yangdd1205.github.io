@@ -82,21 +82,15 @@
 <meta name="description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 <meta name="keywords" content="ARTS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ARTS 第 3 周">
-<meta property="og:url" content="http://yangdongdong.org/2018/07/15/arts-3/index.html">
+<meta property="og:title" content="ARTS 第 7 周">
+<meta property="og:url" content="http://yangdongdong.org/2018/08/12/arts-7/index.html">
 <meta property="og:site_name" content="编程改变生活">
 <meta property="og:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/deltas.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/snapshots.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/basic-rebase-1.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/basic-rebase-2.png">
-<meta property="og:image" content="https://git-scm.com/book/en/v2/images/basic-rebase-3.png">
-<meta property="og:updated_time" content="2018-07-15T12:51:52.532Z">
+<meta property="og:updated_time" content="2018-08-12T15:26:45.569Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ARTS 第 3 周">
+<meta name="twitter:title" content="ARTS 第 7 周">
 <meta name="twitter:description" content="每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路">
-<meta name="twitter:image" content="https://git-scm.com/book/en/v2/images/deltas.png">
 
 
 
@@ -126,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yangdongdong.org/2018/07/15/arts-3/"/>
+  <link rel="canonical" href="http://yangdongdong.org/2018/08/12/arts-7/"/>
 
 
 
 
 
-  <title>ARTS 第 3 周 | 编程改变生活</title>
+  <title>ARTS 第 7 周 | 编程改变生活</title>
   
 
 
@@ -249,7 +243,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/07/15/arts-3/">
+    <link itemprop="mainEntityOfPage" href="http://yangdongdong.org/2018/08/12/arts-7/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="杨冬冬">
@@ -266,7 +260,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">ARTS 第 3 周</h1>
+          <h1 class="post-title" itemprop="name headline">ARTS 第 7 周</h1>
         
 
         <div class="post-meta">
@@ -278,8 +272,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-15T20:51:52+08:00">
-                2018-07-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-12T23:26:45+08:00">
+                2018-08-12
               </time>
             
 
@@ -345,47 +339,58 @@
       
         <p>每周一道算法、点评一篇英文技术文章、学习一个技术技巧、分享一个技术观点和思路</p>
 <a id="more"></a>
-<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>Problem: <a href="https://leetcode.com/problems/longest-substring-without-repeating-characters/description/" target="_blank" rel="noopener">Longest Substring Without Repeating Characters</a></p>
-<p>Given a string, find the length of the longest substring without repeating characters.</p>
-<p>Examples:</p>
-<p>Given “abcabcbb”, the answer is “abc”, which the length is 3.</p>
-<p>Given “bbbbb”, the answer is “b”, with the length of 1.</p>
-<p>Given “pwwkew”, the answer is “wke”, with the length of 3. </p>
-<blockquote>
-<p>Note that the answer must be a substring, “pwke” is a subsequence and not a substring.</p>
-</blockquote>
-<h3 id="思路一"><a href="#思路一" class="headerlink" title="思路一"></a>思路一</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(s.length()&lt;<span class="number">2</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> s.length();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> length = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">int</span> i1 = <span class="number">0</span>, i2 = <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span> (i2 &lt; s.length() &amp;&amp; i1 + length &lt;= s.length()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (i1 == i2) &#123;</span><br><span class="line">                i2++;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            String s1 = s.substring(i1, i1 + (i2 - i1));</span><br><span class="line">            String s2 = s.substring(i2, i2 + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span> (s1.contains(s2)) &#123;</span><br><span class="line">                i1++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                length = (i2 - i1 + <span class="number">1</span>) &gt; length ? (i2 - i1 + <span class="number">1</span>) : length;</span><br><span class="line">                i2++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> length;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>best 97.56%</p>
-<p>优化
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> n = s.length(), ans = <span class="number">0</span>;</span><br><span class="line">        Map&lt;Character, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(); <span class="comment">// current index of character</span></span><br><span class="line">        <span class="comment">// try to extend the range [i, j]</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>, i = <span class="number">0</span>; j &lt; n; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(s.charAt(j))) &#123;</span><br><span class="line">                i = Math.max(map.get(s.charAt(j)), i);</span><br><span class="line">            &#125;</span><br><span class="line">            ans = Math.max(ans, j - i + <span class="number">1</span>);</span><br><span class="line">            map.put(s.charAt(j), j + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h2><p><a href="https://git-scm.com/book/zh/v2/" target="_blank" rel="noopener">Pro Git 第二版</a></p>
-<p>Git 与其它版本控制的区别。</p>
-<p>大部分系统以文件变更列表的方式存储信息，它们保存的信息看作是一组基本文件和每个文件随时间逐步累积的差异。
-<img src="https://git-scm.com/book/en/v2/images/deltas.png" alt="存储每个文件与初始版本的差异"></p>
-<p>Git 更像是把数据看作是对小型文件系统的一组快照，每次你提交更新，或在 Git 中保存项目状态时，它主要对当时的全部文件制作一个快照并保存这个快照的索引。
-<img src="https://git-scm.com/book/en/v2/images/snapshots.png" alt="存储项目随时改变的快照"></p>
-<p>Git merge 和 rebase 的区别</p>
-<p>现在 Git 中有两个分支 <code>experiment</code> 和 <code>master</code></p>
-<p><img src="https://git-scm.com/book/en/v2/images/basic-rebase-1.png" alt=""></p>
-<p>使用 <code>merge</code> 合并，它会把两个分支的最新快照（<code>C3</code> 和 <code>C4</code>）以及二者最近的共同祖先（<code>C2</code>）进行三方合并，合并的结果是生成一个新的快照（并提交）。</p>
-<p><img src="https://git-scm.com/book/en/v2/images/basic-rebase-2.png" alt="merge" title="使用 merge"></p>
-<p>还可以使用 <code>rebase</code> 合并，它会提取在 <code>C4</code> 中引入的补丁和修改，然后在 <code>C3</code> 的基础上应用一次。其实就是将提交到某一分支上的所有修改都移至另一分支上。</p>
-<p><img src="https://git-scm.com/book/en/v2/images/basic-rebase-3.png" alt="" title="将 C4 中的修改变基到 C3 上"></p>
-<p>现在回到 <code>master</code> 分支，进行一次快进合并。
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git checkout master</span><br><span class="line">git merge experiment</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>以上内容均来源于<a href="https://git-scm.com/book/zh/v2/" target="_blank" rel="noopener">Pro Git 第二版</a></p>
-</blockquote>
-<h2 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h2><p>最近在使用 <code>git stash</code> 命令时，遇到了一个问题。</p>
-<p>我先使用 <code>git stash</code> 让工作目录保持干净，然后 <code>git pull</code> 更新。现在使用 <code>git stash pop</code> 还原储藏并且将栈上弹出。然后冲突了，解决冲突。</p>
-<p>然后使用 <code>git stash list</code> 查看。咦？怎么还存在，我再 <code>git stash pop</code> 好吧，又冲突，再解决。</p>
-<p>然后使用 <code>git stash list</code> 查看。咦？怎么还存在，我再 <code>git stash pop</code> 好吧，又冲突，再解决。</p>
-<p>……</p>
-<p>后来才知道，如果使用 <code>git stash pop</code> 时，发生冲突需要合并时，只还原储藏并不会删除栈。需要手动解决冲突，手动删除储藏。</p>
-<p>可以使用 <code>git stash drop</code> 加上将要移除的储藏的名字来移除它。</p>
-<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>最近亚马逊上的书打折，看见《重构：改善既有代码的设计》、《领域驱动设计：软件核心复杂性应对之道》、《编程珠玑》等等赫然在列，好想买。
-想到去年双十一买的书还有未拆封的，又担心买了不看。不可否认买书是有快感的，因为在买的时候已经安排好了学习计划。等书到了，就懒得看或者只拆开就放一边了。通过书籍来学习是没问题了，现在是只有买没有学，是毫无意义的。与其多买几本书，不如把现有的书看完。</p>
-<p>技术类书籍不便宜，要买就要买经典的，不要随便买。</p>
+<h2 id="Algorithm"><a href="#Algorithm" class="headerlink" title="Algorithm"></a>Algorithm</h2><p>Problem: <a href="https://leetcode.com/problems/reverse-integer/description/" target="_blank" rel="noopener">Reverse Integer</a></p>
+<h3 id="思路-1"><a href="#思路-1" class="headerlink" title="思路 1"></a>思路 1</h3><p>当成字符串处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> flag = x &gt; <span class="number">0</span> ? <span class="number">1</span> : -<span class="number">1</span>;</span><br><span class="line">        Long abs = Math.abs(((<span class="keyword">long</span>) (x)));</span><br><span class="line">        String s = String.valueOf(abs);</span><br><span class="line">        <span class="keyword">char</span>[] chars = s.toCharArray();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; s.length() / <span class="number">2</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">char</span> temp = chars[i];</span><br><span class="line">            chars[i] = chars[s.length() - <span class="number">1</span> - i];</span><br><span class="line">            chars[s.length() - <span class="number">1</span> - i] = temp;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (Long.parseLong(String.valueOf(chars)) &gt; Integer.MAX_VALUE) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Integer.parseInt(String.valueOf(chars)) * flag;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很挫的思路。。。</p>
+<h3 id="思路-2"><a href="#思路-2" class="headerlink" title="思路 2"></a>思路 2</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> rev = <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span>(x != <span class="number">0</span>)&#123;</span><br><span class="line">            rev = rev * <span class="number">10</span> + x % <span class="number">10</span>;</span><br><span class="line">            x /= <span class="number">10</span>;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span>(rev &gt; Integer.MAX_VALUE || rev &lt; Integer.MIN_VALUE)</span><br><span class="line">                <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">int</span>)rev;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Review"><a href="#Review" class="headerlink" title="Review"></a>Review</h2><p>关于 CAP 定理的文章 <a href="http://www.acodersjourney.com/2018/07/system-design-interview-cap-theorem/" target="_blank" rel="noopener">System Design Interview Concepts – CAP Theorem</a> </p>
+<ul>
+<li>一致性（Consistency）：查询时，每个节点将返回最新数据。如果没有，系统就会出错。写请求可通过先同步再返回来实现。</li>
+<li>可用性（Availability）：在任何时候，系统触发的每个请求都会生成有效的响应。可通过复制数据来实现。</li>
+<li>分区容错性（Partition Tolerance）：即使发生网络故障或数据丢失，系统也能够连续执行。可通过复制节点来实现。</li>
+</ul>
+<p>CAP理论的核心是：一个分布式系统不可能同时很好的满足一致性、可用性和分区容错性这三个需求，最多只能同时较好的满足两个。</p>
+<p><strong>CA 系统</strong></p>
+<p>关注一致性和可用性。所有节点之间的数据都是一致的，您可以从任何节点读取/写入，但是 CA 系统不能容忍网络错误或节点错误，一旦出现这样的问题，整个系统就会拒绝写请求，因为它不知道对面的那个节点是否挂掉了，还是只是网络问题，唯一安全的做法就是把自己变成只读。</p>
+<p><strong>CP 系统</strong></p>
+<p>关注一致性和分区容错性。这样的系统只需要保证大多数节点数据一致，而少数的节点会在没有同步到最新版本的数据时变成不可用的状态。这样能够提供一部分的可用性。</p>
+<p><strong>AP 系统</strong></p>
+<p>关注可用性和分区容错性，节点总是在线，但它们可能无法获取最新数据，但是，只要线路正常，它们就会同步。</p>
+<p>下面是一些数据存储的分类：</p>
+<ul>
+<li>CA<ul>
+<li>RDBMS( MySQL, MSSQL Server)</li>
+</ul>
+</li>
+<li>CP<ul>
+<li>Google BigTable</li>
+<li>Hbase</li>
+<li>MongoDB</li>
+<li>MemcacheDB</li>
+<li>Redis</li>
+</ul>
+</li>
+<li>AP<ul>
+<li>Dynamo DB</li>
+<li>Voldemort</li>
+<li>Cassandra</li>
+<li>SimpleDB</li>
+<li>CouchDB</li>
+<li>Riak</li>
+</ul>
+</li>
+</ul>
+<p>设计分布式系统时，我们应该根据系统的需求进行取舍。如果我们需要更高的一致性，则需要可用性或者分区容错性要求不高，如果可以牺牲一些一致性或分区容错性，则可以调整可用性。</p>
+<p>部分内容来源于：<a href="https://time.geekbang.org/column/intro/48" target="_blank" rel="noopener">左耳听风专栏</a></p>
+<h2 id="Tip"><a href="#Tip" class="headerlink" title="Tip"></a>Tip</h2><p>使用 Python 快速搭建一个简单 HTTP 服务。</p>
+<p>在指定的目录下，然后执行</p>
+<p>Python2.x
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m SimpleHTTPServer <span class="number">8080</span></span><br></pre></td></tr></table></figure></p>
+<p>Python3.x
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m http.server <span class="number">8080</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Share"><a href="#Share" class="headerlink" title="Share"></a>Share</h2><p>最近在写文档，发现 Word 各种玩不转，然后选择了 Markdown。仔细想想除了 Word 还有 Excel 和 PPT 都玩不转。。。</p>
+<p>其实程序员不仅仅只是输出代码，应该还有各种文档。编写文档、制作PPT、画各种图，这些都可以称为“软技能”。所以平时除了学习编码技术外，提高软技能也是挺重要的。一技之长，多方位提升。</p>
 
       
     </div>
@@ -417,7 +422,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://yangdongdong.org/2018/07/15/arts-3/" title="ARTS 第 3 周">http://yangdongdong.org/2018/07/15/arts-3/</a>
+    <a href="http://yangdongdong.org/2018/08/12/arts-7/" title="ARTS 第 7 周">http://yangdongdong.org/2018/08/12/arts-7/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -445,8 +450,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/07/08/arts-2/" rel="next" title="ARTS 第 2 周">
-                <i class="fa fa-chevron-left"></i> ARTS 第 2 周
+              <a href="/2018/08/05/arts-6/" rel="next" title="ARTS 第 6 周">
+                <i class="fa fa-chevron-left"></i> ARTS 第 6 周
               </a>
             
           </div>
@@ -454,10 +459,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/07/22/arts-4/" rel="prev" title="ARTS 第 4 周">
-                ARTS 第 4 周 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -610,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路一"><span class="nav-number">1.1.</span> <span class="nav-text">思路一</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Review"><span class="nav-number">2.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tip"><span class="nav-number">3.</span> <span class="nav-text">Tip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Share"><span class="nav-number">4.</span> <span class="nav-text">Share</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Algorithm"><span class="nav-number">1.</span> <span class="nav-text">Algorithm</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-1"><span class="nav-number">1.1.</span> <span class="nav-text">思路 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思路-2"><span class="nav-number">1.2.</span> <span class="nav-text">思路 2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Review"><span class="nav-number">2.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tip"><span class="nav-number">3.</span> <span class="nav-text">Tip</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Share"><span class="nav-number">4.</span> <span class="nav-text">Share</span></a></li></ol></div>
             
 
           </div>
